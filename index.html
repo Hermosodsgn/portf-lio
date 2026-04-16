@@ -68,15 +68,9 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 24px 48px;
-    mix-blend-mode: normal;
-  }
-  nav::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to bottom, rgba(13,13,13,0.95) 0%, transparent 100%);
-    z-index: -1;
+    padding: 20px 48px;
+    background: #0d0d0d;
+    border-bottom: 1px solid var(--line);
   }
   .nav-logo {
     font-family: var(--serif);
@@ -529,7 +523,6 @@
     gap: 2px;
   }
   .project-card {
-    background: var(--surface);
     aspect-ratio: 4/5;
     position: relative;
     overflow: hidden;
@@ -537,6 +530,7 @@
     opacity: 0;
     transform: translateY(40px);
     transition: opacity 0.7s ease, transform 0.7s ease;
+    background: var(--surface);
   }
   .project-card.visible { opacity: 1; transform: translateY(0); }
   .project-card:nth-child(2) { transition-delay: 0.1s; }
@@ -544,40 +538,26 @@
   .project-card:nth-child(4) { transition-delay: 0.15s; }
   .project-card:nth-child(5) { transition-delay: 0.25s; }
   .project-card:nth-child(6) { transition-delay: 0.3s; }
-  .project-bg {
+  .project-thumb {
     position: absolute;
     inset: 0;
-    transition: transform 0.6s ease;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease, filter 0.4s ease;
+    filter: brightness(0.75);
   }
-  .project-card:hover .project-bg { transform: scale(1.05); }
-  .proj-1 { background: linear-gradient(135deg, #1a1a1a 0%, #2d2d1a 100%); }
-  .proj-2 { background: linear-gradient(135deg, #1a1a2e 0%, #0f3460 100%); }
-  .proj-3 { background: linear-gradient(135deg, #2d1a1a 0%, #3d1515 100%); }
-  .proj-4 { background: linear-gradient(135deg, #1a2d1a 0%, #153d20 100%); }
-  .proj-5 { background: linear-gradient(135deg, #2d1a2d 0%, #3d153d 100%); }
-  .proj-6 { background: linear-gradient(135deg, #1a2a2d 0%, #153a3d 100%); }
-  .project-pattern {
+  .project-card:hover .project-thumb {
+    transform: scale(1.06);
+    filter: brightness(0.45);
+  }
+  .project-overlay {
     position: absolute;
     inset: 0;
-    opacity: 0.4;
+    background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 50%);
+    transition: background 0.4s ease;
   }
-  .proj-1 .project-pattern {
-    background: repeating-linear-gradient(0deg, transparent, transparent 40px, rgba(200,240,96,0.1) 40px, rgba(200,240,96,0.1) 41px);
-  }
-  .proj-2 .project-pattern {
-    background: repeating-linear-gradient(45deg, transparent, transparent 30px, rgba(100,150,255,0.1) 30px, rgba(100,150,255,0.1) 31px);
-  }
-  .proj-3 .project-pattern {
-    background: radial-gradient(circle at 50% 50%, rgba(240,100,80,0.2) 0%, transparent 70%);
-  }
-  .proj-4 .project-pattern {
-    background: repeating-linear-gradient(90deg, transparent, transparent 20px, rgba(100,240,150,0.1) 20px, rgba(100,240,150,0.1) 21px);
-  }
-  .proj-5 .project-pattern {
-    background: radial-gradient(ellipse at 30% 70%, rgba(200,100,240,0.2) 0%, transparent 60%);
-  }
-  .proj-6 .project-pattern {
-    background: repeating-linear-gradient(-45deg, transparent, transparent 25px, rgba(100,220,240,0.1) 25px, rgba(100,220,240,0.1) 26px);
+  .project-card:hover .project-overlay {
+    background: linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.4) 100%);
   }
   .project-inner {
     position: absolute;
@@ -593,31 +573,31 @@
     text-transform: uppercase;
     color: var(--accent);
     margin-bottom: 8px;
-    transform: translateY(10px);
+    transform: translateY(6px);
     opacity: 0;
     transition: transform 0.4s ease 0.1s, opacity 0.4s ease 0.1s;
   }
   .project-card:hover .project-cat { transform: translateY(0); opacity: 1; }
   .project-name {
     font-family: var(--serif);
-    font-size: 28px;
+    font-size: 26px;
     font-weight: 700;
     line-height: 1.1;
-    margin-bottom: 12px;
-    transform: translateY(20px);
+    margin-bottom: 10px;
+    transform: translateY(10px);
     transition: transform 0.4s ease;
   }
   .project-card:hover .project-name { transform: translateY(0); }
   .project-desc {
     font-size: 12px;
-    color: var(--muted);
+    color: rgba(240,236,227,0.7);
     line-height: 1.6;
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.4s ease 0.1s, opacity 0.4s ease 0.1s;
     opacity: 0;
   }
-  .project-card:hover .project-desc { max-height: 100px; opacity: 1; }
+  .project-card:hover .project-desc { max-height: 80px; opacity: 1; }
   .project-link {
     display: inline-flex;
     align-items: center;
@@ -627,9 +607,9 @@
     text-transform: uppercase;
     color: var(--accent);
     text-decoration: none;
-    margin-top: 16px;
+    margin-top: 14px;
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(8px);
     transition: opacity 0.4s ease 0.2s, transform 0.4s ease 0.2s;
   }
   .project-card:hover .project-link { opacity: 1; transform: translateY(0); }
@@ -974,16 +954,16 @@
     <div class="stat-label">Anos de Experiência</div>
   </div>
   <div class="stat-item">
-    <div class="stat-num">25<span>%</span></div>
-    <div class="stat-label">Redução em entregas</div>
+    <div class="stat-num">E2E</div>
+    <div class="stat-label">Discovery → Handoff</div>
   </div>
   <div class="stat-item">
-    <div class="stat-num">3</div>
-    <div class="stat-label">Empresas como Designer Sênior</div>
+    <div class="stat-num">B2B</div>
+    <div class="stat-label">SaaS · E-commerce · Tech</div>
   </div>
   <div class="stat-item">
-    <div class="stat-num">∞</div>
-    <div class="stat-label">Problemas resolvidos</div>
+    <div class="stat-num">UX<span>+</span></div>
+    <div class="stat-label">Estratégia de Produto</div>
   </div>
 </div>
 
@@ -1114,9 +1094,8 @@
   </div>
   <div class="projects-grid">
     <div class="project-card">
-      <div class="project-bg proj-1">
-        <div class="project-pattern"></div>
-      </div>
+      <img class="project-thumb" src="https://mir-s3-cdn-cf.behance.net/projects/404/16ecdb223034875.Y3JvcCwxMzgyLDEwODEsMjcwLDA.png" alt="Rebranding Maera" loading="lazy">
+      <div class="project-overlay"></div>
       <div class="project-inner">
         <div class="project-cat">Branding · Rebranding</div>
         <div class="project-name">Rebranding Maera</div>
@@ -1125,57 +1104,52 @@
       </div>
     </div>
     <div class="project-card">
-      <div class="project-bg proj-2">
-        <div class="project-pattern"></div>
-      </div>
+      <img class="project-thumb" src="https://mir-s3-cdn-cf.behance.net/projects/404/2f74ca223036011.Y3JvcCwxNTIwLDExODksMTk1LDEzMTA5.jpg" alt="Azaio" loading="lazy">
+      <div class="project-overlay"></div>
       <div class="project-inner">
         <div class="project-cat">Identidade Visual</div>
         <div class="project-name">Azaio</div>
-        <div class="project-desc">Desenvolvimento de brand identity para produto digital com direção de arte estratégica.</div>
+        <div class="project-desc">Brand identity para produto digital com direção de arte estratégica.</div>
         <a href="https://www.behance.net/gallery/223036011/Azaio" target="_blank" class="project-link">Ver projeto</a>
       </div>
     </div>
     <div class="project-card">
-      <div class="project-bg proj-3">
-        <div class="project-pattern"></div>
-      </div>
+      <img class="project-thumb" src="https://mir-s3-cdn-cf.behance.net/projects/404/4464b0223037137.Y3JvcCwxNDc2LDExNTUsMTgyLDQ1MDM.jpg" alt="Márcia Menezes" loading="lazy">
+      <div class="project-overlay"></div>
       <div class="project-inner">
-        <div class="project-cat">Branding</div>
+        <div class="project-cat">Branding Pessoal</div>
         <div class="project-name">Márcia Menezes</div>
         <div class="project-desc">Identidade visual pessoal com personalidade marcante e sistema aplicável em múltiplos canais.</div>
         <a href="https://www.behance.net/gallery/223037137/Marcia-Menezes" target="_blank" class="project-link">Ver projeto</a>
       </div>
     </div>
     <div class="project-card">
-      <div class="project-bg proj-4">
-        <div class="project-pattern"></div>
-      </div>
+      <img class="project-thumb" src="https://mir-s3-cdn-cf.behance.net/projects/404/42f9f7223031741.Y3JvcCwxMTQ1LDg5NiwzODUsMTAy.jpg" alt="Sirea" loading="lazy">
+      <div class="project-overlay"></div>
       <div class="project-inner">
         <div class="project-cat">Identidade Visual</div>
         <div class="project-name">Sirea</div>
-        <div class="project-desc">Criação de sistema visual para empresa com foco em clareza e posicionamento de mercado.</div>
+        <div class="project-desc">Sistema visual com foco em clareza e posicionamento de mercado.</div>
         <a href="https://www.behance.net/gallery/223031741/Sirea" target="_blank" class="project-link">Ver projeto</a>
       </div>
     </div>
     <div class="project-card">
-      <div class="project-bg proj-5">
-        <div class="project-pattern"></div>
-      </div>
+      <img class="project-thumb" src="https://mir-s3-cdn-cf.behance.net/projects/404/6ed89d223027647.Y3JvcCwxMDgwLDg0NCwwLDUwMg.jpg" alt="Breedom Cervejaria" loading="lazy">
+      <div class="project-overlay"></div>
       <div class="project-inner">
         <div class="project-cat">Branding</div>
         <div class="project-name">Breedom Cervejaria</div>
-        <div class="project-desc">Identidade visual para cervejaria artesanal unindo tradição e irreverência em um sistema robusto.</div>
+        <div class="project-desc">Identidade para cervejaria artesanal unindo tradição e irreverência.</div>
         <a href="https://www.behance.net/gallery/223027647/Breedom-Cervejaria" target="_blank" class="project-link">Ver projeto</a>
       </div>
     </div>
     <div class="project-card">
-      <div class="project-bg proj-6">
-        <div class="project-pattern"></div>
-      </div>
+      <img class="project-thumb" src="https://mir-s3-cdn-cf.behance.net/projects/404/7ac18d207008881.Y3JvcCwxMzgwLDEwODAsMCww.jpg" alt="Logofolio 2024" loading="lazy">
+      <div class="project-overlay"></div>
       <div class="project-inner">
         <div class="project-cat">Logofolio</div>
         <div class="project-name">Logofolio 2024</div>
-        <div class="project-desc">Coleção de marcas desenvolvidas ao longo do primeiro semestre de 2024 com diferentes abordagens.</div>
+        <div class="project-desc">Coleção de marcas desenvolvidas ao longo do primeiro semestre de 2024.</div>
         <a href="https://www.behance.net/gallery/207008881/Logofolio-1st-Semester-2024" target="_blank" class="project-link">Ver projeto</a>
       </div>
     </div>
