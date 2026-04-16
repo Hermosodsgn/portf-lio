@@ -17,10 +17,14 @@
 html { scroll-behavior: smooth; }
 body { background: var(--bg); color: var(--text); font-family: var(--mono); font-size: 14px; line-height: 1.7; overflow-x: hidden; }
 
-/* CURSOR */
+/* CURSOR - oculto em touch */
 .cursor { width: 10px; height: 10px; background: var(--accent); border-radius: 50%; position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9999; mix-blend-mode: difference; }
 .cursor-ring { width: 36px; height: 36px; border: 1px solid rgba(200,240,96,0.4); border-radius: 50%; position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9998; transition: width 0.3s, height 0.3s, border-color 0.3s; }
 .cursor-ring.hover { width: 60px; height: 60px; border-color: var(--accent); }
+@media (hover: none), (pointer: coarse) {
+  .cursor, .cursor-ring { display: none !important; }
+  * { cursor: auto !important; }
+}
 
 /* NAV */
 nav { position: fixed; top: 0; left: 0; right: 0; z-index: 200; display: flex; justify-content: space-between; align-items: center; padding: 20px 48px; background: #0d0d0d; border-bottom: 1px solid var(--line); }
@@ -655,16 +659,10 @@ function navClick(e, anchor) {
 
 /* CURSOR */
 const cur = document.getElementById('cursor'), ring = document.getElementById('cursorRing');
-const isTouch = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
-if (isTouch) {
-  cur.style.display = 'none';
-  ring.style.display = 'none';
-  document.body.style.cursor = 'auto';
-} else {
-  document.body.style.cursor = 'none';
-}
-let mx=0,my=0,rx=0,ry=0;
+const isTouch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0 || window.matchMedia('(pointer: coarse)').matches;
 if (!isTouch) {
+  document.body.style.cursor = 'none';
+  let mx=0,my=0,rx=0,ry=0;
   document.addEventListener('mousemove',e=>{ mx=e.clientX; my=e.clientY; cur.style.transform=`translate(${mx-5}px,${my-5}px)`; });
   (function loop(){ rx+=(mx-rx-18)*0.12; ry+=(my-ry-18)*0.12; ring.style.transform=`translate(${rx}px,${ry}px)`; requestAnimationFrame(loop); })();
 }
