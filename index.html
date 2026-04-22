@@ -35,7 +35,11 @@ nav { position: fixed; top: 0; left: 0; right: 0; z-index: 200; display: flex; j
 .nav-links a:hover { color: var(--accent); }
 .nav-cta { color: var(--bg) !important; background: var(--accent); padding: 10px 20px; border-radius: 2px; }
 .nav-cta:hover { background: var(--accent2) !important; }
-.menu-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+.lang-toggle { display: flex; align-items: center; gap: 6px; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); background: none; border: 1px solid var(--line); padding: 7px 14px; border-radius: 2px; cursor: pointer; font-family: var(--mono); transition: all 0.3s; }
+.lang-toggle:hover { border-color: var(--accent); color: var(--accent); }
+.lang-toggle .lang-active { color: var(--text); font-weight: 500; }
+.lang-toggle .lang-sep { color: var(--line); }
+
 .menu-toggle span { width: 24px; height: 1px; background: var(--text); display: block; }
 .mobile-nav { display: none; position: fixed; inset: 0; background: var(--bg); z-index: 199; flex-direction: column; align-items: center; justify-content: center; gap: 32px; }
 .mobile-nav.open { display: flex; }
@@ -291,13 +295,18 @@ footer { border-top: 1px solid var(--line); padding: 32px 48px; display: flex; j
 <nav>
   <a href="#" class="nav-logo" onclick="navClick(event,'#hero')">Hermoso<span>.</span></a>
   <ul class="nav-links">
-    <li><a href="#sobre" onclick="navClick(event,'#sobre')">Sobre</a></li>
-    <li><a href="#experiencia" onclick="navClick(event,'#experiencia')">Experiência</a></li>
-    <li><a href="#projetos" onclick="navClick(event,'#projetos')">Projetos</a></li>
-    <li><a href="#formacao" onclick="navClick(event,'#formacao')">Formação</a></li>
-    <li><a href="#contato" class="nav-cta" onclick="navClick(event,'#contato')">Contato</a></li>
+    <li><a href="#sobre" onclick="navClick(event,'#sobre')" data-i18n="nav_about">Sobre</a></li>
+    <li><a href="#experiencia" onclick="navClick(event,'#experiencia')" data-i18n="nav_exp">Experiência</a></li>
+    <li><a href="#projetos" onclick="navClick(event,'#projetos')" data-i18n="nav_work">Projetos</a></li>
+    <li><a href="#formacao" onclick="navClick(event,'#formacao')" data-i18n="nav_edu">Formação</a></li>
+    <li><a href="#contato" class="nav-cta" onclick="navClick(event,'#contato')" data-i18n="nav_contact">Contato</a></li>
   </ul>
-  <div class="menu-toggle" id="menuToggle"><span></span><span></span><span></span></div>
+  <div style="display:flex;align-items:center;gap:16px">
+    <button class="lang-toggle" id="langBtn" onclick="toggleLang()">
+      <span class="lang-active" id="langActive">PT</span><span class="lang-sep">/</span><span id="langOther">EN</span>
+    </button>
+    <div class="menu-toggle" id="menuToggle"><span></span><span></span><span></span></div>
+  </div>
 </nav>
 
 <div class="mobile-nav" id="mobileNav">
@@ -313,12 +322,12 @@ footer { border-top: 1px solid var(--line); padding: 32px 48px; display: flex; j
 <div id="portfolio-view">
   <section id="hero">
     <div class="hero-left">
-      <div class="hero-tag">Product Designer · Brand Designer</div>
+      <div class="hero-tag" data-i18n="hero_tag">Product Designer · Brand Designer</div>
       <h1 class="hero-headline">Leonardo<br><em>Hermoso.</em></h1>
-      <p class="hero-sub">Raízes em branding. Cabeça em produto.<br>4+ anos criando sistemas visuais e experiências digitais que funcionam — do símbolo à interface, da pesquisa ao handoff.</p>
+      <p class="hero-sub" data-i18n="hero_sub">Raízes em branding. Cabeça em produto.<br>4+ anos criando sistemas visuais e experiências digitais que funcionam — do símbolo à interface, da pesquisa ao handoff.</p>
       <div class="hero-actions">
-        <a href="#projetos" class="btn-primary">Ver Projetos</a>
-        <a href="#contato" class="btn-ghost">Vamos conversar</a>
+        <a href="#projetos" class="btn-primary" data-i18n="hero_cta1">Ver Projetos</a>
+        <a href="#contato" class="btn-ghost" data-i18n="hero_cta2">Vamos conversar</a>
       </div>
     </div>
     <div class="hero-right">
@@ -333,19 +342,19 @@ footer { border-top: 1px solid var(--line); padding: 32px 48px; display: flex; j
   </section>
 
   <div class="stats-bar" id="statsBar">
-    <div class="stat-item"><div class="stat-num">4<span>+</span></div><div class="stat-label">Anos de Experiência</div></div>
-    <div class="stat-item"><div class="stat-num">E2E</div><div class="stat-label">Discovery → Handoff</div></div>
-    <div class="stat-item"><div class="stat-num">B2B</div><div class="stat-label">SaaS · E-commerce · Tech</div></div>
-    <div class="stat-item"><div class="stat-num">UX<span>+</span></div><div class="stat-label">Estratégia de Produto</div></div>
+    <div class="stat-item"><div class="stat-num">4<span>+</span></div><div class="stat-label" data-i18n="stat1">Anos de Experiência</div></div>
+    <div class="stat-item"><div class="stat-num">E2E</div><div class="stat-label" data-i18n="stat2">Discovery → Handoff</div></div>
+    <div class="stat-item"><div class="stat-num">B2B</div><div class="stat-label" data-i18n="stat3">SaaS · E-commerce · Tech</div></div>
+    <div class="stat-item"><div class="stat-num">UX<span>+</span></div><div class="stat-label" data-i18n="stat4">Estratégia de Produto</div></div>
   </div>
 
   <section id="sobre">
-    <div class="section-header reveal"><div class="section-label" data-num="01">Sobre mim</div><h2 class="section-title">Branding <em>encontra</em> produto</h2></div>
+    <div class="section-header reveal"><div class="section-label" data-num="01" data-i18n="about_label">Sobre mim</div><h2 class="section-title" data-i18n="about_title">Branding <em>encontra</em> produto</h2></div>
     <div class="sobre-grid">
       <div class="sobre-text reveal">
-        <p>Comecei pelo branding — construindo sistemas de identidade visual com personalidade e consistência. Com o tempo, fui me aproximando de produto: pesquisa com usuários, arquitetura de informação, prototipagem e decisões que impactam negócio.</p>
-        <p>Hoje atuo na interseção entre as duas disciplinas. Entendo <strong>marca como experiência</strong> e <strong>produto como comunicação</strong> — o que me permite colaborar com times de design, produto e estratégia sem perder a visão do todo.</p>
-        <p>Experiência em ambientes <strong>B2B SaaS</strong> e <strong>e-commerce</strong>, com atuação em projetos end-to-end: do discovery ao handoff. Disponível para freelance e oportunidades.</p>
+        <p data-i18n="about_p1">Comecei pelo branding — construindo sistemas de identidade visual com personalidade e consistência. Com o tempo, fui me aproximando de produto: pesquisa com usuários, arquitetura de informação, prototipagem e decisões que impactam negócio.</p>
+        <p data-i18n="about_p2">Hoje atuo na interseção entre as duas disciplinas. Entendo <strong>marca como experiência</strong> e <strong>produto como comunicação</strong> — o que me permite colaborar com times de design, produto e estratégia sem perder a visão do todo.</p>
+        <p data-i18n="about_p3">Experiência em ambientes <strong>B2B SaaS</strong> e <strong>e-commerce</strong>, com atuação em projetos end-to-end: do discovery ao handoff. Disponível para freelance e oportunidades.</p>
         <div class="social-links">
           <a href="https://www.behance.net/heermoso" target="_blank" class="social-btn">Behance ↗</a>
           <a href="https://www.linkedin.com/in/heermoso" target="_blank" class="social-btn">LinkedIn ↗</a>
@@ -353,57 +362,57 @@ footer { border-top: 1px solid var(--line); padding: 32px 48px; display: flex; j
         </div>
       </div>
       <div class="skills-grid reveal">
-        <div class="skill-card"><div class="skill-icon">◈</div><div class="skill-name">UX / UI</div><div class="skill-list">Figma · Prototipagem · Wireframes · Design System · User Research · Testes</div></div>
-        <div class="skill-card"><div class="skill-icon">◉</div><div class="skill-name">Estratégia</div><div class="skill-list">Discovery · JTBD · Arquitetura de Informação · Handoff · Acessibilidade</div></div>
-        <div class="skill-card"><div class="skill-icon">◇</div><div class="skill-name">Branding</div><div class="skill-list">Identidade Visual · Direção de Arte · Sistemas Visuais · Social Media</div></div>
-        <div class="skill-card"><div class="skill-icon">◎</div><div class="skill-name">Processos</div><div class="skill-list">Design Thinking · Scrum · Kanban · UCD · Pesquisa Qualitativa</div></div>
+        <div class="skill-card"><div class="skill-icon">◈</div><div class="skill-name">UX / UI</div><div class="skill-list" data-i18n="skill_ux">Figma · Prototipagem · Wireframes · Design System · User Research · Testes</div></div>
+        <div class="skill-card"><div class="skill-icon">◉</div><div class="skill-name" data-i18n="skill_strat_name">Estratégia</div><div class="skill-list" data-i18n="skill_strat">Discovery · JTBD · Arquitetura de Informação · Handoff · Acessibilidade</div></div>
+        <div class="skill-card"><div class="skill-icon">◇</div><div class="skill-name">Branding</div><div class="skill-list" data-i18n="skill_brand">Identidade Visual · Direção de Arte · Sistemas Visuais · Social Media</div></div>
+        <div class="skill-card"><div class="skill-icon">◎</div><div class="skill-name" data-i18n="skill_proc_name">Processos</div><div class="skill-list" data-i18n="skill_proc">Design Thinking · Scrum · Kanban · UCD · Pesquisa Qualitativa</div></div>
       </div>
     </div>
   </section>
 
   <section id="experiencia">
     <div class="exp-inner">
-      <div class="section-header reveal"><div class="section-label" data-num="02">Trajetória</div><h2 class="section-title">Onde <em>atuei</em></h2></div>
+      <div class="section-header reveal"><div class="section-label" data-num="02" data-i18n="exp_label">Trajetória</div><h2 class="section-title" data-i18n="exp_title">Onde <em>atuei</em></h2></div>
       <div>
-        <div class="exp-item"><div><div class="exp-company">UpFlux</div><div class="exp-period">Set/2025 — Atual</div></div><div><div class="exp-role">Product Designer · Estratégico · SaaS B2B</div><ul class="exp-achievements"><li>Propostas estratégicas e narrativas de produto para Big Deals de alto valor</li><li>Fluxos de UX e jornadas orientadas a dados para decisões de produto</li><li>Alinhamento entre produto, comercial e liderança executiva</li></ul></div><span class="exp-tag">Atual</span></div>
-        <div class="exp-item"><div><div class="exp-company">Hacoo</div><div class="exp-period">Mar/2024 — Jun/2025</div></div><div><div class="exp-role">Designer de Soluções II · E-commerce · Remoto</div><ul class="exp-achievements"><li>Projetos end-to-end de UX com redução de <strong style="color:var(--accent)">25%</strong> no tempo médio de entrega</li><li>Design System que reduziu retrabalho entre squads</li><li>Testes de usabilidade e iteração contínua de interfaces</li></ul></div><span class="exp-tag">1 ano e 3m</span></div>
-        <div class="exp-item"><div><div class="exp-company">Selettra</div><div class="exp-period">Mai/2023 — Mar/2024</div></div><div><div class="exp-role">Assistente de Criação Jr · Automação e Robótica</div><ul class="exp-achievements"><li>Materiais visuais para comunicação institucional e apresentações comerciais</li><li>Interfaces e layouts para canais digitais</li></ul></div><span class="exp-tag">10 meses</span></div>
-        <div class="exp-item"><div><div class="exp-company">Studio Sol</div><div class="exp-period">Fev/2022 — Fev/2023</div></div><div><div class="exp-role">Estagiário em Visual Design · Remoto</div><ul class="exp-achievements"><li>Materiais gráficos para redes sociais, websites e apresentações digitais</li><li>Layouts responsivos e prototipagem de interfaces</li></ul></div><span class="exp-tag">1 ano</span></div>
+        <div class="exp-item"><div><div class="exp-company">UpFlux</div><div class="exp-period" data-i18n="upflux_period">Set/2025 — Atual</div></div><div><div class="exp-role" data-i18n="upflux_role">Product Designer · Estratégico · SaaS B2B</div><ul class="exp-achievements"><li data-i18n="upflux_li1">Propostas estratégicas e narrativas de produto para Big Deals de alto valor</li><li data-i18n="upflux_li2">Fluxos de UX e jornadas orientadas a dados para decisões de produto</li><li data-i18n="upflux_li3">Alinhamento entre produto, comercial e liderança executiva</li></ul></div><span class="exp-tag" data-i18n="exp_current">Atual</span></div>
+        <div class="exp-item"><div><div class="exp-company">Hacoo</div><div class="exp-period" data-i18n="hacoo_period">Mar/2024 — Jun/2025</div></div><div><div class="exp-role" data-i18n="hacoo_role">Designer de Soluções II · E-commerce · Remoto</div><ul class="exp-achievements"><li data-i18n="hacoo_li1">Projetos end-to-end de UX com redução de <strong style="color:var(--accent)">25%</strong> no tempo médio de entrega</li><li data-i18n="hacoo_li2">Design System que reduziu retrabalho entre squads</li><li data-i18n="hacoo_li3">Testes de usabilidade e iteração contínua de interfaces</li></ul></div><span class="exp-tag" data-i18n="hacoo_dur">1 ano e 3m</span></div>
+        <div class="exp-item"><div><div class="exp-company">Selettra</div><div class="exp-period" data-i18n="selettra_period">Mai/2023 — Mar/2024</div></div><div><div class="exp-role" data-i18n="selettra_role">Assistente de Criação Jr · Automação e Robótica</div><ul class="exp-achievements"><li data-i18n="selettra_li1">Materiais visuais para comunicação institucional e apresentações comerciais</li><li data-i18n="selettra_li2">Interfaces e layouts para canais digitais</li></ul></div><span class="exp-tag" data-i18n="selettra_dur">10 meses</span></div>
+        <div class="exp-item"><div><div class="exp-company">Studio Sol</div><div class="exp-period" data-i18n="sol_period">Fev/2022 — Fev/2023</div></div><div><div class="exp-role" data-i18n="sol_role">Estagiário em Visual Design · Remoto</div><ul class="exp-achievements"><li data-i18n="sol_li1">Materiais gráficos para redes sociais, websites e apresentações digitais</li><li data-i18n="sol_li2">Layouts responsivos e prototipagem de interfaces</li></ul></div><span class="exp-tag" data-i18n="sol_dur">1 ano</span></div>
       </div>
     </div>
   </section>
 
   <section id="projetos">
-    <div class="section-header reveal"><div class="section-label" data-num="03">Portfólio</div><h2 class="section-title">Cases <em>selecionados</em></h2></div>
+    <div class="section-header reveal"><div class="section-label" data-num="03" data-i18n="work_label">Portfólio</div><h2 class="section-title" data-i18n="work_title">Cases <em>selecionados</em></h2></div>
     <div class="projects-grid">
       <div class="project-card project-card--text" onclick="openCase('upflux')">
         <div class="project-card-text-bg"></div>
         <div class="project-overlay"></div>
         <div class="project-inner">
-          <div class="project-cat">Product Design · Design Ops · B2B SaaS</div>
+          <div class="project-cat" data-i18n="upflux_cat">Product Design · Design Ops · B2B SaaS</div>
           <div class="project-name">UpFlux</div>
-          <div class="project-desc">Construção da área de design do zero — estrutura, marca e estratégia comercial em um SaaS de Process Mining.</div>
-          <button class="open-case-btn">Ver case</button>
+          <div class="project-desc" data-i18n="upflux_desc">Construção da área de design do zero — estrutura, marca e estratégia comercial em um SaaS de Process Mining.</div>
+          <button class="open-case-btn" data-i18n="view_case">Ver case</button>
         </div>
         <div class="project-nda-tag">NDA</div>
       </div>
-      <div class="project-card" onclick="openCase('pitanga')"><img class="project-thumb" src="https://mir-s3-cdn-cf.behance.net/projects/404/47272a186100279.Y3JvcCwxMzgwLDEwODAsMjcwLDA.jpg" alt="Pitanga" loading="lazy"><div class="project-overlay"></div><div class="project-inner"><div class="project-cat">UX · Branding · App Mobile · IoT</div><div class="project-name">Pitanga</div><div class="project-desc">Plataforma digital para agricultores familiares — pesquisa, UX e identidade do zero.</div><button class="open-case-btn">Ver case</button></div></div>
-      <div class="project-card" onclick="openCase('maera')"><img class="project-thumb" src="https://mir-s3-cdn-cf.behance.net/projects/404/16ecdb223034875.Y3JvcCwxMzgyLDEwODEsMjcwLDA.png" alt="Maera" loading="lazy"><div class="project-overlay"></div><div class="project-inner"><div class="project-cat">Branding · Rebranding</div><div class="project-name">Rebranding Maera</div><div class="project-desc">Redesign completo de identidade visual com sistema de marca coeso e moderno.</div><button class="open-case-btn">Ver case</button></div></div>
-      <div class="project-card" onclick="openCase('breedom')"><img class="project-thumb" src="https://mir-s3-cdn-cf.behance.net/projects/404/6ed89d223027647.Y3JvcCwxMDgwLDg0NCwwLDUwMg.jpg" alt="Breedom" loading="lazy"><div class="project-overlay"></div><div class="project-inner"><div class="project-cat">Branding · Embalagem</div><div class="project-name">Breedom Cervejaria</div><div class="project-desc">Identidade para cervejaria artesanal unindo tradição e irreverência.</div><button class="open-case-btn">Ver case</button></div></div>
-      <div class="project-card" onclick="openCase('sirea')"><img class="project-thumb" src="https://mir-s3-cdn-cf.behance.net/projects/404/42f9f7223031741.Y3JvcCwxMTQ1LDg5NiwzODUsMTAy.jpg" alt="Sirea" loading="lazy"><div class="project-overlay"></div><div class="project-inner"><div class="project-cat">Identidade Visual</div><div class="project-name">Sirea</div><div class="project-desc">Sistema visual com foco em clareza e posicionamento de mercado.</div><button class="open-case-btn">Ver case</button></div></div>
-      <div class="project-card" onclick="openCase('azaio')"><img class="project-thumb" src="https://mir-s3-cdn-cf.behance.net/projects/404/2f74ca223036011.Y3JvcCwxNTIwLDExODksMTk1LDEzMTA5.jpg" alt="Azaio" loading="lazy"><div class="project-overlay"></div><div class="project-inner"><div class="project-cat">Identidade Visual</div><div class="project-name">Azaio</div><div class="project-desc">Brand identity para produto digital com direção de arte estratégica.</div><button class="open-case-btn">Ver case</button></div></div>
-      <div class="project-card" onclick="openCase('marcia')"><img class="project-thumb" src="https://mir-s3-cdn-cf.behance.net/projects/404/4464b0223037137.Y3JvcCwxNDc2LDExNTUsMTgyLDQ1MDM.jpg" alt="Marcia" loading="lazy"><div class="project-overlay"></div><div class="project-inner"><div class="project-cat">Branding Pessoal</div><div class="project-name">Márcia Menezes</div><div class="project-desc">Identidade visual pessoal com personalidade marcante e sistema aplicável.</div><button class="open-case-btn">Ver case</button></div></div>
+      <div class="project-card" onclick="openCase('pitanga')"><img class="project-thumb" src="https://mir-s3-cdn-cf.behance.net/projects/404/47272a186100279.Y3JvcCwxMzgwLDEwODAsMjcwLDA.jpg" alt="Pitanga" loading="lazy"><div class="project-overlay"></div><div class="project-inner"><div class="project-cat">UX · Branding · App Mobile · IoT</div><div class="project-name">Pitanga</div><div class="project-desc" data-i18n="pitanga_desc">Plataforma digital para agricultores familiares — pesquisa, UX e identidade do zero.</div><button class="open-case-btn" data-i18n="view_case">Ver case</button></div></div>
+      <div class="project-card" onclick="openCase('maera')"><img class="project-thumb" src="https://mir-s3-cdn-cf.behance.net/projects/404/16ecdb223034875.Y3JvcCwxMzgyLDEwODEsMjcwLDA.png" alt="Maera" loading="lazy"><div class="project-overlay"></div><div class="project-inner"><div class="project-cat" data-i18n="maera_cat">Branding · Rebranding</div><div class="project-name">Rebranding Maera</div><div class="project-desc" data-i18n="maera_desc">Redesign completo de identidade visual com sistema de marca coeso e moderno.</div><button class="open-case-btn" data-i18n="view_case">Ver case</button></div></div>
+      <div class="project-card" onclick="openCase('breedom')"><img class="project-thumb" src="https://mir-s3-cdn-cf.behance.net/projects/404/6ed89d223027647.Y3JvcCwxMDgwLDg0NCwwLDUwMg.jpg" alt="Breedom" loading="lazy"><div class="project-overlay"></div><div class="project-inner"><div class="project-cat" data-i18n="breedom_cat">Branding · Embalagem</div><div class="project-name">Breedom Cervejaria</div><div class="project-desc" data-i18n="breedom_desc">Identidade para cervejaria artesanal unindo tradição e irreverência.</div><button class="open-case-btn" data-i18n="view_case">Ver case</button></div></div>
+      <div class="project-card" onclick="openCase('sirea')"><img class="project-thumb" src="https://mir-s3-cdn-cf.behance.net/projects/404/42f9f7223031741.Y3JvcCwxMTQ1LDg5NiwzODUsMTAy.jpg" alt="Sirea" loading="lazy"><div class="project-overlay"></div><div class="project-inner"><div class="project-cat" data-i18n="sirea_cat">Identidade Visual</div><div class="project-name">Sirea</div><div class="project-desc" data-i18n="sirea_desc">Sistema visual com foco em clareza e posicionamento de mercado.</div><button class="open-case-btn" data-i18n="view_case">Ver case</button></div></div>
+      <div class="project-card" onclick="openCase('azaio')"><img class="project-thumb" src="https://mir-s3-cdn-cf.behance.net/projects/404/2f74ca223036011.Y3JvcCwxNTIwLDExODksMTk1LDEzMTA5.jpg" alt="Azaio" loading="lazy"><div class="project-overlay"></div><div class="project-inner"><div class="project-cat" data-i18n="azaio_cat">Identidade Visual</div><div class="project-name">Azaio</div><div class="project-desc" data-i18n="azaio_desc">Brand identity para produto digital com direção de arte estratégica.</div><button class="open-case-btn" data-i18n="view_case">Ver case</button></div></div>
+      <div class="project-card" onclick="openCase('marcia')"><img class="project-thumb" src="https://mir-s3-cdn-cf.behance.net/projects/404/4464b0223037137.Y3JvcCwxNDc2LDExNTUsMTgyLDQ1MDM.jpg" alt="Marcia" loading="lazy"><div class="project-overlay"></div><div class="project-inner"><div class="project-cat" data-i18n="marcia_cat">Branding Pessoal</div><div class="project-name">Márcia Menezes</div><div class="project-desc" data-i18n="marcia_desc">Identidade visual pessoal com personalidade marcante e sistema aplicável.</div><button class="open-case-btn" data-i18n="view_case">Ver case</button></div></div>
     </div>
-    <div style="text-align:center;margin-top:48px" class="reveal"><a href="https://www.behance.net/heermoso" target="_blank" class="btn-primary">Ver todos no Behance ↗</a></div>
+    <div style="text-align:center;margin-top:48px" class="reveal"><a href="https://www.behance.net/heermoso" target="_blank" class="btn-primary" data-i18n="behance_btn">Ver todos no Behance ↗</a></div>
   </section>
 
   <section id="formacao">
     <div class="formacao-inner">
-      <div class="section-header reveal"><div class="section-label" data-num="04">Educação</div><h2 class="section-title">Formação <em>acadêmica</em></h2></div>
+      <div class="section-header reveal"><div class="section-label" data-num="04" data-i18n="edu_label">Educação</div><h2 class="section-title" data-i18n="edu_title">Formação <em>acadêmica</em></h2></div>
       <div class="edu-grid">
-        <div class="edu-card reveal"><div class="edu-num">01</div><div class="edu-badge">Em curso</div><div class="edu-title">Pós-graduação em UX Design</div><div class="edu-inst">PUCRS</div><div class="edu-period">Mar/2026 — Abr/2027</div></div>
-        <div class="edu-card reveal"><div class="edu-num">02</div><div class="edu-badge">Concluído</div><div class="edu-title">Bacharelado em Design</div><div class="edu-inst">PUC Paraná</div><div class="edu-period">2020 — 2024</div></div>
-        <div class="edu-card reveal"><div class="edu-num">03</div><div class="edu-badge">Em curso</div><div class="edu-title">UX/UI Design & UI Avançado</div><div class="edu-inst">Origamid</div><div class="edu-period">2025 — cursando</div></div>
+        <div class="edu-card reveal"><div class="edu-num">01</div><div class="edu-badge" data-i18n="edu_ongoing">Em curso</div><div class="edu-title" data-i18n="edu1_title">Pós-graduação em UX Design</div><div class="edu-inst">PUCRS</div><div class="edu-period">Mar/2026 — Abr/2027</div></div>
+        <div class="edu-card reveal"><div class="edu-num">02</div><div class="edu-badge" data-i18n="edu_done">Concluído</div><div class="edu-title" data-i18n="edu2_title">Bacharelado em Design</div><div class="edu-inst">PUC Paraná</div><div class="edu-period">2020 — 2024</div></div>
+        <div class="edu-card reveal"><div class="edu-num">03</div><div class="edu-badge" data-i18n="edu_ongoing">Em curso</div><div class="edu-title" data-i18n="edu3_title">UX/UI Design & UI Avançado</div><div class="edu-inst">Origamid</div><div class="edu-period" data-i18n="edu3_period">2025 — cursando</div></div>
       </div>
     </div>
   </section>
@@ -411,23 +420,23 @@ footer { border-top: 1px solid var(--line); padding: 32px 48px; display: flex; j
   <section id="contato">
     <div class="contact-wrap">
       <div class="contact-left reveal">
-        <h2 class="big-cta">Vamos criar<br><em>algo incrível</em><br>juntos?</h2>
-        <p>Estou disponível para projetos freelance, colaborações e oportunidades.</p>
-        <a href="mailto:hermoso.dsgn@gmail.com" class="btn-primary">Enviar mensagem →</a>
+        <h2 class="big-cta" data-i18n="contact_cta">Vamos criar<br><em>algo incrível</em><br>juntos?</h2>
+        <p data-i18n="contact_sub">Estou disponível para projetos freelance, colaborações e oportunidades.</p>
+        <a href="mailto:hermoso.dsgn@gmail.com" class="btn-primary" data-i18n="contact_btn">Enviar mensagem →</a>
       </div>
       <div class="contact-info reveal">
         <div class="contact-row"><div class="contact-icon">✉</div><div class="contact-detail"><div class="label">Email</div><a href="mailto:hermoso.dsgn@gmail.com">hermoso.dsgn@gmail.com</a></div></div>
-        <div class="contact-row"><div class="contact-icon">☎</div><div class="contact-detail"><div class="label">Telefone</div><a href="tel:+5541995248974">(41) 99524-8974</a></div></div>
-        <div class="contact-row"><div class="contact-icon">◎</div><div class="contact-detail"><div class="label">Localização</div><span>São José dos Pinhais, PR</span></div></div>
-        <div class="contact-row"><div class="contact-icon">↗</div><div class="contact-detail"><div class="label">Portfólio</div><a href="https://www.behance.net/heermoso" target="_blank">behance.net/heermoso</a></div></div>
+        <div class="contact-row"><div class="contact-icon">☎</div><div class="contact-detail"><div class="label" data-i18n="contact_phone">Telefone</div><a href="tel:+5541995248974">(41) 99524-8974</a></div></div>
+        <div class="contact-row"><div class="contact-icon">◎</div><div class="contact-detail"><div class="label" data-i18n="contact_loc">Localização</div><span data-i18n="contact_loc_val">São José dos Pinhais, PR</span></div></div>
+        <div class="contact-row"><div class="contact-icon">↗</div><div class="contact-detail"><div class="label" data-i18n="contact_portfolio">Portfólio</div><a href="https://www.behance.net/heermoso" target="_blank">behance.net/heermoso</a></div></div>
         <div class="contact-row"><div class="contact-icon">in</div><div class="contact-detail"><div class="label">LinkedIn</div><a href="https://www.linkedin.com/in/heermoso" target="_blank">linkedin.com/in/heermoso</a></div></div>
       </div>
     </div>
   </section>
 
   <footer>
-    <div class="footer-copy">© 2026 <strong>Leonardo Hermoso Santana</strong> · Product Designer</div>
-    <a href="#hero" class="footer-back">↑ Voltar ao topo</a>
+    <div class="footer-copy">© 2026 <strong>Leonardo Hermoso Santana</strong> · <span data-i18n="footer_role">Product Designer</span></div>
+    <a href="#hero" class="footer-back" data-i18n="footer_top">↑ Voltar ao topo</a>
   </footer>
 </div>
 
@@ -583,6 +592,7 @@ const C = {
 const ORDER = ['upflux','pitanga','maera','breedom','sirea','azaio','marcia'];
 
 function buildCase(k) {
+  const t = i18n[currentLang];
   const c = C[k], i = ORDER.indexOf(k);
   const prev = i > 0 ? ORDER[i-1] : null;
   const next = i < ORDER.length-1 ? ORDER[i+1] : null;
@@ -596,9 +606,9 @@ function buildCase(k) {
           <div class="case-hero-cat">${c.cat}</div>
           <h1 class="case-hero-title">${c.title}<br><em>${c.titleEm}</em></h1>
           <div class="case-meta-row">
-            <div><div class="case-meta-label">Papel</div><div class="case-meta-value">${c.meta.papel}</div></div>
-            <div><div class="case-meta-label">Ano</div><div class="case-meta-value">${c.meta.ano}</div></div>
-            <div><div class="case-meta-label">Ferramentas</div><div class="case-meta-value">${c.meta.ferramentas}</div></div>
+            <div><div class="case-meta-label">${t.meta_role}</div><div class="case-meta-value">${c.meta.papel}</div></div>
+            <div><div class="case-meta-label">${t.meta_year}</div><div class="case-meta-value">${c.meta.ano}</div></div>
+            <div><div class="case-meta-label">${t.meta_tools}</div><div class="case-meta-value">${c.meta.ferramentas}</div></div>
             ${c.meta.escopo ? `<div><div class="case-meta-label">Escopo</div><div class="case-meta-value">${c.meta.escopo}</div></div>` : ''}
           </div>
         </div>
@@ -608,12 +618,12 @@ function buildCase(k) {
           <div class="case-hero-cat">${c.cat}</div>
           <h1 class="case-hero-title">${c.title}<br><em>${c.titleEm}</em></h1>
           <div class="case-meta-row">
-            <div><div class="case-meta-label">Papel</div><div class="case-meta-value">${c.meta.papel}</div></div>
-            <div><div class="case-meta-label">Ano</div><div class="case-meta-value">${c.meta.ano}</div></div>
-            <div><div class="case-meta-label">Ferramentas</div><div class="case-meta-value">${c.meta.ferramentas}</div></div>
+            <div><div class="case-meta-label">${t.meta_role}</div><div class="case-meta-value">${c.meta.papel}</div></div>
+            <div><div class="case-meta-label">${t.meta_year}</div><div class="case-meta-value">${c.meta.ano}</div></div>
+            <div><div class="case-meta-label">${t.meta_tools}</div><div class="case-meta-value">${c.meta.ferramentas}</div></div>
             ${c.meta.escopo ? `<div><div class="case-meta-label">Escopo</div><div class="case-meta-value">${c.meta.escopo}</div></div>` : ''}
           </div>
-          <div class="case-nda-note">Imagens não divulgadas por acordo de confidencialidade.</div>
+          <div class="case-nda-note">${t.case_nda}</div>
         </div>
         <div class="case-hero-pattern"></div>
       </div>`;
@@ -621,14 +631,14 @@ function buildCase(k) {
   return `
   ${heroHtml}
   <div class="case-body">
-    <div class="case-section"><div class="case-section-label">Problema</div><h2>O que estava <em>quebrado</em></h2><p>${c.problema}</p></div>
-    <div class="case-section"><div class="case-section-label">Desafio</div><h2>A questão <em>central</em></h2><p>${c.desafio}</p></div>
-    <div class="case-section"><div class="case-section-label">Hipótese</div><h2>Nossa <em>aposta</em></h2><p>${c.hipotese}</p></div>
-    <div class="case-section"><div class="case-section-label">Abordagem</div><h2>Como <em>chegamos lá</em></h2><p>${c.abordagem}</p></div>
-    ${c.imgs.length ? `<div class="case-gallery ${gcols}">${c.imgs.map(img=>`<img src="${img}" alt="${c.title}" loading="lazy">`).join('')}</div><p class="gallery-caption">Seleção de imagens do projeto</p>` : ''}
-    <div class="case-section"><div class="case-section-label">Decisões que moldaram o projeto</div><h2>Escolhas <em>intencionais</em></h2><div class="decisions-list">${c.decisoes.map((d,n)=>`<div class="decision-item"><div class="decision-num">0${n+1}</div><div><div class="decision-title">${d.title}</div><div class="decision-desc">${d.desc}</div></div></div>`).join('')}</div></div>
-    <div class="case-section"><div class="case-section-label">Solução</div><h2>O que foi <em>entregue</em></h2><p>${c.solucao}</p></div>
-    <div class="case-section"><div class="case-section-label">Impacto</div><h2>O que <em>mudou</em></h2><p>${c.impacto}</p>${c.metrics.length ? `<div class="case-metrics">${c.metrics.map(m=>`<div class="metric-card"><div class="metric-num">${m.num}</div><div class="metric-label">${m.label}</div></div>`).join('')}</div>` : ''}</div>
+    <div class="case-section"><div class="case-section-label">${t.sec_problem}</div><h2>${t.sec_problem_sub}</h2><p>${c.problema}</p></div>
+    <div class="case-section"><div class="case-section-label">${t.sec_challenge}</div><h2>${t.sec_challenge_sub}</h2><p>${c.desafio}</p></div>
+    <div class="case-section"><div class="case-section-label">${t.sec_hypothesis}</div><h2>${t.sec_hypothesis_sub}</h2><p>${c.hipotese}</p></div>
+    <div class="case-section"><div class="case-section-label">${t.sec_approach}</div><h2>${t.sec_approach_sub}</h2><p>${c.abordagem}</p></div>
+    ${c.imgs.length ? `<div class="case-gallery ${gcols}">${c.imgs.map(img=>`<img src="${img}" alt="${c.title}" loading="lazy">`).join('')}</div><p class="gallery-caption">${t.gallery_caption}</p>` : ''}
+    <div class="case-section"><div class="case-section-label">${t.sec_decisions}</div><h2>${t.sec_decisions_sub}</h2><div class="decisions-list">${c.decisoes.map((d,n)=>`<div class="decision-item"><div class="decision-num">0${n+1}</div><div><div class="decision-title">${d.title}</div><div class="decision-desc">${d.desc}</div></div></div>`).join('')}</div></div>
+    <div class="case-section"><div class="case-section-label">${t.sec_solution}</div><h2>${t.sec_solution_sub}</h2><p>${c.solucao}</p></div>
+    <div class="case-section"><div class="case-section-label">${t.sec_impact}</div><h2>${t.sec_impact_sub}</h2><p>${c.impacto}</p>${c.metrics.length ? `<div class="case-metrics">${c.metrics.map(m=>`<div class="metric-card"><div class="metric-num">${m.num}</div><div class="metric-label">${m.label}</div></div>`).join('')}</div>` : ''}</div>
   </div>
   <div class="case-footer-nav">
     ${prev ? `<div class="cfn-item" onclick="openCase('${prev}')"><div class="cfn-dir">← Anterior</div><div class="cfn-title">${C[prev].title}</div></div>` : '<div class="cfn-item" style="cursor:default"></div>'}
@@ -637,9 +647,13 @@ function buildCase(k) {
 }
 
 function openCase(k) {
+  window._openCaseKey = k;
   const cv = document.getElementById('case-view');
+  const t = i18n[currentLang];
   document.getElementById('caseNavTitle').textContent = C[k].title + ' ' + C[k].titleEm;
-  document.getElementById('caseBehanceLink').href = C[k].behance;
+  const cbl = document.getElementById('caseBehanceLink');
+  cbl.textContent = t.case_behance;
+  cbl.href = C[k].behance || '#';
   document.getElementById('caseContent').innerHTML = buildCase(k);
   cv.classList.remove('closing'); cv.classList.add('active');
   cv.scrollTop = 0; document.body.style.overflow = 'hidden';
@@ -657,7 +671,170 @@ function navClick(e, anchor) {
   if (cv.classList.contains('active')) { e.preventDefault(); closeCase(); if(anchor) setTimeout(()=>document.querySelector(anchor)?.scrollIntoView({behavior:'smooth'}),500); }
 }
 
-/* CURSOR */
+/* ── i18n ───────────────────────────────────────────────────────────── */
+const i18n = {
+  pt: {
+    nav_about:'Sobre', nav_exp:'Experiência', nav_work:'Projetos', nav_edu:'Formação', nav_contact:'Contato',
+    hero_tag:'Product Designer · Brand Designer',
+    hero_sub:'Raízes em branding. Cabeça em produto.<br>4+ anos criando sistemas visuais e experiências digitais que funcionam — do símbolo à interface, da pesquisa ao handoff.',
+    hero_cta1:'Ver Projetos', hero_cta2:'Vamos conversar',
+    stat1:'Anos de Experiência', stat2:'Discovery → Handoff', stat3:'SaaS · E-commerce · Tech', stat4:'Estratégia de Produto',
+    about_label:'Sobre mim', about_title:'Branding <em>encontra</em> produto',
+    about_p1:'Comecei pelo branding — construindo sistemas de identidade visual com personalidade e consistência. Com o tempo, fui me aproximando de produto: pesquisa com usuários, arquitetura de informação, prototipagem e decisões que impactam negócio.',
+    about_p2:'Hoje atuo na interseção entre as duas disciplinas. Entendo <strong>marca como experiência</strong> e <strong>produto como comunicação</strong> — o que me permite colaborar com times de design, produto e estratégia sem perder a visão do todo.',
+    about_p3:'Experiência em ambientes <strong>B2B SaaS</strong> e <strong>e-commerce</strong>, com atuação em projetos end-to-end: do discovery ao handoff. Disponível para freelance e oportunidades.',
+    skill_ux:'Figma · Prototipagem · Wireframes · Design System · User Research · Testes',
+    skill_strat_name:'Estratégia', skill_strat:'Discovery · JTBD · Arquitetura de Informação · Handoff · Acessibilidade',
+    skill_brand:'Identidade Visual · Direção de Arte · Sistemas Visuais · Social Media',
+    skill_proc_name:'Processos', skill_proc:'Design Thinking · Scrum · Kanban · UCD · Pesquisa Qualitativa',
+    exp_label:'Trajetória', exp_title:'Onde <em>atuei</em>',
+    upflux_period:'Set/2025 — Atual', upflux_role:'Product Designer · Estratégico · SaaS B2B',
+    upflux_li1:'Propostas estratégicas e narrativas de produto para Big Deals de alto valor',
+    upflux_li2:'Fluxos de UX e jornadas orientadas a dados para decisões de produto',
+    upflux_li3:'Alinhamento entre produto, comercial e liderança executiva',
+    exp_current:'Atual',
+    hacoo_period:'Mar/2024 — Jun/2025', hacoo_role:'Designer de Soluções II · E-commerce · Remoto',
+    hacoo_li1:'Projetos end-to-end de UX com redução de <strong style="color:var(--accent)">25%</strong> no tempo médio de entrega',
+    hacoo_li2:'Design System que reduziu retrabalho entre squads',
+    hacoo_li3:'Testes de usabilidade e iteração contínua de interfaces', hacoo_dur:'1 ano e 3m',
+    selettra_period:'Mai/2023 — Mar/2024', selettra_role:'Assistente de Criação Jr · Automação e Robótica',
+    selettra_li1:'Materiais visuais para comunicação institucional e apresentações comerciais',
+    selettra_li2:'Interfaces e layouts para canais digitais', selettra_dur:'10 meses',
+    sol_period:'Fev/2022 — Fev/2023', sol_role:'Estagiário em Visual Design · Remoto',
+    sol_li1:'Materiais gráficos para redes sociais, websites e apresentações digitais',
+    sol_li2:'Layouts responsivos e prototipagem de interfaces', sol_dur:'1 ano',
+    work_label:'Portfólio', work_title:'Cases <em>selecionados</em>',
+    upflux_cat:'Product Design · Design Ops · B2B SaaS',
+    upflux_desc:'Construção da área de design do zero — estrutura, marca e estratégia comercial em um SaaS de Process Mining.',
+    pitanga_desc:'Plataforma digital para agricultores familiares — pesquisa, UX e identidade do zero.',
+    maera_cat:'Branding · Rebranding', maera_desc:'Redesign completo de identidade visual com sistema de marca coeso e moderno.',
+    breedom_cat:'Branding · Embalagem', breedom_desc:'Identidade para cervejaria artesanal unindo tradição e irreverência.',
+    sirea_cat:'Identidade Visual', sirea_desc:'Sistema visual com foco em clareza e posicionamento de mercado.',
+    azaio_cat:'Identidade Visual', azaio_desc:'Brand identity para produto digital com direção de arte estratégica.',
+    marcia_cat:'Branding Pessoal', marcia_desc:'Identidade visual pessoal com personalidade marcante e sistema aplicável.',
+    view_case:'Ver case', behance_btn:'Ver todos no Behance ↗',
+    edu_label:'Educação', edu_title:'Formação <em>acadêmica</em>',
+    edu_ongoing:'Em curso', edu_done:'Concluído',
+    edu1_title:'Pós-graduação em UX Design', edu2_title:'Bacharelado em Design',
+    edu3_title:'UX/UI Design & UI Avançado', edu3_period:'2025 — cursando',
+    contact_cta:'Vamos criar<br><em>algo incrível</em><br>juntos?',
+    contact_sub:'Estou disponível para projetos freelance, colaborações e oportunidades.',
+    contact_btn:'Enviar mensagem →', contact_phone:'Telefone',
+    contact_loc:'Localização', contact_loc_val:'São José dos Pinhais, PR', contact_portfolio:'Portfólio',
+    footer_role:'Product Designer', footer_top:'↑ Voltar ao topo',
+    case_back:'Voltar ao portfólio', case_behance:'Ver no Behance ↗',
+    case_nda:'Imagens não divulgadas por acordo de confidencialidade.',
+    sec_problem:'Problema', sec_problem_sub:'O que estava <em>quebrado</em>',
+    sec_challenge:'Desafio', sec_challenge_sub:'A questão <em>central</em>',
+    sec_hypothesis:'Hipótese', sec_hypothesis_sub:'Nossa <em>aposta</em>',
+    sec_approach:'Abordagem', sec_approach_sub:'Como <em>chegamos lá</em>',
+    sec_decisions:'Decisões que moldaram o projeto', sec_decisions_sub:'Escolhas <em>intencionais</em>',
+    sec_solution:'Solução', sec_solution_sub:'O que foi <em>entregue</em>',
+    sec_impact:'Impacto', sec_impact_sub:'O que <em>mudou</em>',
+    gallery_caption:'Seleção de imagens do projeto',
+    cfn_prev:'← Anterior', cfn_next:'Próximo →',
+    meta_role:'Papel', meta_year:'Ano', meta_tools:'Ferramentas', meta_scope:'Escopo',
+  },
+  en: {
+    nav_about:'About', nav_exp:'Experience', nav_work:'Work', nav_edu:'Education', nav_contact:'Contact',
+    hero_tag:'Product Designer · Brand Designer',
+    hero_sub:'Roots in branding. Mind in product.<br>4+ years building visual systems and digital experiences that work — from symbol to interface, from research to handoff.',
+    hero_cta1:'View Work', hero_cta2:'Let\'s talk',
+    stat1:'Years of Experience', stat2:'Discovery → Handoff', stat3:'SaaS · E-commerce · Tech', stat4:'Product Strategy',
+    about_label:'About me', about_title:'Branding <em>meets</em> product',
+    about_p1:'I started with branding — building visual identity systems with personality and consistency. Over time, I moved closer to product: user research, information architecture, prototyping and decisions that impact the business.',
+    about_p2:'Today I work at the intersection of both disciplines. I see <strong>brand as experience</strong> and <strong>product as communication</strong> — which allows me to collaborate with design, product and strategy teams without losing sight of the whole.',
+    about_p3:'Experience in <strong>B2B SaaS</strong> and <strong>e-commerce</strong> environments, working on end-to-end projects: from discovery to handoff. Available for freelance and full-time opportunities.',
+    skill_ux:'Figma · Prototyping · Wireframes · Design System · User Research · Usability Testing',
+    skill_strat_name:'Strategy', skill_strat:'Discovery · JTBD · Information Architecture · Handoff · Accessibility',
+    skill_brand:'Visual Identity · Art Direction · Visual Systems · Social Media',
+    skill_proc_name:'Process', skill_proc:'Design Thinking · Scrum · Kanban · UCD · Qualitative Research',
+    exp_label:'Timeline', exp_title:'Where I\'ve <em>worked</em>',
+    upflux_period:'Sep/2025 — Present', upflux_role:'Product Designer · Strategic · B2B SaaS',
+    upflux_li1:'Strategic proposals and product narratives for high-value Big Deals',
+    upflux_li2:'UX flows and data-driven journeys to support product decisions',
+    upflux_li3:'Alignment between product, sales and executive leadership',
+    exp_current:'Current',
+    hacoo_period:'Mar/2024 — Jun/2025', hacoo_role:'Solutions Designer II · E-commerce · Remote',
+    hacoo_li1:'End-to-end UX projects with a <strong style="color:var(--accent)">25%</strong> reduction in average campaign delivery time',
+    hacoo_li2:'Design System that reduced rework across squads',
+    hacoo_li3:'Usability testing and continuous interface iteration', hacoo_dur:'1 year 3m',
+    selettra_period:'May/2023 — Mar/2024', selettra_role:'Junior Creative Assistant · Automation & Robotics',
+    selettra_li1:'Visual materials for institutional communication and commercial presentations',
+    selettra_li2:'Interfaces and layouts for digital channels', selettra_dur:'10 months',
+    sol_period:'Feb/2022 — Feb/2023', sol_role:'Visual Design Intern · Remote',
+    sol_li1:'Graphic materials for social media, websites and digital presentations',
+    sol_li2:'Responsive layouts and interface prototyping', sol_dur:'1 year',
+    work_label:'Portfolio', work_title:'Selected <em>case studies</em>',
+    upflux_cat:'Product Design · Design Ops · B2B SaaS',
+    upflux_desc:'Built the design function from scratch — structure, brand system and commercial strategy in a Process Mining SaaS.',
+    pitanga_desc:'Digital platform for family farmers — research, UX and brand identity from scratch.',
+    maera_cat:'Branding · Rebranding', maera_desc:'Complete visual identity redesign with a cohesive and modern brand system.',
+    breedom_cat:'Branding · Packaging', breedom_desc:'Identity for a craft brewery balancing tradition and attitude.',
+    sirea_cat:'Visual Identity', sirea_desc:'Visual system focused on clarity and market positioning.',
+    azaio_cat:'Visual Identity', azaio_desc:'Brand identity for a digital product with strategic art direction.',
+    marcia_cat:'Personal Branding', marcia_desc:'Personal visual identity with strong personality and scalable system.',
+    view_case:'View case', behance_btn:'See all on Behance ↗',
+    edu_label:'Education', edu_title:'Academic <em>background</em>',
+    edu_ongoing:'In progress', edu_done:'Completed',
+    edu1_title:'Postgraduate in UX Design', edu2_title:'Bachelor\'s in Design',
+    edu3_title:'UX/UI Design & Advanced UI', edu3_period:'2025 — in progress',
+    contact_cta:'Let\'s build<br><em>something great</em><br>together?',
+    contact_sub:'Available for freelance projects, collaborations and full-time opportunities.',
+    contact_btn:'Send a message →', contact_phone:'Phone',
+    contact_loc:'Location', contact_loc_val:'São José dos Pinhais, PR · Brazil', contact_portfolio:'Portfolio',
+    footer_role:'Product Designer', footer_top:'↑ Back to top',
+    case_back:'Back to portfolio', case_behance:'View on Behance ↗',
+    case_nda:'Images not disclosed under NDA.',
+    sec_problem:'Problem', sec_problem_sub:'What was <em>broken</em>',
+    sec_challenge:'Challenge', sec_challenge_sub:'The <em>core question</em>',
+    sec_hypothesis:'Hypothesis', sec_hypothesis_sub:'Our <em>bet</em>',
+    sec_approach:'Approach', sec_approach_sub:'How we <em>got there</em>',
+    sec_decisions:'Decisions that shaped the project', sec_decisions_sub:'Intentional <em>choices</em>',
+    sec_solution:'Solution', sec_solution_sub:'What was <em>delivered</em>',
+    sec_impact:'Impact', sec_impact_sub:'What <em>changed</em>',
+    gallery_caption:'Project image selection',
+    cfn_prev:'← Previous', cfn_next:'Next →',
+    meta_role:'Role', meta_year:'Year', meta_tools:'Tools', meta_scope:'Scope',
+  }
+};
+
+let currentLang = 'pt';
+
+function applyLang(lang) {
+  const t = i18n[lang];
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (t[key] !== undefined) el.innerHTML = t[key];
+  });
+  // Nav labels
+  document.getElementById('langActive').textContent = lang === 'pt' ? 'PT' : 'EN';
+  document.getElementById('langOther').textContent  = lang === 'pt' ? 'EN' : 'PT';
+  // Mobile nav
+  const mobLinks = document.querySelectorAll('.mob-link');
+  const navKeys = ['nav_about','nav_exp','nav_work','nav_edu','nav_contact'];
+  mobLinks.forEach((el, i) => { if(navKeys[i]) el.textContent = t[navKeys[i]]; });
+  // case nav back button (if open)
+  const cb = document.querySelector('.case-back');
+  if(cb) cb.innerHTML = t.case_back;
+  const cbl = document.getElementById('caseBehanceLink');
+  if(cbl) cbl.textContent = t.case_behance;
+  document.documentElement.lang = lang === 'pt' ? 'pt-BR' : 'en';
+  currentLang = lang;
+}
+
+function toggleLang() {
+  const next = currentLang === 'pt' ? 'en' : 'pt';
+  applyLang(next);
+  // If a case is open, rebuild it in new lang
+  const cv = document.getElementById('case-view');
+  if(cv && cv.classList.contains('active') && window._openCaseKey) {
+    document.getElementById('caseContent').innerHTML = buildCase(window._openCaseKey);
+    reattachHover();
+  }
+}
+
+
 const cur = document.getElementById('cursor'), ring = document.getElementById('cursorRing');
 const isTouch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0 || window.matchMedia('(pointer: coarse)').matches;
 if (!isTouch) {
