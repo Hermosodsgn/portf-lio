@@ -6,866 +6,1172 @@
 <title>Leonardo Hermoso — Product Designer</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,300;1,9..144,700&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Caveat:wght@700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
+/* ── VARS ─────────────────────────────────────────────────────────────── */
 :root {
-  --bg: #0d0d0d; --surface: #141414; --surface2: #1c1c1c; --line: #2a2a2a;
-  --text: #f0ece3; --muted: #7a7672; --accent: #c8f060; --accent2: #f0c860;
-  --serif: 'Fraunces', Georgia, serif; --mono: 'DM Mono', monospace;
+  --white: #ffffff;
+  --off:   #f5f4f0;
+  --black: #0a0a0a;
+  --gray:  #6b6b6b;
+  --light: #e8e6e0;
+  --accent: #c8f060;
+  --red:   #c8f060; /* verde limão como "vermelho" do David — identidade do Leo */
+  --red-dark: #a8d040;
+  --sans: 'Outfit', sans-serif;
+  --hand: 'Caveat', cursive;
+  --display: 'Bebas Neue', sans-serif;
 }
+
+/* ── RESET ────────────────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
-body { background: var(--bg); color: var(--text); font-family: var(--mono); font-size: 14px; line-height: 1.7; overflow-x: hidden; }
+body { background: var(--white); color: var(--black); font-family: var(--sans); font-size: 16px; line-height: 1.6; overflow-x: hidden; }
 
-/* CURSOR - oculto em touch */
-.cursor { width: 10px; height: 10px; background: var(--accent); border-radius: 50%; position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9999; mix-blend-mode: difference; }
-.cursor-ring { width: 36px; height: 36px; border: 1px solid rgba(200,240,96,0.4); border-radius: 50%; position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9998; transition: width 0.3s, height 0.3s, border-color 0.3s; }
-.cursor-ring.hover { width: 60px; height: 60px; border-color: var(--accent); }
-@media (hover: none), (pointer: coarse) {
-  .cursor, .cursor-ring { display: none !important; }
-  * { cursor: auto !important; }
+/* ── NAV ──────────────────────────────────────────────────────────────── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+  display: grid; grid-template-columns: 1fr auto 1fr;
+  align-items: center; padding: 18px 48px;
+  transition: background 0.4s, border-color 0.4s;
 }
-
-/* NAV */
-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 200; display: flex; justify-content: space-between; align-items: center; padding: 20px 48px; background: #0d0d0d; border-bottom: 1px solid var(--line); }
-.nav-logo { font-family: var(--serif); font-size: 18px; font-weight: 300; color: var(--text); text-decoration: none; }
-.nav-logo span { color: var(--accent); font-style: italic; }
-.nav-links { display: flex; gap: 40px; list-style: none; }
-.nav-links a { color: var(--muted); text-decoration: none; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; transition: color 0.3s; }
-.nav-links a:hover { color: var(--accent); }
-.nav-cta { color: var(--bg) !important; background: var(--accent); padding: 10px 20px; border-radius: 2px; }
-.nav-cta:hover { background: var(--accent2) !important; }
-.lang-toggle { display: flex; align-items: center; gap: 6px; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); background: none; border: 1px solid var(--line); padding: 7px 14px; border-radius: 2px; cursor: pointer; font-family: var(--mono); transition: all 0.3s; }
-.lang-toggle:hover { border-color: var(--accent); color: var(--accent); }
-.lang-toggle .lang-active { color: var(--text); font-weight: 500; }
-.lang-toggle .lang-sep { color: var(--line); }
-
-.menu-toggle span { width: 24px; height: 1px; background: var(--text); display: block; }
-.mobile-nav { display: none; position: fixed; inset: 0; background: var(--bg); z-index: 199; flex-direction: column; align-items: center; justify-content: center; gap: 32px; }
+nav.scrolled { background: rgba(255,255,255,0.95); border-bottom: 1px solid var(--light); backdrop-filter: blur(12px); }
+nav.dark-section { background: transparent; }
+.nav-logo {
+  font-family: var(--display); font-size: 22px; letter-spacing: 0.05em;
+  color: var(--white); text-decoration: none; justify-self: start;
+}
+nav.scrolled .nav-logo { color: var(--black); }
+.nav-logo span { color: var(--accent); }
+.nav-center { display: flex; gap: 36px; list-style: none; justify-self: center; }
+.nav-center a {
+  font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--white); text-decoration: none; transition: color 0.2s;
+  position: relative;
+}
+nav.scrolled .nav-center a { color: var(--black); }
+.nav-center a::after {
+  content: ''; position: absolute; bottom: -3px; left: 0; right: 0; height: 2px;
+  background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform 0.3s;
+}
+.nav-center a:hover { color: var(--accent); }
+.nav-center a:hover::after, .nav-center a.active::after { transform: scaleX(1); }
+.nav-right { display: flex; align-items: center; gap: 16px; justify-self: end; }
+.lang-btn {
+  font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--white); background: none; border: 1px solid rgba(255,255,255,0.3); padding: 6px 12px;
+  border-radius: 20px; cursor: pointer; font-family: var(--sans); transition: all 0.2s;
+}
+nav.scrolled .lang-btn { color: var(--black); border-color: var(--light); }
+.lang-btn:hover { border-color: var(--accent); color: var(--accent); }
+.menu-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; }
+.menu-toggle span { width: 22px; height: 1.5px; background: var(--white); display: block; transition: all 0.3s; }
+nav.scrolled .menu-toggle span { background: var(--black); }
+.mobile-nav {
+  display: none; position: fixed; inset: 0; background: var(--black); z-index: 499;
+  flex-direction: column; align-items: center; justify-content: center; gap: 28px;
+}
 .mobile-nav.open { display: flex; }
-.mobile-nav a { font-family: var(--serif); font-size: 36px; font-weight: 700; color: var(--text); text-decoration: none; }
-.mobile-close { position: absolute; top: 24px; right: 24px; font-size: 24px; cursor: pointer; color: var(--muted); background: none; border: none; }
+.mobile-nav a { font-family: var(--display); font-size: 48px; color: var(--white); text-decoration: none; letter-spacing: 0.05em; }
+.mobile-nav a:hover { color: var(--accent); }
+.mobile-close { position: absolute; top: 24px; right: 24px; background: none; border: none; color: var(--gray); font-size: 24px; cursor: pointer; }
 
-/* HERO */
-#hero { min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; position: relative; overflow: hidden; }
-.hero-left { display: flex; flex-direction: column; justify-content: flex-end; padding: 140px 64px 80px; position: relative; z-index: 2; }
-.hero-tag { font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent); margin-bottom: 32px; display: flex; align-items: center; gap: 12px; opacity: 0; animation: fadeUp 0.8s ease 0.2s forwards; }
-.hero-tag::before { content: ''; width: 32px; height: 1px; background: var(--accent); }
-.hero-headline { font-family: var(--serif); font-size: clamp(52px, 6vw, 96px); font-weight: 700; line-height: 1.0; letter-spacing: -0.02em; margin-bottom: 24px; opacity: 0; animation: fadeUp 0.8s ease 0.4s forwards; }
-.hero-headline em { font-style: italic; font-weight: 300; color: var(--muted); }
-.hero-sub { max-width: 380px; color: var(--muted); font-size: 13px; line-height: 1.8; margin-bottom: 48px; opacity: 0; animation: fadeUp 0.8s ease 0.6s forwards; }
-.hero-actions { display: flex; gap: 20px; align-items: center; opacity: 0; animation: fadeUp 0.8s ease 0.8s forwards; }
-.btn-primary { background: var(--accent); color: var(--bg); padding: 14px 32px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; text-decoration: none; border-radius: 2px; transition: background 0.3s, transform 0.2s; display: inline-block; border: none; cursor: pointer; }
-.btn-primary:hover { background: var(--accent2); transform: translateY(-2px); }
-.btn-ghost { color: var(--muted); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none; display: flex; align-items: center; gap: 8px; transition: color 0.3s; background: none; border: none; cursor: pointer; font-family: var(--mono); }
-.btn-ghost:hover { color: var(--text); }
-.btn-ghost::after { content: '→'; transition: transform 0.3s; }
-.btn-ghost:hover::after { transform: translateX(4px); }
-.hero-right { position: relative; overflow: hidden; }
-.hero-grid { width: 100%; height: 100%; display: grid; grid-template-columns: repeat(3,1fr); grid-template-rows: repeat(3,1fr); gap: 2px; position: absolute; inset: 0; opacity: 0; animation: fadeIn 1.2s ease 1s forwards; }
-.hero-cell { background: var(--surface); }
-.hero-cell:nth-child(2) { background: var(--accent); }
-.hero-cell:nth-child(5) { background: var(--surface2); }
-.hero-cell:nth-child(6) { background: #1a2200; }
-.hero-cell:nth-child(8) { background: var(--accent2); opacity: 0.3; }
-.hero-name-float { position: absolute; right: 40px; bottom: 80px; writing-mode: vertical-rl; transform: rotate(180deg); font-size: 10px; letter-spacing: 0.2em; color: var(--muted); text-transform: uppercase; opacity: 0; animation: fadeIn 1s ease 1.4s forwards; }
-.hero-scroll { position: absolute; bottom: 40px; left: 64px; display: flex; align-items: center; gap: 12px; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); opacity: 0; animation: fadeIn 1s ease 1.6s forwards; }
-.scroll-line { width: 48px; height: 1px; background: var(--line); position: relative; overflow: hidden; }
-.scroll-line::after { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: var(--accent); animation: scrollAnim 2s ease-in-out infinite; }
-@keyframes scrollAnim { 0%{left:-100%} 50%{left:0} 100%{left:100%} }
+/* ── HERO ─────────────────────────────────────────────────────────────── */
+#hero {
+  min-height: 100vh; position: relative; overflow: hidden;
+  background: linear-gradient(135deg, #0d0d0d 0%, #1a1a1a 50%, #0a1400 100%);
+  display: flex; align-items: center; justify-content: center;
+}
+.hero-bg-text {
+  position: absolute; bottom: -60px; left: -20px;
+  font-family: var(--display); font-size: clamp(200px, 25vw, 380px);
+  color: rgba(200,240,96,0.04); line-height: 1; pointer-events: none;
+  white-space: nowrap; letter-spacing: -0.02em;
+}
+.hero-content {
+  position: relative; z-index: 2; text-align: center;
+  padding: 120px 48px 80px;
+}
+.hero-handwrite {
+  font-family: var(--hand); font-size: clamp(48px, 7vw, 96px);
+  color: var(--accent); line-height: 1; margin-bottom: 8px;
+  animation: fadeUp 1s ease 0.2s both;
+}
+.hero-role {
+  font-family: var(--display); font-size: clamp(40px, 6vw, 80px);
+  color: var(--white); letter-spacing: 0.05em; line-height: 1; margin-bottom: 16px;
+  animation: fadeUp 1s ease 0.4s both;
+}
+.hero-sub {
+  font-size: 16px; color: rgba(255,255,255,0.5); letter-spacing: 0.15em;
+  text-transform: uppercase; font-weight: 300; margin-bottom: 56px;
+  animation: fadeUp 1s ease 0.6s both;
+}
+.hero-actions {
+  display: flex; gap: 16px; justify-content: center; align-items: center;
+  animation: fadeUp 1s ease 0.8s both;
+}
+.btn-solid {
+  background: var(--accent); color: var(--black); padding: 14px 32px;
+  font-family: var(--sans); font-size: 12px; font-weight: 600; letter-spacing: 0.1em;
+  text-transform: uppercase; text-decoration: none; border-radius: 4px;
+  transition: background 0.2s, transform 0.2s; border: none; cursor: pointer; display: inline-block;
+}
+.btn-solid:hover { background: var(--red-dark); transform: translateY(-2px); }
+.btn-outline {
+  background: transparent; color: var(--white); padding: 14px 32px;
+  font-family: var(--sans); font-size: 12px; font-weight: 500; letter-spacing: 0.1em;
+  text-transform: uppercase; text-decoration: none; border-radius: 4px;
+  border: 1px solid rgba(255,255,255,0.25); transition: all 0.2s; display: inline-block;
+}
+.btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+.hero-scroll {
+  position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.3);
+  animation: fadeIn 1s ease 1.2s both;
+}
+.scroll-dot { width: 1px; height: 40px; background: rgba(255,255,255,0.15); position: relative; overflow: hidden; }
+.scroll-dot::after {
+  content: ''; position: absolute; top: -100%; left: 0; width: 100%; height: 100%;
+  background: var(--accent); animation: scrollDown 2s ease-in-out infinite;
+}
+@keyframes scrollDown { 0%{top:-100%} 50%{top:0} 100%{top:100%} }
 
-/* STATS */
-.stats-bar { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); display: grid; grid-template-columns: repeat(4,1fr); opacity: 0; transform: translateY(30px); transition: opacity 0.8s, transform 0.8s; }
-.stats-bar.visible { opacity: 1; transform: translateY(0); }
-.stat-item { padding: 40px 48px; border-right: 1px solid var(--line); position: relative; }
-.stat-item:last-child { border-right: none; }
-.stat-item::before { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform 0.6s; }
-.stat-item:hover::before { transform: scaleX(1); }
-.stat-num { font-family: var(--serif); font-size: 48px; font-weight: 700; line-height: 1; margin-bottom: 8px; }
-.stat-num span { color: var(--accent); font-size: 28px; }
-.stat-label { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
+/* ── MARQUEE ──────────────────────────────────────────────────────────── */
+.marquee-wrap {
+  background: var(--accent); padding: 14px 0; overflow: hidden;
+  border-top: none; border-bottom: none;
+}
+.marquee-track {
+  display: flex; gap: 0; white-space: nowrap;
+  animation: marquee 20s linear infinite;
+}
+.marquee-item {
+  font-family: var(--display); font-size: 15px; letter-spacing: 0.08em;
+  color: var(--black); padding: 0 32px; text-transform: uppercase; flex-shrink: 0;
+}
+.marquee-sep { color: rgba(0,0,0,0.3); margin: 0 4px; }
+@keyframes marquee { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
 
-/* SECTIONS */
-section { position: relative; }
-.section-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 80px; padding-bottom: 24px; border-bottom: 1px solid var(--line); }
-.section-label { font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent); display: flex; align-items: center; gap: 12px; }
-.section-label::before { content: attr(data-num); font-size: 9px; color: var(--muted); }
-.section-title { font-family: var(--serif); font-size: clamp(36px,4vw,56px); font-weight: 700; line-height: 1.1; }
-.section-title em { font-style: italic; font-weight: 300; color: var(--muted); }
+/* ── SECTION SHARED ───────────────────────────────────────────────────── */
+.section-handwrite {
+  font-family: var(--hand); font-size: clamp(52px, 7vw, 96px);
+  color: var(--black); line-height: 1; margin-bottom: 64px;
+}
+.section-handwrite.accent { color: var(--accent); }
+.section-handwrite.white { color: var(--white); }
 
-/* SOBRE */
-#sobre { padding: 120px 48px; max-width: 1400px; margin: 0 auto; }
-.sobre-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
-.sobre-text p { font-size: 16px; line-height: 1.9; color: var(--muted); margin-bottom: 24px; }
-.sobre-text p strong { color: var(--text); font-weight: 400; }
-.sobre-text p em { color: var(--accent); font-style: normal; }
-.skills-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
-.skill-card { background: var(--surface); padding: 28px; position: relative; overflow: hidden; transition: background 0.3s; }
-.skill-card:hover { background: var(--surface2); }
-.skill-card::before { content: ''; position: absolute; top: 0; left: 0; width: 2px; height: 0; background: var(--accent); transition: height 0.4s; }
-.skill-card:hover::before { height: 100%; }
-.skill-icon { font-size: 22px; margin-bottom: 14px; }
-.skill-name { font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text); margin-bottom: 8px; }
-.skill-list { font-size: 11px; color: var(--muted); line-height: 1.8; }
-.social-links { display: flex; gap: 12px; margin-top: 40px; }
-.social-btn { padding: 12px 24px; border: 1px solid var(--line); font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: all 0.3s; border-radius: 2px; }
-.social-btn:hover { border-color: var(--accent); color: var(--accent); }
+/* ── PROJETOS CARROSSEL ───────────────────────────────────────────────── */
+#projetos { padding: 100px 0 100px; background: var(--white); }
+.proj-inner { max-width: 1280px; margin: 0 auto; padding: 0 48px; }
+.proj-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 48px; }
+.proj-nav-btns { display: flex; gap: 12px; }
+.proj-nav-btn {
+  width: 48px; height: 48px; border-radius: 50%; border: 1.5px solid var(--light);
+  background: none; cursor: pointer; font-size: 18px; color: var(--black);
+  display: flex; align-items: center; justify-content: center; transition: all 0.2s;
+}
+.proj-nav-btn:hover { background: var(--accent); border-color: var(--accent); color: var(--black); }
+.proj-nav-btn:disabled { opacity: 0.3; cursor: default; }
+.carousel-wrap { overflow: hidden; padding: 0 48px; }
+.carousel-track {
+  display: flex; gap: 24px; transition: transform 0.5s cubic-bezier(0.16,1,0.3,1);
+}
+.proj-card {
+  flex: 0 0 calc((100vw - 96px - 48px) / 3 - 16px);
+  min-width: 0; border-radius: 16px; overflow: hidden;
+  cursor: pointer; position: relative; transition: transform 0.3s;
+  background: var(--off);
+}
+.proj-card:hover { transform: translateY(-6px); }
+.proj-card-img {
+  width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block;
+  background: linear-gradient(135deg,#1a1a1a,#2a2a2a);
+}
+.proj-card-img-placeholder {
+  width: 100%; aspect-ratio: 4/3; display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(135deg,#0d0d0d,#1a1a1a,#0a1400);
+  font-family: var(--display); font-size: 64px; color: rgba(200,240,96,0.15); letter-spacing: -0.02em;
+}
+.proj-card-body { padding: 24px 24px 28px; }
+.proj-tags { display: flex; gap: 6px; margin-bottom: 10px; flex-wrap: wrap; }
+.proj-tag {
+  font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 3px 10px; border-radius: 20px; background: var(--light); color: var(--gray);
+}
+.proj-tag.nda { background: #1a1a1a; color: var(--accent); }
+.proj-card-name {
+  font-family: var(--display); font-size: 26px; letter-spacing: 0.03em; line-height: 1.1;
+  color: var(--black); margin-bottom: 8px;
+}
+.proj-card-desc { font-size: 13px; color: var(--gray); line-height: 1.6; }
+.proj-card-footer {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 24px; border-top: 1px solid var(--light);
+}
+.proj-card-cta {
+  font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--black); display: flex; align-items: center; gap: 6px;
+}
+.proj-card-arrow { font-size: 18px; transition: transform 0.2s; }
+.proj-card:hover .proj-card-arrow { transform: rotate(45deg); }
+.carousel-dots { display: flex; gap: 8px; justify-content: center; margin-top: 32px; }
+.carousel-dot {
+  width: 8px; height: 8px; border-radius: 50%; background: var(--light);
+  border: none; cursor: pointer; transition: all 0.2s; padding: 0;
+}
+.carousel-dot.active { background: var(--accent); width: 24px; border-radius: 4px; }
 
-/* EXPERIÊNCIA */
-#experiencia { padding: 120px 48px; background: var(--surface); }
-.exp-inner { max-width: 1400px; margin: 0 auto; }
-.exp-item { background: var(--bg); display: grid; grid-template-columns: 260px 1fr 200px; gap: 40px; padding: 48px; border-bottom: 1px solid var(--line); transition: background 0.3s; opacity: 0; transform: translateX(-40px); }
-.exp-item.visible { opacity: 1; transform: translateX(0); transition: opacity 0.7s ease, transform 0.7s ease, background 0.3s; }
-.exp-item:hover { background: var(--surface2); }
-.exp-company { font-family: var(--serif); font-size: 22px; font-weight: 700; margin-bottom: 6px; }
-.exp-period { font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); }
-.exp-role { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 20px; }
-.exp-achievements { list-style: none; display: flex; flex-direction: column; gap: 10px; }
-.exp-achievements li { font-size: 13px; color: var(--muted); padding-left: 20px; position: relative; line-height: 1.6; }
-.exp-achievements li::before { content: '—'; position: absolute; left: 0; color: var(--accent); }
-.exp-tag { display: inline-block; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); border: 1px solid rgba(200,240,96,0.3); padding: 4px 10px; border-radius: 2px; align-self: start; justify-self: end; }
+/* ── SOBRE ────────────────────────────────────────────────────────────── */
+#sobre { padding: 100px 48px; background: var(--off); }
+.sobre-inner { max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+.sobre-left { position: sticky; top: 120px; }
+.sobre-photo-wrap {
+  position: relative; border-radius: 12px; overflow: hidden;
+  background: var(--light); aspect-ratio: 3/4; max-width: 420px;
+}
+.sobre-photo-placeholder {
+  width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+  font-family: var(--display); font-size: 80px; color: rgba(200,240,96,0.15); letter-spacing: -0.02em;
+}
+.sobre-right {}
+.sobre-right .section-handwrite { margin-bottom: 32px; }
+.sobre-text { font-size: 17px; line-height: 1.8; color: var(--black); margin-bottom: 16px; }
+.sobre-text strong { font-weight: 600; }
+.sobre-text em { font-style: normal; color: #3d6b08; font-weight: 600; }
+.sobre-stats { margin-top: 48px; border-top: 1px solid var(--light); }
+.sobre-stat {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 20px 0; border-bottom: 1px solid var(--light);
+}
+.sobre-stat-label { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gray); }
+.sobre-stat-value { font-family: var(--display); font-size: 32px; color: #3d6b08; letter-spacing: 0.02em; }
+.sobre-stat-desc { font-size: 11px; color: var(--gray); }
 
-/* PROJETOS */
-#projetos { padding: 120px 48px; max-width: 1400px; margin: 0 auto; }
-.projects-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 2px; }
-.project-card { aspect-ratio: 4/5; position: relative; overflow: hidden; cursor: pointer; background: var(--surface); opacity: 0; transform: translateY(40px); transition: opacity 0.7s ease, transform 0.7s ease; }
-.project-card.visible { opacity: 1; transform: translateY(0); }
-.project-card:nth-child(2){transition-delay:0.1s} .project-card:nth-child(3){transition-delay:0.2s}
-.project-card:nth-child(4){transition-delay:0.15s} .project-card:nth-child(5){transition-delay:0.25s} .project-card:nth-child(6){transition-delay:0.3s}
-.project-thumb { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease, filter 0.4s ease; filter: brightness(0.75); }
-.project-card:hover .project-thumb { transform: scale(1.06); filter: brightness(0.4); }
-.project-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 55%); transition: background 0.4s; }
-.project-card:hover .project-overlay { background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.35) 100%); }
-.project-inner { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: flex-end; padding: 32px; }
-.project-cat { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; transform: translateY(6px); opacity: 0; transition: transform 0.4s ease 0.05s, opacity 0.4s ease 0.05s; }
-.project-card:hover .project-cat { transform: translateY(0); opacity: 1; }
-.project-name { font-family: var(--serif); font-size: 26px; font-weight: 700; line-height: 1.1; margin-bottom: 10px; transform: translateY(12px); transition: transform 0.4s; }
-.project-card:hover .project-name { transform: translateY(0); }
-.project-desc { font-size: 12px; color: rgba(240,236,227,0.65); line-height: 1.6; max-height: 0; overflow: hidden; opacity: 0; transition: max-height 0.4s ease 0.1s, opacity 0.4s ease 0.1s; }
-.project-card:hover .project-desc { max-height: 80px; opacity: 1; }
-.open-case-btn { display: inline-flex; align-items: center; gap: 8px; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); text-decoration: none; margin-top: 14px; opacity: 0; transform: translateY(8px); transition: opacity 0.4s ease 0.18s, transform 0.4s ease 0.18s; background: none; border: none; cursor: pointer; font-family: var(--mono); }
-.project-card:hover .open-case-btn { opacity: 1; transform: translateY(0); }
-.open-case-btn::after { content: '↗'; }
+/* ── SKILLS ───────────────────────────────────────────────────────────── */
+#skills { padding: 100px 48px; background: var(--white); }
+.skills-inner { max-width: 1280px; margin: 0 auto; }
+.skills-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-top: 0; }
+.skill-card {
+  background: var(--off); padding: 40px 32px; position: relative; overflow: hidden;
+  transition: background 0.3s;
+}
+.skill-card:hover { background: var(--accent); }
+.skill-card-icon { font-size: 32px; margin-bottom: 20px; }
+.skill-card-name {
+  font-family: var(--display); font-size: 28px; letter-spacing: 0.03em;
+  color: var(--black); margin-bottom: 12px; line-height: 1.1;
+}
+.skill-card-desc { font-size: 14px; color: var(--gray); line-height: 1.7; }
+.skill-card:hover .skill-card-desc { color: rgba(0,0,0,0.6); }
 
-/* FORMAÇÃO */
-#formacao { padding: 120px 48px; background: var(--surface); }
-.formacao-inner { max-width: 1400px; margin: 0 auto; }
-.edu-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 2px; }
-.edu-card { background: var(--bg); padding: 48px 40px; position: relative; overflow: hidden; transition: background 0.3s; }
-.edu-card:hover { background: var(--surface2); }
-.edu-num { font-family: var(--serif); font-size: 80px; font-weight: 900; line-height: 1; color: var(--line); position: absolute; top: 20px; right: 24px; transition: color 0.3s; }
-.edu-card:hover .edu-num { color: rgba(200,240,96,0.15); }
-.edu-badge { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); border: 1px solid rgba(200,240,96,0.3); padding: 4px 10px; display: inline-block; margin-bottom: 24px; border-radius: 2px; }
-.edu-title { font-family: var(--serif); font-size: 22px; font-weight: 700; line-height: 1.2; margin-bottom: 8px; }
-.edu-inst { font-size: 13px; color: var(--accent); margin-bottom: 8px; }
-.edu-period { font-size: 11px; color: var(--muted); }
+/* ── JORNADA ──────────────────────────────────────────────────────────── */
+#jornada { padding: 100px 48px; background: var(--off); }
+.jornada-inner { max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; }
+.jornada-left { position: sticky; top: 120px; }
+.jornada-timeline { display: flex; flex-direction: column; gap: 0; }
+.timeline-item {
+  display: grid; grid-template-columns: 20px 1fr; gap: 24px;
+  padding-bottom: 48px; position: relative;
+}
+.timeline-item::before {
+  content: ''; position: absolute; left: 9px; top: 24px; bottom: 0;
+  width: 2px; background: var(--light);
+}
+.timeline-item:last-child::before { display: none; }
+.timeline-dot {
+  width: 20px; height: 20px; border-radius: 50%; background: var(--accent);
+  border: 3px solid var(--white); box-shadow: 0 0 0 2px var(--accent);
+  flex-shrink: 0; margin-top: 4px; position: relative; z-index: 1;
+}
+.timeline-content {}
+.timeline-period { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray); margin-bottom: 6px; }
+.timeline-company { font-family: var(--display); font-size: 26px; letter-spacing: 0.03em; color: var(--black); margin-bottom: 4px; }
+.timeline-role { font-size: 13px; font-weight: 500; color: #3d6b08; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 12px; }
+.timeline-desc { font-size: 14px; color: var(--gray); line-height: 1.7; }
 
-/* CONTATO */
-#contato { padding: 120px 48px 80px; max-width: 1400px; margin: 0 auto; }
-.contact-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
-.big-cta { font-family: var(--serif); font-size: clamp(40px,5vw,72px); font-weight: 700; line-height: 1.05; margin-bottom: 32px; }
-.big-cta em { font-style: italic; font-weight: 300; color: var(--muted); display: block; }
-.contact-left p { color: var(--muted); font-size: 14px; line-height: 1.8; max-width: 380px; margin-bottom: 48px; }
-.contact-info { display: flex; flex-direction: column; gap: 24px; }
-.contact-row { display: flex; align-items: center; gap: 20px; padding-bottom: 24px; border-bottom: 1px solid var(--line); }
-.contact-row:last-child { border-bottom: none; }
-.contact-icon { width: 44px; height: 44px; background: var(--surface); display: flex; align-items: center; justify-content: center; border-radius: 2px; flex-shrink: 0; }
-.contact-detail .label { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
-.contact-detail a, .contact-detail span { font-size: 13px; color: var(--text); text-decoration: none; transition: color 0.3s; }
-.contact-detail a:hover { color: var(--accent); }
+/* ── CONTATO ──────────────────────────────────────────────────────────── */
+#contato { padding: 100px 48px; background: var(--black); min-height: 80vh; display: flex; align-items: center; }
+.contato-inner { max-width: 1280px; margin: 0 auto; width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: end; }
+.contato-left {}
+.contato-handwrite { font-family: var(--hand); font-size: clamp(60px, 9vw, 120px); color: var(--accent); line-height: 0.9; margin-bottom: 24px; }
+.contato-sub { font-size: 18px; color: rgba(255,255,255,0.5); line-height: 1.6; }
+.contato-links { display: flex; flex-direction: column; gap: 0; }
+.contato-link-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 20px 0; border-bottom: 1px solid rgba(255,255,255,0.08);
+  text-decoration: none; transition: all 0.2s;
+}
+.contato-link-row:first-child { border-top: 1px solid rgba(255,255,255,0.08); }
+.contato-link-label { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.3); }
+.contato-link-value { font-size: 16px; color: var(--white); display: flex; align-items: center; gap: 8px; transition: color 0.2s; }
+.contato-link-row:hover .contato-link-value { color: var(--accent); }
+.contato-link-arrow { font-size: 18px; opacity: 0.4; transition: opacity 0.2s, transform 0.2s; }
+.contato-link-row:hover .contato-link-arrow { opacity: 1; transform: rotate(45deg); }
 
-/* FOOTER */
-footer { border-top: 1px solid var(--line); padding: 32px 48px; display: flex; justify-content: space-between; align-items: center; }
-.footer-copy { font-size: 11px; color: var(--muted); }
-.footer-copy strong { color: var(--text); }
-.footer-back { font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.3s; }
+/* ── FOOTER ───────────────────────────────────────────────────────────── */
+footer {
+  background: var(--black); border-top: 1px solid rgba(255,255,255,0.06);
+  padding: 28px 48px; display: flex; justify-content: space-between; align-items: center;
+}
+.footer-copy { font-size: 12px; color: rgba(255,255,255,0.25); }
+.footer-copy strong { color: rgba(255,255,255,0.5); }
+.footer-back { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.25); text-decoration: none; transition: color 0.2s; }
 .footer-back:hover { color: var(--accent); }
 
-/* =========== CASE VIEW =========== */
-#case-view { display: none; position: fixed; inset: 0; z-index: 300; background: var(--bg); overflow-y: auto; }
+/* ── CASE VIEW ────────────────────────────────────────────────────────── */
+#case-view {
+  display: none; position: fixed; inset: 0; z-index: 600;
+  background: var(--white); overflow-y: auto;
+}
 #case-view.active { display: block; animation: slideIn 0.5s cubic-bezier(0.16,1,0.3,1); }
 #case-view.closing { animation: slideOut 0.4s cubic-bezier(0.16,1,0.3,1) forwards; }
-@keyframes slideIn { from{transform:translateX(100%);opacity:0} to{transform:translateX(0);opacity:1} }
-@keyframes slideOut { from{transform:translateX(0);opacity:1} to{transform:translateX(100%);opacity:0} }
+@keyframes slideIn { from{transform:translateY(60px);opacity:0} to{transform:translateY(0);opacity:1} }
+@keyframes slideOut { from{transform:translateY(0);opacity:1} to{transform:translateY(60px);opacity:0} }
 
-.case-nav { position: sticky; top: 0; z-index: 10; display: flex; justify-content: space-between; align-items: center; padding: 20px 48px; background: rgba(13,13,13,0.96); border-bottom: 1px solid var(--line); backdrop-filter: blur(10px); }
-.case-back { display: flex; align-items: center; gap: 10px; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); background: none; border: none; cursor: pointer; font-family: var(--mono); transition: color 0.3s; }
-.case-back::before { content: '←'; }
-.case-back:hover { color: var(--accent); }
-.case-nav-title { font-family: var(--serif); font-size: 16px; font-weight: 300; color: var(--muted); }
-.case-behance-link { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.3s; }
-.case-behance-link:hover { color: var(--accent); }
+.case-topbar {
+  position: sticky; top: 0; z-index: 10; display: flex; justify-content: space-between; align-items: center;
+  padding: 18px 48px; background: rgba(255,255,255,0.95); border-bottom: 1px solid var(--light);
+  backdrop-filter: blur(12px);
+}
+.case-back-btn {
+  display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 500;
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray); background: none; border: none; cursor: pointer;
+  font-family: var(--sans); transition: color 0.2s;
+}
+.case-back-btn::before { content: '←'; font-size: 16px; }
+.case-back-btn:hover { color: var(--black); }
+.case-topbar-title { font-family: var(--display); font-size: 18px; letter-spacing: 0.05em; color: var(--black); }
+.case-behance-lnk { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray); text-decoration: none; transition: color 0.2s; }
+.case-behance-lnk:hover { color: var(--black); }
 
-.case-hero { position: relative; height: 70vh; min-height: 500px; overflow: hidden; }
-.case-hero-img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.4); }
-.case-hero-overlay { position: absolute; inset: 0; background: linear-gradient(to top, var(--bg) 0%, transparent 60%); }
-.case-hero-content { position: absolute; bottom: 0; left: 0; right: 0; padding: 60px 80px; }
-.case-hero-cat { font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent); margin-bottom: 20px; display: flex; align-items: center; gap: 12px; }
-.case-hero-cat::before { content: ''; width: 32px; height: 1px; background: var(--accent); }
-.case-hero-title { font-family: var(--serif); font-size: clamp(48px,7vw,96px); font-weight: 700; line-height: 0.95; letter-spacing: -0.02em; margin-bottom: 32px; }
-.case-hero-title em { font-style: italic; font-weight: 300; color: var(--muted); }
-.case-meta-row { display: flex; gap: 48px; }
-.case-meta-label { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
-.case-meta-value { font-size: 12px; color: var(--text); }
+.case-hero-section {
+  min-height: 60vh; display: flex; align-items: flex-end;
+  position: relative; overflow: hidden; background: var(--black);
+}
+.case-hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.4; }
+.case-hero-no-img {
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, #0d0d0d 0%, #1a1a1a 60%, #0a1400 100%);
+}
+.case-hero-no-img::after {
+  content: attr(data-name); position: absolute; bottom: -40px; right: -20px;
+  font-family: var(--display); font-size: 200px; color: rgba(200,240,96,0.04);
+  line-height: 1; pointer-events: none; white-space: nowrap;
+}
+.case-hero-content { position: relative; z-index: 2; padding: 60px 80px; width: 100%; }
+.case-cat { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 16px; display: flex; align-items: center; gap: 12px; }
+.case-cat::before { content: ''; width: 28px; height: 1px; background: var(--accent); }
+.case-hero-title { font-family: var(--display); font-size: clamp(48px, 7vw, 96px); color: var(--white); letter-spacing: 0.02em; line-height: 0.95; margin-bottom: 12px; }
+.case-hero-subtitle { font-family: var(--hand); font-size: 36px; color: rgba(255,255,255,0.4); margin-bottom: 40px; }
+.case-meta { display: flex; gap: 48px; flex-wrap: wrap; }
+.case-meta-item {}
+.case-meta-label { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 4px; }
+.case-meta-val { font-size: 13px; color: rgba(255,255,255,0.8); font-weight: 500; }
+.case-nda-badge {
+  display: inline-flex; align-items: center; gap: 6px; margin-top: 16px;
+  font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--accent); border: 1px solid rgba(200,240,96,0.3); padding: 6px 14px; border-radius: 20px;
+}
+.case-behance-hero-btn {
+  display: inline-flex; align-items: center; gap: 8px; margin-top: 28px;
+  background: var(--accent); color: var(--black); padding: 12px 24px; border-radius: 4px;
+  font-family: var(--sans); font-size: 12px; font-weight: 600; letter-spacing: 0.08em;
+  text-transform: uppercase; text-decoration: none; transition: background 0.2s, transform 0.2s;
+}
+.case-behance-hero-btn:hover { background: #a8d040; transform: translateY(-2px); }
 
-.case-body { max-width: 900px; margin: 0 auto; padding: 80px 48px; }
-.case-section { margin-bottom: 72px; }
-.case-section-label { font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--accent); margin-bottom: 16px; display: flex; align-items: center; gap: 12px; }
-.case-section-label::before { content: ''; width: 24px; height: 1px; background: var(--accent); }
-.case-section h2 { font-family: var(--serif); font-size: clamp(28px,3vw,40px); font-weight: 700; line-height: 1.15; margin-bottom: 20px; }
-.case-section h2 em { font-style: italic; font-weight: 300; color: var(--muted); }
-.case-section p { font-size: 15px; color: var(--muted); line-height: 1.9; margin-bottom: 16px; }
-.case-section p strong { color: var(--text); font-weight: 400; }
+.case-body { max-width: 860px; margin: 0 auto; padding: 80px 48px; }
+.case-sec { margin-bottom: 64px; }
+.case-sec-label { font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
+.case-sec-label::before { content: ''; width: 20px; height: 1px; background: var(--accent); }
+.case-sec h2 { font-family: var(--display); font-size: clamp(28px,3vw,40px); letter-spacing: 0.03em; line-height: 1.1; margin-bottom: 20px; color: var(--black); }
+.case-sec h2 em { font-style: normal; color: #3d6b08; }
+.case-sec p { font-size: 16px; color: #444; line-height: 1.85; margin-bottom: 16px; }
+.case-sec p strong { color: var(--black); font-weight: 600; }
 
-.case-metrics { display: grid; grid-template-columns: repeat(3,1fr); gap: 2px; margin: 40px 0; }
-.metric-card { background: var(--surface); padding: 36px 28px; position: relative; }
-.metric-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--accent); }
-.metric-num { font-family: var(--serif); font-size: 40px; font-weight: 700; color: var(--accent); line-height: 1; margin-bottom: 8px; }
-.metric-label { font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); }
-
-.decisions-list { display: flex; flex-direction: column; gap: 2px; margin-top: 28px; }
-.decision-item { background: var(--surface); padding: 28px 32px; display: grid; grid-template-columns: 48px 1fr; gap: 20px; align-items: start; transition: background 0.3s; }
-.decision-item:hover { background: var(--surface2); }
-.decision-num { font-family: var(--serif); font-size: 32px; font-weight: 700; color: var(--line); line-height: 1; transition: color 0.3s; }
-.decision-item:hover .decision-num { color: rgba(200,240,96,0.3); }
-.decision-title { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text); margin-bottom: 8px; }
-.decision-desc { font-size: 13px; color: var(--muted); line-height: 1.7; }
-
-.case-gallery { display: grid; gap: 4px; margin: 40px -48px; }
+.case-gallery { display: grid; gap: 4px; margin: 48px -48px; }
 .case-gallery.g1 { grid-template-columns: 1fr; }
 .case-gallery.g2 { grid-template-columns: 1fr 1fr; }
 .case-gallery.g3 { grid-template-columns: 1fr 1fr 1fr; }
 .case-gallery img { width: 100%; height: auto; display: block; object-fit: cover; }
-.gallery-caption { text-align: center; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); padding: 16px 0 0; }
+.gallery-cap { text-align: center; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gray); padding: 12px 0; }
 
-.case-hero-text { display: flex; align-items: flex-end; background: var(--surface); min-height: 70vh; position: relative; overflow: hidden; }
-.case-hero-text-inner { position: relative; z-index: 2; padding: 60px 80px; width: 100%; }
-.case-hero-pattern { position: absolute; inset: 0; background: repeating-linear-gradient(45deg, transparent, transparent 40px, rgba(200,240,96,0.03) 40px, rgba(200,240,96,0.03) 41px); }
-.case-hero-pattern::after { content: ''; position: absolute; top: -200px; right: -200px; width: 600px; height: 600px; border-radius: 50%; background: radial-gradient(circle, rgba(200,240,96,0.06) 0%, transparent 70%); }
-.case-nda-note { margin-top: 24px; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); border-left: 2px solid var(--line); padding-left: 16px; }
-.project-card--text { cursor: pointer; }
-.project-card-text-bg { position: absolute; inset: 0; background: repeating-linear-gradient(45deg, transparent, transparent 30px, rgba(200,240,96,0.025) 30px, rgba(200,240,96,0.025) 31px); }
-.project-card-text-bg::after { content: 'UpFlux'; position: absolute; bottom: -20px; right: -10px; font-family: var(--serif); font-size: 120px; font-weight: 900; color: rgba(200,240,96,0.04); line-height: 1; pointer-events: none; white-space: nowrap; transition: color 0.4s; }
-.project-card--text:hover .project-card-text-bg::after { color: rgba(200,240,96,0.08); }
-.project-nda-tag { position: absolute; top: 20px; right: 20px; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); border: 1px solid var(--line); padding: 4px 10px; border-radius: 2px; z-index: 3; transition: border-color 0.3s, color 0.3s; }
-.project-card--text:hover .project-nda-tag { border-color: rgba(200,240,96,0.3); color: var(--accent); }
+.decisions-grid { display: flex; flex-direction: column; gap: 2px; margin-top: 24px; }
+.dec-item {
+  background: var(--off); padding: 28px 32px; display: grid; grid-template-columns: 48px 1fr; gap: 20px;
+  align-items: start; border-radius: 4px; transition: background 0.3s;
+}
+.dec-item:hover { background: var(--light); }
+.dec-num { font-family: var(--display); font-size: 36px; color: var(--light); line-height: 1; transition: color 0.3s; }
+.dec-item:hover .dec-num { color: var(--accent); }
+.dec-title { font-size: 13px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--black); margin-bottom: 6px; }
+.dec-desc { font-size: 14px; color: var(--gray); line-height: 1.7; }
 
+.case-metrics { display: grid; grid-template-columns: repeat(3,1fr); gap: 2px; margin: 32px 0; }
+.metric-card { background: var(--black); padding: 32px 24px; border-radius: 4px; }
+.metric-num { font-family: var(--display); font-size: 40px; color: var(--accent); line-height: 1; margin-bottom: 8px; }
+.metric-lbl { font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.4); }
 
-.cfn-item { padding: 48px; cursor: pointer; transition: background 0.3s; }
-.cfn-item:first-child { border-right: 1px solid var(--line); }
-.cfn-item:last-child { text-align: right; }
-.cfn-item:hover { background: var(--surface); }
-.cfn-dir { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
-.cfn-title { font-family: var(--serif); font-size: 24px; font-weight: 700; }
+.case-footer-nav { border-top: 1px solid var(--light); display: grid; grid-template-columns: 1fr 1fr; margin-top: 80px; }
+.cfn { padding: 40px 32px; cursor: pointer; transition: background 0.3s; }
+.cfn:hover { background: var(--off); }
+.cfn:last-child { border-left: 1px solid var(--light); text-align: right; }
+.cfn-dir { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gray); margin-bottom: 8px; }
+.cfn-name { font-family: var(--display); font-size: 24px; letter-spacing: 0.03em; }
 
-/* ANIMATIONS */
+/* ── ANIMATIONS ───────────────────────────────────────────────────────── */
 @keyframes fadeUp { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
 @keyframes fadeIn { from{opacity:0} to{opacity:1} }
 .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.8s ease, transform 0.8s ease; }
 .reveal.visible { opacity: 1; transform: translateY(0); }
 
-/* RESPONSIVE */
+/* ── RESPONSIVE ───────────────────────────────────────────────────────── */
 @media(max-width:1024px){
-  nav{padding:20px 24px} .nav-links{display:none} .menu-toggle{display:flex}
-  #hero{grid-template-columns:1fr} .hero-right{display:none} .hero-left{padding:120px 24px 80px}
-  .stats-bar{grid-template-columns:1fr 1fr} .stat-item:nth-child(2){border-right:none}
-  #sobre{padding:80px 24px} .sobre-grid{grid-template-columns:1fr;gap:48px}
-  #experiencia{padding:80px 24px} .exp-item{grid-template-columns:1fr;gap:20px;padding:32px 24px} .exp-tag{justify-self:start}
-  #projetos{padding:80px 24px} .projects-grid{grid-template-columns:1fr 1fr}
-  #formacao{padding:80px 24px} .edu-grid{grid-template-columns:1fr}
-  #contato{padding:80px 24px} .contact-wrap{grid-template-columns:1fr}
-  footer{flex-direction:column;gap:16px;text-align:center}
-  .case-nav{padding:20px 24px} .case-hero-content{padding:40px 24px}
-  .case-body{padding:60px 24px} .case-gallery{margin:40px -24px}
-  .case-gallery.g3{grid-template-columns:1fr 1fr} .case-metrics{grid-template-columns:1fr 1fr}
-  .case-footer-nav{grid-template-columns:1fr} .cfn-item:first-child{border-right:none;border-bottom:1px solid var(--line)} .cfn-item:last-child{text-align:left}
+  nav{padding:16px 24px; grid-template-columns:1fr auto 1fr}
+  .nav-center{display:none}
+  .menu-toggle{display:flex}
+  #hero .hero-content{padding:100px 24px 60px}
+  #projetos{padding:80px 0}
+  #sobre,#skills,#jornada,#contato{padding:80px 24px}
+  .proj-inner{padding:0 24px}
+  .carousel-wrap{padding:0 24px}
+  .proj-card{flex:0 0 calc(50vw - 28px)}
+  .sobre-inner,.jornada-inner,.contato-inner{grid-template-columns:1fr;gap:48px}
+  .sobre-left{position:static}
+  .jornada-left{position:static}
+  .skills-grid{grid-template-columns:1fr}
+  .case-topbar{padding:16px 24px}
+  .case-hero-content{padding:40px 24px}
+  .case-body{padding:60px 24px}
+  .case-gallery{margin:40px -24px}
+  .case-gallery.g2,.case-gallery.g3{grid-template-columns:1fr 1fr}
+  .case-metrics{grid-template-columns:1fr 1fr}
+  footer{flex-direction:column;gap:12px;text-align:center}
+  .contato-inner{grid-template-columns:1fr}
 }
 @media(max-width:640px){
-  .projects-grid{grid-template-columns:1fr} .skills-grid{grid-template-columns:1fr}
-  .case-gallery.g2,.case-gallery.g3{grid-template-columns:1fr} .case-metrics{grid-template-columns:1fr}
-  .case-meta-row{flex-wrap:wrap;gap:20px}
+  .skills-grid{grid-template-columns:1fr}
+  .proj-card{flex:0 0 calc(85vw)}
+  .case-gallery.g2,.case-gallery.g3{grid-template-columns:1fr}
+  .case-metrics{grid-template-columns:1fr}
+  .case-footer-nav{grid-template-columns:1fr}
+  .cfn:last-child{border-left:none;border-top:1px solid var(--light);text-align:left}
 }
 </style>
 </head>
 <body>
 
-<div class="cursor" id="cursor"></div>
-<div class="cursor-ring" id="cursorRing"></div>
-
-<nav>
-  <a href="#" class="nav-logo" onclick="navClick(event,'#hero')">Hermoso<span>.</span></a>
-  <ul class="nav-links">
-    <li><a href="#sobre" onclick="navClick(event,'#sobre')" data-i18n="nav_about">Sobre</a></li>
-    <li><a href="#experiencia" onclick="navClick(event,'#experiencia')" data-i18n="nav_exp">Experiência</a></li>
-    <li><a href="#projetos" onclick="navClick(event,'#projetos')" data-i18n="nav_work">Projetos</a></li>
-    <li><a href="#formacao" onclick="navClick(event,'#formacao')" data-i18n="nav_edu">Formação</a></li>
-    <li><a href="#contato" class="nav-cta" onclick="navClick(event,'#contato')" data-i18n="nav_contact">Contato</a></li>
+<!-- NAV -->
+<nav id="mainNav">
+  <a href="#" class="nav-logo" onclick="closeCase()">L<span>.</span></a>
+  <ul class="nav-center">
+    <li><a href="#projetos" data-i18n="nav_work">Projetos</a></li>
+    <li><a href="#sobre" data-i18n="nav_about">Sobre</a></li>
+    <li><a href="#skills" data-i18n="nav_skills">Skills</a></li>
+    <li><a href="#jornada" data-i18n="nav_journey">Jornada</a></li>
+    <li><a href="#contato" data-i18n="nav_contact">Contato</a></li>
   </ul>
-  <div style="display:flex;align-items:center;gap:16px">
-    <button class="lang-toggle" id="langBtn" onclick="toggleLang()">
-      <span class="lang-active" id="langActive">PT</span><span class="lang-sep">/</span><span id="langOther">EN</span>
-    </button>
-    <div class="menu-toggle" id="menuToggle"><span></span><span></span><span></span></div>
+  <div class="nav-right">
+    <button class="lang-btn" onclick="toggleLang()" id="langBtn">EN</button>
+    <button class="menu-toggle" id="menuToggle"><span></span><span></span><span></span></button>
   </div>
 </nav>
 
 <div class="mobile-nav" id="mobileNav">
   <button class="mobile-close" id="mobileClose">✕</button>
-  <a href="#sobre" class="mob-link">Sobre</a>
-  <a href="#experiencia" class="mob-link">Experiência</a>
-  <a href="#projetos" class="mob-link">Projetos</a>
-  <a href="#formacao" class="mob-link">Formação</a>
-  <a href="#contato" class="mob-link">Contato</a>
+  <a href="#projetos" class="mob-link" data-i18n="nav_work">Projetos</a>
+  <a href="#sobre" class="mob-link" data-i18n="nav_about">Sobre</a>
+  <a href="#skills" class="mob-link" data-i18n="nav_skills">Skills</a>
+  <a href="#jornada" class="mob-link" data-i18n="nav_journey">Jornada</a>
+  <a href="#contato" class="mob-link" data-i18n="nav_contact">Contato</a>
 </div>
 
-<!-- PORTFOLIO -->
+<!-- PORTFOLIO VIEW -->
 <div id="portfolio-view">
+
+  <!-- HERO -->
   <section id="hero">
-    <div class="hero-left">
-      <div class="hero-tag" data-i18n="hero_tag">Product Designer · Brand Designer</div>
-      <h1 class="hero-headline">Leonardo<br><em>Hermoso.</em></h1>
-      <p class="hero-sub" data-i18n="hero_sub">Raízes em branding. Cabeça em produto.<br>4+ anos criando sistemas visuais e experiências digitais que funcionam — do símbolo à interface, da pesquisa ao handoff.</p>
+    <div class="hero-bg-text">HERMOSO</div>
+    <div class="hero-content">
+      <div class="hero-handwrite">Leonardo Hermoso</div>
+      <div class="hero-role" data-i18n="hero_role">Product Designer</div>
+      <div class="hero-sub" data-i18n="hero_sub">Branding · UX/UI · Estratégia de Produto</div>
       <div class="hero-actions">
-        <a href="#projetos" class="btn-primary" data-i18n="hero_cta1">Ver Projetos</a>
-        <a href="#contato" class="btn-ghost" data-i18n="hero_cta2">Vamos conversar</a>
+        <a href="#projetos" class="btn-solid" data-i18n="hero_cta1">Ver Projetos</a>
+        <a href="#contato" class="btn-outline" data-i18n="hero_cta2">Vamos conversar</a>
       </div>
     </div>
-    <div class="hero-right">
-      <div class="hero-grid">
-        <div class="hero-cell"></div><div class="hero-cell"></div><div class="hero-cell"></div>
-        <div class="hero-cell"></div><div class="hero-cell"></div><div class="hero-cell"></div>
-        <div class="hero-cell"></div><div class="hero-cell"></div><div class="hero-cell"></div>
-      </div>
-      <div class="hero-name-float">São José dos Pinhais · PR · Brasil</div>
+    <div class="hero-scroll">
+      <div class="scroll-dot"></div>
+      Scroll
     </div>
-    <div class="hero-scroll"><div class="scroll-line"></div>Scroll</div>
   </section>
 
-  <div class="stats-bar" id="statsBar">
-    <div class="stat-item"><div class="stat-num">4<span>+</span></div><div class="stat-label" data-i18n="stat1">Anos de Experiência</div></div>
-    <div class="stat-item"><div class="stat-num">E2E</div><div class="stat-label" data-i18n="stat2">Discovery → Handoff</div></div>
-    <div class="stat-item"><div class="stat-num">B2B</div><div class="stat-label" data-i18n="stat3">SaaS · E-commerce · Tech</div></div>
-    <div class="stat-item"><div class="stat-num">UX<span>+</span></div><div class="stat-label" data-i18n="stat4">Estratégia de Produto</div></div>
+  <!-- MARQUEE -->
+  <div class="marquee-wrap">
+    <div class="marquee-track">
+      <span class="marquee-item">Product Design <span class="marquee-sep">·</span></span>
+      <span class="marquee-item">Brand Identity <span class="marquee-sep">·</span></span>
+      <span class="marquee-item">UX Research <span class="marquee-sep">·</span></span>
+      <span class="marquee-item">Design System <span class="marquee-sep">·</span></span>
+      <span class="marquee-item">B2B SaaS <span class="marquee-sep">·</span></span>
+      <span class="marquee-item">Design Strategy <span class="marquee-sep">·</span></span>
+      <span class="marquee-item">Visual Identity <span class="marquee-sep">·</span></span>
+      <span class="marquee-item">Figma · Illustrator <span class="marquee-sep">·</span></span>
+      <span class="marquee-item">Product Design <span class="marquee-sep">·</span></span>
+      <span class="marquee-item">Brand Identity <span class="marquee-sep">·</span></span>
+      <span class="marquee-item">UX Research <span class="marquee-sep">·</span></span>
+      <span class="marquee-item">Design System <span class="marquee-sep">·</span></span>
+      <span class="marquee-item">B2B SaaS <span class="marquee-sep">·</span></span>
+      <span class="marquee-item">Design Strategy <span class="marquee-sep">·</span></span>
+      <span class="marquee-item">Visual Identity <span class="marquee-sep">·</span></span>
+      <span class="marquee-item">Figma · Illustrator <span class="marquee-sep">·</span></span>
+    </div>
   </div>
 
-  <section id="sobre">
-    <div class="section-header reveal"><div class="section-label" data-num="01" data-i18n="about_label">Sobre mim</div><h2 class="section-title" data-i18n="about_title">Branding <em>encontra</em> produto</h2></div>
-    <div class="sobre-grid">
-      <div class="sobre-text reveal">
-        <p data-i18n="about_p1">Comecei pelo branding — construindo sistemas de identidade visual com personalidade e consistência. Com o tempo, fui me aproximando de produto: pesquisa com usuários, arquitetura de informação, prototipagem e decisões que impactam negócio.</p>
-        <p data-i18n="about_p2">Hoje atuo na interseção entre as duas disciplinas. Entendo <strong>marca como experiência</strong> e <strong>produto como comunicação</strong> — o que me permite colaborar com times de design, produto e estratégia sem perder a visão do todo.</p>
-        <p data-i18n="about_p3">Experiência em ambientes <strong>B2B SaaS</strong> e <strong>e-commerce</strong>, com atuação em projetos end-to-end: do discovery ao handoff. Disponível para freelance e oportunidades.</p>
-        <div class="social-links">
-          <a href="https://www.behance.net/heermoso" target="_blank" class="social-btn">Behance ↗</a>
-          <a href="https://www.linkedin.com/in/heermoso" target="_blank" class="social-btn">LinkedIn ↗</a>
-          <a href="mailto:hermoso.dsgn@gmail.com" class="social-btn">Email ↗</a>
-        </div>
-      </div>
-      <div class="skills-grid reveal">
-        <div class="skill-card"><div class="skill-icon">◈</div><div class="skill-name">UX / UI</div><div class="skill-list" data-i18n="skill_ux">Figma · Prototipagem · Wireframes · Design System · User Research · Testes</div></div>
-        <div class="skill-card"><div class="skill-icon">◉</div><div class="skill-name" data-i18n="skill_strat_name">Estratégia</div><div class="skill-list" data-i18n="skill_strat">Discovery · JTBD · Arquitetura de Informação · Handoff · Acessibilidade</div></div>
-        <div class="skill-card"><div class="skill-icon">◇</div><div class="skill-name">Branding</div><div class="skill-list" data-i18n="skill_brand">Identidade Visual · Direção de Arte · Sistemas Visuais · Social Media</div></div>
-        <div class="skill-card"><div class="skill-icon">◎</div><div class="skill-name" data-i18n="skill_proc_name">Processos</div><div class="skill-list" data-i18n="skill_proc">Design Thinking · Scrum · Kanban · UCD · Pesquisa Qualitativa</div></div>
-      </div>
-    </div>
-  </section>
-
-  <section id="experiencia">
-    <div class="exp-inner">
-      <div class="section-header reveal"><div class="section-label" data-num="02" data-i18n="exp_label">Trajetória</div><h2 class="section-title" data-i18n="exp_title">Onde <em>atuei</em></h2></div>
-      <div>
-        <div class="exp-item"><div><div class="exp-company">UpFlux</div><div class="exp-period" data-i18n="upflux_period">Set/2025 — Atual</div></div><div><div class="exp-role" data-i18n="upflux_role">Product Designer · Estratégico · SaaS B2B</div><ul class="exp-achievements"><li data-i18n="upflux_li1">Propostas estratégicas e narrativas de produto para Big Deals de alto valor</li><li data-i18n="upflux_li2">Fluxos de UX e jornadas orientadas a dados para decisões de produto</li><li data-i18n="upflux_li3">Alinhamento entre produto, comercial e liderança executiva</li></ul></div><span class="exp-tag" data-i18n="exp_current">Atual</span></div>
-        <div class="exp-item"><div><div class="exp-company">Hacoo</div><div class="exp-period" data-i18n="hacoo_period">Mar/2024 — Jun/2025</div></div><div><div class="exp-role" data-i18n="hacoo_role">Designer de Soluções II · E-commerce · Remoto</div><ul class="exp-achievements"><li data-i18n="hacoo_li1">Projetos end-to-end de UX com redução de <strong style="color:var(--accent)">25%</strong> no tempo médio de entrega</li><li data-i18n="hacoo_li2">Design System que reduziu retrabalho entre squads</li><li data-i18n="hacoo_li3">Testes de usabilidade e iteração contínua de interfaces</li></ul></div><span class="exp-tag" data-i18n="hacoo_dur">1 ano e 3m</span></div>
-        <div class="exp-item"><div><div class="exp-company">Selettra</div><div class="exp-period" data-i18n="selettra_period">Mai/2023 — Mar/2024</div></div><div><div class="exp-role" data-i18n="selettra_role">Assistente de Criação Jr · Automação e Robótica</div><ul class="exp-achievements"><li data-i18n="selettra_li1">Materiais visuais para comunicação institucional e apresentações comerciais</li><li data-i18n="selettra_li2">Interfaces e layouts para canais digitais</li></ul></div><span class="exp-tag" data-i18n="selettra_dur">10 meses</span></div>
-        <div class="exp-item"><div><div class="exp-company">Studio Sol</div><div class="exp-period" data-i18n="sol_period">Fev/2022 — Fev/2023</div></div><div><div class="exp-role" data-i18n="sol_role">Estagiário em Visual Design · Remoto</div><ul class="exp-achievements"><li data-i18n="sol_li1">Materiais gráficos para redes sociais, websites e apresentações digitais</li><li data-i18n="sol_li2">Layouts responsivos e prototipagem de interfaces</li></ul></div><span class="exp-tag" data-i18n="sol_dur">1 ano</span></div>
-      </div>
-    </div>
-  </section>
-
+  <!-- PROJETOS -->
   <section id="projetos">
-    <div class="section-header reveal"><div class="section-label" data-num="03" data-i18n="work_label">Portfólio</div><h2 class="section-title" data-i18n="work_title">Cases <em>selecionados</em></h2></div>
-    <div class="projects-grid">
-      <div class="project-card project-card--text" onclick="openCase('upflux')">
-        <div class="project-card-text-bg"></div>
-        <div class="project-overlay"></div>
-        <div class="project-inner">
-          <div class="project-cat" data-i18n="upflux_cat">Product Design · Design Ops · B2B SaaS</div>
-          <div class="project-name">UpFlux</div>
-          <div class="project-desc" data-i18n="upflux_desc">Construção da área de design do zero — estrutura, marca e estratégia comercial em um SaaS de Process Mining.</div>
-          <button class="open-case-btn" data-i18n="view_case">Ver case</button>
+    <div class="proj-inner">
+      <div class="proj-header">
+        <div class="section-handwrite reveal" data-i18n="proj_title">Projetos</div>
+        <div class="proj-nav-btns">
+          <button class="proj-nav-btn" id="prevBtn" onclick="carouselPrev()" disabled>←</button>
+          <button class="proj-nav-btn" id="nextBtn" onclick="carouselNext()">→</button>
         </div>
-        <div class="project-nda-tag">NDA</div>
-      </div>
-      <div class="project-card" onclick="openCase('pitanga')"><img class="project-thumb" src="https://mir-s3-cdn-cf.behance.net/projects/404/47272a186100279.Y3JvcCwxMzgwLDEwODAsMjcwLDA.jpg" alt="Pitanga" loading="lazy"><div class="project-overlay"></div><div class="project-inner"><div class="project-cat">UX · Branding · App Mobile · IoT</div><div class="project-name">Pitanga</div><div class="project-desc" data-i18n="pitanga_desc">Plataforma digital para agricultores familiares — pesquisa, UX e identidade do zero.</div><button class="open-case-btn" data-i18n="view_case">Ver case</button></div></div>
-      <div class="project-card" onclick="openCase('maera')"><img class="project-thumb" src="https://mir-s3-cdn-cf.behance.net/projects/404/16ecdb223034875.Y3JvcCwxMzgyLDEwODEsMjcwLDA.png" alt="Maera" loading="lazy"><div class="project-overlay"></div><div class="project-inner"><div class="project-cat" data-i18n="maera_cat">Branding · Rebranding</div><div class="project-name">Rebranding Maera</div><div class="project-desc" data-i18n="maera_desc">Redesign completo de identidade visual com sistema de marca coeso e moderno.</div><button class="open-case-btn" data-i18n="view_case">Ver case</button></div></div>
-      <div class="project-card" onclick="openCase('breedom')"><img class="project-thumb" src="https://mir-s3-cdn-cf.behance.net/projects/404/6ed89d223027647.Y3JvcCwxMDgwLDg0NCwwLDUwMg.jpg" alt="Breedom" loading="lazy"><div class="project-overlay"></div><div class="project-inner"><div class="project-cat" data-i18n="breedom_cat">Branding · Embalagem</div><div class="project-name">Breedom Cervejaria</div><div class="project-desc" data-i18n="breedom_desc">Identidade para cervejaria artesanal unindo tradição e irreverência.</div><button class="open-case-btn" data-i18n="view_case">Ver case</button></div></div>
-      <div class="project-card" onclick="openCase('sirea')"><img class="project-thumb" src="https://mir-s3-cdn-cf.behance.net/projects/404/42f9f7223031741.Y3JvcCwxMTQ1LDg5NiwzODUsMTAy.jpg" alt="Sirea" loading="lazy"><div class="project-overlay"></div><div class="project-inner"><div class="project-cat" data-i18n="sirea_cat">Identidade Visual</div><div class="project-name">Sirea</div><div class="project-desc" data-i18n="sirea_desc">Sistema visual com foco em clareza e posicionamento de mercado.</div><button class="open-case-btn" data-i18n="view_case">Ver case</button></div></div>
-      <div class="project-card" onclick="openCase('azaio')"><img class="project-thumb" src="https://mir-s3-cdn-cf.behance.net/projects/404/2f74ca223036011.Y3JvcCwxNTIwLDExODksMTk1LDEzMTA5.jpg" alt="Azaio" loading="lazy"><div class="project-overlay"></div><div class="project-inner"><div class="project-cat" data-i18n="azaio_cat">Identidade Visual</div><div class="project-name">Azaio</div><div class="project-desc" data-i18n="azaio_desc">Brand identity para produto digital com direção de arte estratégica.</div><button class="open-case-btn" data-i18n="view_case">Ver case</button></div></div>
-      <div class="project-card" onclick="openCase('marcia')"><img class="project-thumb" src="https://mir-s3-cdn-cf.behance.net/projects/404/4464b0223037137.Y3JvcCwxNDc2LDExNTUsMTgyLDQ1MDM.jpg" alt="Marcia" loading="lazy"><div class="project-overlay"></div><div class="project-inner"><div class="project-cat" data-i18n="marcia_cat">Branding Pessoal</div><div class="project-name">Márcia Menezes</div><div class="project-desc" data-i18n="marcia_desc">Identidade visual pessoal com personalidade marcante e sistema aplicável.</div><button class="open-case-btn" data-i18n="view_case">Ver case</button></div></div>
-    </div>
-    <div style="text-align:center;margin-top:48px" class="reveal"><a href="https://www.behance.net/heermoso" target="_blank" class="btn-primary" data-i18n="behance_btn">Ver todos no Behance ↗</a></div>
-  </section>
-
-  <section id="formacao">
-    <div class="formacao-inner">
-      <div class="section-header reveal"><div class="section-label" data-num="04" data-i18n="edu_label">Educação</div><h2 class="section-title" data-i18n="edu_title">Formação <em>acadêmica</em></h2></div>
-      <div class="edu-grid">
-        <div class="edu-card reveal"><div class="edu-num">01</div><div class="edu-badge" data-i18n="edu_ongoing">Em curso</div><div class="edu-title" data-i18n="edu1_title">Pós-graduação em UX Design</div><div class="edu-inst">PUCRS</div><div class="edu-period">Mar/2026 — Abr/2027</div></div>
-        <div class="edu-card reveal"><div class="edu-num">02</div><div class="edu-badge" data-i18n="edu_done">Concluído</div><div class="edu-title" data-i18n="edu2_title">Bacharelado em Design</div><div class="edu-inst">PUC Paraná</div><div class="edu-period">2020 — 2024</div></div>
-        <div class="edu-card reveal"><div class="edu-num">03</div><div class="edu-badge" data-i18n="edu_ongoing">Em curso</div><div class="edu-title" data-i18n="edu3_title">UX/UI Design & UI Avançado</div><div class="edu-inst">Origamid</div><div class="edu-period" data-i18n="edu3_period">2025 — cursando</div></div>
       </div>
     </div>
+    <div class="carousel-wrap">
+      <div class="carousel-track" id="carouselTrack">
+
+        <div class="proj-card" onclick="openCase('upflux')">
+          <div class="proj-card-img-placeholder">UF</div>
+          <div class="proj-card-body">
+            <div class="proj-tags"><span class="proj-tag">Product Design</span><span class="proj-tag">Design Ops</span><span class="proj-tag nda">NDA</span></div>
+            <div class="proj-card-name">UpFlux</div>
+            <div class="proj-card-desc" data-i18n="upflux_desc">Construção da área de design do zero — estrutura, marca e estratégia comercial em Process Mining.</div>
+          </div>
+          <div class="proj-card-footer"><span class="proj-card-cta">Ver case <span class="proj-card-arrow">↗</span></span></div>
+        </div>
+
+        <div class="proj-card" onclick="openCase('pitanga')">
+          <img class="proj-card-img" src="capa_pitanga.png" alt="Pitanga" loading="lazy">
+          <div class="proj-card-body">
+            <div class="proj-tags"><span class="proj-tag">UX Design</span><span class="proj-tag">Branding</span><span class="proj-tag">IoT</span></div>
+            <div class="proj-card-name">Pitanga</div>
+            <div class="proj-card-desc" data-i18n="pitanga_desc">Ecossistema digital para agricultura familiar — IoT, UX e assinatura de cestas orgânicas.</div>
+          </div>
+          <div class="proj-card-footer"><span class="proj-card-cta">Ver case <span class="proj-card-arrow">↗</span></span></div>
+        </div>
+
+        <div class="proj-card" onclick="openCase('maera')">
+          <img class="proj-card-img" src="capa_maera.png" alt="Maera" loading="lazy">
+          <div class="proj-card-body">
+            <div class="proj-tags"><span class="proj-tag">Branding</span><span class="proj-tag">Rebranding</span><span class="proj-tag">LATAM</span></div>
+            <div class="proj-card-name">Rebranding Maera</div>
+            <div class="proj-card-desc" data-i18n="maera_desc">Rebranding de líder em engenharia clínica no Brasil para expansão LATAM.</div>
+          </div>
+          <div class="proj-card-footer"><span class="proj-card-cta">Ver case <span class="proj-card-arrow">↗</span></span></div>
+        </div>
+
+        <div class="proj-card" onclick="openCase('breedom')">
+          <img class="proj-card-img" src="capa_breedom.png" alt="Breedom" loading="lazy">
+          <div class="proj-card-body">
+            <div class="proj-tags"><span class="proj-tag">Branding</span><span class="proj-tag">Embalagem</span><span class="proj-tag">Varejo</span></div>
+            <div class="proj-card-name">Breedom Cervejaria</div>
+            <div class="proj-card-desc" data-i18n="breedom_desc">Identidade para cervejaria artesanal — rebranding testado nas prateleiras.</div>
+          </div>
+          <div class="proj-card-footer"><span class="proj-card-cta">Ver case <span class="proj-card-arrow">↗</span></span></div>
+        </div>
+
+        <div class="proj-card" onclick="openCase('sirea')">
+          <img class="proj-card-img" src="capa_sirea.png" alt="Sirea" loading="lazy">
+          <div class="proj-card-body">
+            <div class="proj-tags"><span class="proj-tag">Identidade Visual</span><span class="proj-tag">Autoridade de Marca</span></div>
+            <div class="proj-card-name">Sirea</div>
+            <div class="proj-card-desc" data-i18n="sirea_desc">Marca para empresa de 20 anos disputar mercado com Deloitte e Accenture.</div>
+          </div>
+          <div class="proj-card-footer"><span class="proj-card-cta">Ver case <span class="proj-card-arrow">↗</span></span></div>
+        </div>
+
+        <div class="proj-card" onclick="openCase('azaio')">
+          <img class="proj-card-img" src="capa_azaio.png" alt="Azaio" loading="lazy">
+          <div class="proj-card-body">
+            <div class="proj-tags"><span class="proj-tag">Brand Identity</span><span class="proj-tag">Inovação</span></div>
+            <div class="proj-card-name">Azaio</div>
+            <div class="proj-card-desc" data-i18n="azaio_desc">Identidade para braço de inovação da Maera — novo ecossistema, nova marca.</div>
+          </div>
+          <div class="proj-card-footer"><span class="proj-card-cta">Ver case <span class="proj-card-arrow">↗</span></span></div>
+        </div>
+
+        <div class="proj-card" onclick="openCase('marcia')">
+          <img class="proj-card-img" src="capa_marcia.png" alt="Marcia" loading="lazy">
+          <div class="proj-card-body">
+            <div class="proj-tags"><span class="proj-tag">Personal Branding</span></div>
+            <div class="proj-card-name">Márcia Menezes</div>
+            <div class="proj-card-desc" data-i18n="marcia_desc">Identidade pessoal com sistema aplicável e personalidade marcante.</div>
+          </div>
+          <div class="proj-card-footer"><span class="proj-card-cta">Ver case <span class="proj-card-arrow">↗</span></span></div>
+        </div>
+
+      </div>
+    </div>
+    <div class="carousel-dots" id="carouselDots"></div>
   </section>
 
+  <!-- SOBRE -->
+  <section id="sobre">
+    <div class="sobre-inner">
+      <div class="sobre-left reveal">
+        <div class="sobre-photo-wrap">
+          <img src="foto-leonardo.png" alt="Leonardo Hermoso" style="width:100%;height:100%;object-fit:cover;display:block;">
+        </div>
+      </div>
+      <div class="sobre-right reveal">
+        <div class="section-handwrite" data-i18n="about_title">Sobre mim</div>
+        <p class="sobre-text" data-i18n="about_p1">Comecei pelo branding — construindo sistemas de identidade visual com personalidade e consistência. Com o tempo, fui me aproximando de produto: pesquisa com usuários, arquitetura de informação, prototipagem e decisões que impactam negócio.</p>
+        <p class="sobre-text" data-i18n="about_p2">Hoje atuo na interseção entre as duas disciplinas. Entendo <em>marca como experiência</em> e <strong>produto como comunicação</strong> — o que me permite colaborar com times de design, produto e estratégia sem perder a visão do todo.</p>
+        <p class="sobre-text" data-i18n="about_p3">Experiência em <strong>B2B SaaS</strong> e <strong>e-commerce</strong>, com atuação em projetos end-to-end: do discovery ao handoff. Disponível para freelance e oportunidades.</p>
+        <div class="sobre-stats">
+          <div class="sobre-stat">
+            <div><div class="sobre-stat-label" data-i18n="stat1_label">Experiência</div></div>
+            <div style="text-align:right"><div class="sobre-stat-value">4+</div><div class="sobre-stat-desc" data-i18n="stat1_desc">anos de carreira</div></div>
+          </div>
+          <div class="sobre-stat">
+            <div><div class="sobre-stat-label" data-i18n="stat2_label">Processo</div></div>
+            <div style="text-align:right"><div class="sobre-stat-value">E2E</div><div class="sobre-stat-desc" data-i18n="stat2_desc">discovery → handoff</div></div>
+          </div>
+          <div class="sobre-stat">
+            <div><div class="sobre-stat-label" data-i18n="stat3_label">Segmentos</div></div>
+            <div style="text-align:right"><div class="sobre-stat-value">B2B</div><div class="sobre-stat-desc" data-i18n="stat3_desc">SaaS · E-commerce · Tech</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="skills-inner">
+      <div class="section-handwrite reveal" data-i18n="skills_title">Core Skills</div>
+      <div class="skills-grid reveal">
+        <div class="skill-card">
+          <div class="skill-card-icon">◈</div>
+          <div class="skill-card-name" data-i18n="skill1_name">UX / UI Design</div>
+          <div class="skill-card-desc" data-i18n="skill1_desc">Figma, prototipagem, wireframes, testes de usabilidade, design system, arquitetura de informação e handoff com times de produto e desenvolvimento.</div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-card-icon">◉</div>
+          <div class="skill-card-name" data-i18n="skill2_name">Brand & Visual</div>
+          <div class="skill-card-desc" data-i18n="skill2_desc">Identidade visual, rebranding, direção de arte, sistemas visuais e design para social media. Background sólido que diferencia quando aplicado a produto.</div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-card-icon">◎</div>
+          <div class="skill-card-name" data-i18n="skill3_name">Estratégia & Processo</div>
+          <div class="skill-card-desc" data-i18n="skill3_desc">Discovery, JTBD, Design Thinking, Scrum, Kanban, pesquisa qualitativa e design ops. Confortável colaborando com produto, comercial e liderança.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- JORNADA -->
+  <section id="jornada">
+    <div class="jornada-inner">
+      <div class="jornada-left reveal">
+        <div class="section-handwrite" data-i18n="journey_title">A Jornada</div>
+        <p style="font-size:16px;color:var(--gray);line-height:1.7;margin-top:24px" data-i18n="journey_sub">4+ anos construindo experiências digitais e identidades visuais em ambientes de produto e agências.</p>
+      </div>
+      <div class="jornada-timeline reveal">
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <div class="timeline-period" data-i18n="upflux_period">Set/2025 — Atual · em andamento</div>
+            <div class="timeline-company">UpFlux</div>
+            <div class="timeline-role" data-i18n="upflux_role">Product Designer Estratégico</div>
+            <div class="timeline-desc" data-i18n="upflux_tl_desc">Estruturei a área de design do zero: processos, design system e materiais estratégicos para Big Deals em um SaaS de Process Mining.</div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <div class="timeline-period" data-i18n="hacoo_period">Mar/2024 — Jun/2025 · 1 ano e 3 meses</div>
+            <div class="timeline-company">Hacoo</div>
+            <div class="timeline-role" data-i18n="hacoo_role">Designer de Soluções II</div>
+            <div class="timeline-desc" data-i18n="hacoo_tl_desc">Projetos end-to-end de UX em e-commerce: pesquisa, prototipagem, testes e design system. Redução de 25% no tempo médio de entrega de campanhas.</div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <div class="timeline-period" data-i18n="selettra_period">Mai/2023 — Mar/2024 · 10 meses</div>
+            <div class="timeline-company">Selettra</div>
+            <div class="timeline-role" data-i18n="selettra_role">Assistente de Criação Jr</div>
+            <div class="timeline-desc" data-i18n="selettra_tl_desc">Materiais visuais para comunicação institucional e interfaces para canais digitais de empresa de automação e robótica.</div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <div class="timeline-period" data-i18n="sol_period">Fev/2022 — Fev/2023 · 1 ano</div>
+            <div class="timeline-company">Studio Sol</div>
+            <div class="timeline-role" data-i18n="sol_role">Estagiário em Visual Design</div>
+            <div class="timeline-desc" data-i18n="sol_tl_desc">Materiais gráficos, layouts responsivos e prototipagem de interfaces colaborando com times de marketing e produto.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTATO -->
   <section id="contato">
-    <div class="contact-wrap">
-      <div class="contact-left reveal">
-        <h2 class="big-cta" data-i18n="contact_cta">Vamos criar<br><em>algo incrível</em><br>juntos?</h2>
-        <p data-i18n="contact_sub">Estou disponível para projetos freelance, colaborações e oportunidades.</p>
-        <a href="mailto:hermoso.dsgn@gmail.com" class="btn-primary" data-i18n="contact_btn">Enviar mensagem →</a>
+    <div class="contato-inner">
+      <div class="contato-left reveal">
+        <div class="contato-handwrite" data-i18n="contact_handwrite">Gostou?</div>
+        <div class="contato-sub" data-i18n="contact_sub">Entre em contato<br>e vamos conversar.</div>
       </div>
-      <div class="contact-info reveal">
-        <div class="contact-row"><div class="contact-icon">✉</div><div class="contact-detail"><div class="label">Email</div><a href="mailto:hermoso.dsgn@gmail.com">hermoso.dsgn@gmail.com</a></div></div>
-        <div class="contact-row"><div class="contact-icon">☎</div><div class="contact-detail"><div class="label" data-i18n="contact_phone">Telefone</div><a href="tel:+5541995248974">(41) 99524-8974</a></div></div>
-        <div class="contact-row"><div class="contact-icon">◎</div><div class="contact-detail"><div class="label" data-i18n="contact_loc">Localização</div><span data-i18n="contact_loc_val">São José dos Pinhais, PR</span></div></div>
-        <div class="contact-row"><div class="contact-icon">↗</div><div class="contact-detail"><div class="label" data-i18n="contact_portfolio">Portfólio</div><a href="https://www.behance.net/heermoso" target="_blank">behance.net/heermoso</a></div></div>
-        <div class="contact-row"><div class="contact-icon">in</div><div class="contact-detail"><div class="label">LinkedIn</div><a href="https://www.linkedin.com/in/heermoso" target="_blank">linkedin.com/in/heermoso</a></div></div>
+      <div class="contato-links reveal">
+        <a class="contato-link-row" href="https://www.linkedin.com/in/heermoso" target="_blank">
+          <span class="contato-link-label">LinkedIn</span>
+          <span class="contato-link-value">/in/heermoso <span class="contato-link-arrow">↗</span></span>
+        </a>
+        <a class="contato-link-row" href="mailto:hermoso.dsgn@gmail.com">
+          <span class="contato-link-label">Email</span>
+          <span class="contato-link-value">hermoso.dsgn@gmail.com <span class="contato-link-arrow">↗</span></span>
+        </a>
+        <a class="contato-link-row" href="https://www.behance.net/heermoso" target="_blank">
+          <span class="contato-link-label">Behance</span>
+          <span class="contato-link-value">behance.net/heermoso <span class="contato-link-arrow">↗</span></span>
+        </a>
+        <a class="contato-link-row" href="tel:+5541995248974">
+          <span class="contato-link-label" data-i18n="contact_phone">Telefone</span>
+          <span class="contato-link-value">(41) 99524-8974 <span class="contato-link-arrow">↗</span></span>
+        </a>
       </div>
     </div>
   </section>
 
   <footer>
     <div class="footer-copy">© 2026 <strong>Leonardo Hermoso Santana</strong> · <span data-i18n="footer_role">Product Designer</span></div>
-    <a href="#hero" class="footer-back" data-i18n="footer_top">↑ Voltar ao topo</a>
+    <a href="#hero" class="footer-back" data-i18n="footer_top">↑ Topo</a>
   </footer>
-</div>
+
+</div><!-- /portfolio-view -->
 
 <!-- CASE VIEW -->
 <div id="case-view">
-  <nav class="case-nav">
-    <button class="case-back" onclick="closeCase()">Voltar ao portfólio</button>
-    <span class="case-nav-title" id="caseNavTitle"></span>
-    <a class="case-behance-link" id="caseBehanceLink" href="#" target="_blank">Ver no Behance ↗</a>
-  </nav>
+  <div class="case-topbar">
+    <button class="case-back-btn" onclick="closeCase()" id="caseBackBtn">Voltar</button>
+    <span class="case-topbar-title" id="caseTopTitle"></span>
+    <a class="case-behance-lnk" id="caseBehanceLnk" href="#" target="_blank">Behance ↗</a>
+  </div>
   <div id="caseContent"></div>
 </div>
 
 <script>
+/* ──────────────────────────────────────────────────────────
+   i18n
+────────────────────────────────────────────────────────── */
+const i18n = {
+  pt:{
+    nav_work:'Projetos',nav_about:'Sobre',nav_skills:'Skills',nav_journey:'Jornada',nav_contact:'Contato',
+    hero_role:'Product Designer',
+    hero_sub:'Branding · UX/UI · Estratégia de Produto',
+    hero_cta1:'Ver Projetos',hero_cta2:'Vamos conversar',
+    proj_title:'Projetos',
+    upflux_desc:'Construção da área de design do zero — estrutura, marca e estratégia comercial em Process Mining.',
+    pitanga_desc:'Ecossistema digital para agricultura familiar — IoT, UX e assinatura de cestas orgânicas.',
+    maera_desc:'Rebranding de líder em engenharia clínica no Brasil para expansão LATAM.',
+    breedom_desc:'Identidade para cervejaria artesanal — rebranding estratégico testado nas prateleiras.',
+    sirea_desc:'Marca para empresa de 20 anos disputar mercado com Deloitte e Accenture.',
+    azaio_desc:'Identidade para braço de inovação da Maera — novo ecossistema, nova marca.',
+    marcia_desc:'Identidade pessoal com sistema aplicável e personalidade marcante.',
+    about_title:'Sobre mim',
+    about_p1:'Comecei pelo branding — construindo sistemas de identidade visual com personalidade e consistência. Com o tempo, fui me aproximando de produto: pesquisa com usuários, arquitetura de informação, prototipagem e decisões que impactam negócio.',
+    about_p2:'Hoje atuo na interseção entre as duas disciplinas. Entendo <em>marca como experiência</em> e <strong>produto como comunicação</strong> — o que me permite colaborar com times de design, produto e estratégia sem perder a visão do todo.',
+    about_p3:'Experiência em <strong>B2B SaaS</strong> e <strong>e-commerce</strong>, com atuação em projetos end-to-end: do discovery ao handoff. Disponível para freelance e oportunidades.',
+    stat1_label:'Experiência',stat1_desc:'anos de carreira',
+    stat2_label:'Processo',stat2_desc:'discovery → handoff',
+    stat3_label:'Segmentos',stat3_desc:'SaaS · E-commerce · Tech',
+    skills_title:'Core Skills',
+    skill1_name:'UX / UI Design',skill1_desc:'Figma, prototipagem, wireframes, testes de usabilidade, design system, arquitetura de informação e handoff com times de produto e desenvolvimento.',
+    skill2_name:'Brand & Visual',skill2_desc:'Identidade visual, rebranding, direção de arte, sistemas visuais e design para social media. Background sólido que diferencia quando aplicado a produto.',
+    skill3_name:'Estratégia & Processo',skill3_desc:'Discovery, JTBD, Design Thinking, Scrum, Kanban, pesquisa qualitativa e design ops. Confortável colaborando com produto, comercial e liderança.',
+    journey_title:'A Jornada',journey_sub:'4+ anos construindo experiências digitais e identidades visuais em ambientes de produto e agências.',
+    upflux_period:'Set/2025 — Atual · em andamento',upflux_role:'Product Designer Estratégico',
+    upflux_tl_desc:'Estruturei a área de design do zero: processos, design system e materiais estratégicos para Big Deals em um SaaS de Process Mining.',
+    hacoo_period:'Mar/2024 — Jun/2025 · 1 ano e 3 meses',hacoo_role:'Designer de Soluções II',
+    hacoo_tl_desc:'Projetos end-to-end de UX em e-commerce: pesquisa, prototipagem, testes e design system. Redução de 25% no tempo médio de entrega de campanhas.',
+    selettra_period:'Mai/2023 — Mar/2024 · 10 meses',selettra_role:'Assistente de Criação Jr',
+    selettra_tl_desc:'Materiais visuais para comunicação institucional e interfaces para canais digitais de empresa de automação e robótica.',
+    sol_period:'Fev/2022 — Fev/2023 · 1 ano',sol_role:'Estagiário em Visual Design',
+    sol_tl_desc:'Materiais gráficos, layouts responsivos e prototipagem de interfaces colaborando com times de marketing e produto.',
+    contact_handwrite:'Gostou?',contact_sub:'Entre em contato<br>e vamos conversar.',contact_phone:'Telefone',
+    footer_role:'Product Designer',footer_top:'↑ Topo',
+    case_back:'Voltar',case_behance:'Ver no Behance ↗',case_nda:'Imagens não divulgadas por acordo de confidencialidade.',
+    sec_problem:'Problema',sec_problem_h:'O que estava <em>quebrado</em>',
+    sec_challenge:'Desafio',sec_challenge_h:'A questão <em>central</em>',
+    sec_hypothesis:'Hipótese',sec_hypothesis_h:'Nossa <em>aposta</em>',
+    sec_approach:'Abordagem',sec_approach_h:'Como <em>chegamos lá</em>',
+    sec_decisions:'Decisões que moldaram o projeto',sec_decisions_h:'Escolhas <em>intencionais</em>',
+    sec_solution:'Solução',sec_solution_h:'O que foi <em>entregue</em>',
+    sec_impact:'Impacto',sec_impact_h:'O que <em>mudou</em>',
+    gallery_cap:'Seleção de imagens do projeto',
+    cfn_prev:'← Anterior',cfn_next:'Próximo →',
+    meta_role:'Papel',meta_year:'Ano',meta_tools:'Ferramentas',meta_scope:'Escopo',
+  },
+  en:{
+    nav_work:'Work',nav_about:'About',nav_skills:'Skills',nav_journey:'Journey',nav_contact:'Contact',
+    hero_role:'Product Designer',
+    hero_sub:'Branding · UX/UI · Product Strategy',
+    hero_cta1:'View Work',hero_cta2:"Let's talk",
+    proj_title:'Work',
+    upflux_desc:'Built the design function from scratch — structure, brand system and commercial strategy in a Process Mining SaaS.',
+    pitanga_desc:'Digital ecosystem for family farming — IoT, UX and organic basket subscription.',
+    maera_desc:"Rebranding Brazil's leader in clinical engineering for LATAM expansion.",
+    breedom_desc:'Brand identity for a craft brewery — strategic rebranding tested on shelves.',
+    sirea_desc:'Brand for a 20-year company competing with Deloitte and Accenture.',
+    azaio_desc:"Identity for Maera's innovation arm — new ecosystem, new brand.",
+    marcia_desc:'Personal identity with a scalable system and strong personality.',
+    about_title:'About me',
+    about_p1:'I started with branding — building visual identity systems with personality and consistency. Over time, I moved closer to product: user research, information architecture, prototyping and decisions that impact the business.',
+    about_p2:'Today I work at the intersection of both disciplines. I see <em>brand as experience</em> and <strong>product as communication</strong> — which allows me to collaborate with design, product and strategy teams without losing sight of the whole.',
+    about_p3:'Experience in <strong>B2B SaaS</strong> and <strong>e-commerce</strong>, working on end-to-end projects: from discovery to handoff. Available for freelance and full-time opportunities.',
+    stat1_label:'Experience',stat1_desc:'years of career',
+    stat2_label:'Process',stat2_desc:'discovery → handoff',
+    stat3_label:'Segments',stat3_desc:'SaaS · E-commerce · Tech',
+    skills_title:'Core Skills',
+    skill1_name:'UX / UI Design',skill1_desc:'Figma, prototyping, wireframes, usability testing, design system, information architecture and handoff with product and development teams.',
+    skill2_name:'Brand & Visual',skill2_desc:'Visual identity, rebranding, art direction, visual systems and social media design. Solid background that differentiates when applied to product.',
+    skill3_name:'Strategy & Process',skill3_desc:'Discovery, JTBD, Design Thinking, Scrum, Kanban, qualitative research and design ops. Comfortable collaborating with product, sales and leadership.',
+    journey_title:'The Journey',journey_sub:'4+ years building digital experiences and visual identities in product and agency environments.',
+    upflux_period:'Sep/2025 — Present · ongoing',upflux_role:'Strategic Product Designer',
+    upflux_tl_desc:'Built the design function from scratch: processes, design system and strategic materials for Big Deals in a Process Mining SaaS.',
+    hacoo_period:'Mar/2024 — Jun/2025 · 1 year 3 months',hacoo_role:'Solutions Designer II',
+    hacoo_tl_desc:'End-to-end UX projects in e-commerce: research, prototyping, testing and design system. 25% reduction in average campaign delivery time.',
+    selettra_period:'May/2023 — Mar/2024 · 10 months',selettra_role:'Junior Creative Assistant',
+    selettra_tl_desc:'Visual materials for institutional communication and interfaces for digital channels at an automation and robotics company.',
+    sol_period:'Feb/2022 — Feb/2023 · 1 year',sol_role:'Visual Design Intern',
+    sol_tl_desc:'Graphic materials, responsive layouts and interface prototyping collaborating with marketing and product teams.',
+    contact_handwrite:'Like it?',contact_sub:"Get in touch<br>and let's talk.",contact_phone:'Phone',
+    footer_role:'Product Designer',footer_top:'↑ Top',
+    case_back:'Back',case_behance:'View on Behance ↗',case_nda:'Images not disclosed under NDA.',
+    sec_problem:'Problem',sec_problem_h:'What was <em>broken</em>',
+    sec_challenge:'Challenge',sec_challenge_h:'The <em>core question</em>',
+    sec_hypothesis:'Hypothesis',sec_hypothesis_h:'Our <em>bet</em>',
+    sec_approach:'Approach',sec_approach_h:'How we <em>got there</em>',
+    sec_decisions:'Decisions that shaped the project',sec_decisions_h:'Intentional <em>choices</em>',
+    sec_solution:'Solution',sec_solution_h:'What was <em>delivered</em>',
+    sec_impact:'Impact',sec_impact_h:'What <em>changed</em>',
+    gallery_cap:'Project image selection',
+    cfn_prev:'← Previous',cfn_next:'Next →',
+    meta_role:'Role',meta_year:'Year',meta_tools:'Tools',meta_scope:'Scope',
+  }
+};
+let lang = 'pt';
+
+function applyLang(l){
+  lang=l;
+  const t=i18n[l];
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const k=el.getAttribute('data-i18n');
+    if(t[k]!==undefined) el.innerHTML=t[k];
+  });
+  document.querySelectorAll('.mob-link').forEach((el,i)=>{
+    const keys=['nav_work','nav_about','nav_skills','nav_journey','nav_contact'];
+    if(keys[i]) el.textContent=t[keys[i]];
+  });
+  document.getElementById('langBtn').textContent = l==='pt'?'EN':'PT';
+  const cb=document.getElementById('caseBackBtn');
+  if(cb) cb.textContent='← '+t.case_back;
+  const cbl=document.getElementById('caseBehanceLnk');
+  if(cbl) cbl.textContent=t.case_behance;
+  document.documentElement.lang=l==='pt'?'pt-BR':'en';
+  if(window._openCaseKey){ document.getElementById('caseContent').innerHTML=buildCase(window._openCaseKey); }
+}
+function toggleLang(){ applyLang(lang==='pt'?'en':'pt'); }
+
+/* ──────────────────────────────────────────────────────────
+   CASES DATA
+────────────────────────────────────────────────────────── */
 const C = {
+  upflux:{
+    title:'UpFlux',sub:'Design como estrutura',cat:'Product Design · Design Ops · B2B SaaS',
+    behance:null,cover:null,imgs:[],
+    meta:{papel:'Product Designer Estratégico',ano:'2025 — atual',ferramentas:'Figma · Notion · IA generativa',escopo:'CLT · Remoto'},
+    problema:'A UpFlux é uma plataforma SaaS de Process Mining — produto de alta complexidade técnica, vendido para grandes empresas em ciclos comerciais longos. Quando chegamos, a área de design era embrionária: sem processos, sem design system, sem integração com as demais áreas. Design existia como execução reativa, não como função estratégica.',
+    desafio:'Construir a área de design do zero e ao mesmo tempo tornar o design um ativo direto no processo comercial — traduzindo a complexidade do produto em narrativas claras o suficiente para apoiar negociações de alto valor com decisores de grandes empresas.',
+    hipotese:'Se a área de design tivesse estrutura interna sólida e entregasse materiais estratégicos de alta qualidade para o time comercial, o design deixaria de ser custo de suporte e passaria a ser alavanca de receita — especialmente em Big Deals onde a clareza da proposta de valor é determinante.',
+    abordagem:'Três frentes sequenciais e interdependentes: estruturação da operação interna com rituais, Gantt e Notion; construção do ecossistema de marca com design system e aceleradores por área; e desenvolvimento de modelos de narrativa estratégica para Big Deals, PoCs e demonstrações de uso.',
+    decisoes:[{title:'Estrutura antes de execução',desc:'A tentação era sair fazendo. A decisão foi construir a base primeiro: processos documentados, fluxos de demanda e visibilidade centralizada no Notion. Sem isso, qualquer entregável seria produzido no vácuo.'},{title:'Design system orientado por dor',desc:'Em vez de criar um sistema genérico, fizemos pesquisa interna para entender as necessidades reais de cada setor. O resultado foram aceleradores específicos que davam autonomia às áreas sem abrir mão de consistência.'},{title:'Narrativa comercial como produto de design',desc:'Desenvolvemos um modelo visual para Big Deals e PoCs que traduzia complexidade técnica em linguagem de negócio: problema, dado, impacto, retorno.'},{title:'IA como acelerador de escala',desc:'Após validar o modelo de narrativa, estruturamos um processo com IA generativa para produção de cases e apresentações — mantendo qualidade e reduzindo o tempo de resposta para o time comercial.'}],
+    solucao:'Área de design funcional e integrada em três camadas: operação interna estruturada; ecossistema de marca com design system e aceleradores; e modelo de narrativa comercial hoje parcialmente automatizado com IA.',
+    impacto:'O design passou de função reativa para ativo estratégico dentro da UpFlux. A área ganhou visibilidade, integração com produto e comercial, e passou a contribuir diretamente em negociações de alto valor. Por restrições de NDA, números e nomes de clientes não são divulgados.',
+    metrics:[{num:'0→1',label:'Área estruturada do zero'},{num:'3',label:'Frentes: Ops · Marca · Comercial'},{num:'IA',label:'Processo automatizado'}]
+  },
   pitanga:{
-    title:'Pitanga',titleEm:'Colhendo resultados',cat:'UX Design · Branding · Produto Digital · IoT',
+    title:'Pitanga',sub:'Colhendo resultados',cat:'UX Design · Branding · App Mobile · IoT',
     behance:'https://www.behance.net/gallery/186100279/Pitanga-Colhendo-resultados',
-    cover:'https://mir-s3-cdn-cf.behance.net/project_modules/1400_webp/d03549186100279.656f66fca8c57.jpg',
+    cover:'capa_pitanga.png',
     imgs:['https://mir-s3-cdn-cf.behance.net/project_modules/1400_webp/48accd186100279.656f66fcb14cd.jpg','https://mir-s3-cdn-cf.behance.net/project_modules/1400_webp/950957186100279.656f66fcb2c51.jpg','https://mir-s3-cdn-cf.behance.net/project_modules/1400_webp/eef0ef186100279.656f66fcad535.jpg','https://mir-s3-cdn-cf.behance.net/project_modules/1400_webp/89d239186100279.656f66fcafa18.jpg','https://mir-s3-cdn-cf.behance.net/project_modules/1400_webp/4a8581186100279.656f66fcb20cb.jpg','https://mir-s3-cdn-cf.behance.net/project_modules/1400_webp/059c85186100279.656f66fca9d51.jpg'],
     meta:{papel:'UX · Brand Designer',ano:'2023',ferramentas:'Figma · Photoshop · Illustrator',escopo:'Projeto acadêmico'},
-    problema:'Boa parte dos alimentos produzidos pela agricultura familiar nunca chega às gôndolas. Não por falta de qualidade nutricional — mas por não atender ao padrão estético exigido pelo varejo. O resultado é desperdício em escala, prejuízo para o produtor e perda real para o consumidor, que deixa de acessar alimentos frescos, orgânicos e rastreados.',
-    desafio:'Criar um ecossistema digital que fechasse esse ciclo: dar ao produtor controle sobre sua operação via IoT, elevar o padrão dos alimentos que chegam ao mercado e criar um canal direto com o consumidor final — sem depender da aprovação estética das gôndolas tradicionais.',
-    hipotese:'Se o produtor tivesse visibilidade em tempo real da sua produção e o consumidor pudesse assinar diretamente uma cesta de alimentos rastreados, o produto "fora do padrão" de gôndola deixaria de ser descarte e passaria a ser diferencial — orgânico, fresco e com origem comprovada.',
-    abordagem:'O projeto foi estruturado como um ecossistema com três camadas: a interface do produtor (gestão de produção com dados de IoT), a interface do consumidor (assinatura de cestas) e a identidade visual que conectaria os dois mundos com confiança e clareza. Começamos pela jornada do produtor — mapeando pontos de dor reais — e trabalhamos os fluxos de forma reversa até chegar à experiência do assinante.',
-    decisoes:[
-      {title:'IoT como diferencial de produto',desc:'Integramos a rastreabilidade via IoT não como feature técnica, mas como argumento de valor para o consumidor: saber exatamente de onde vem o alimento, como foi cultivado e em que condições chegou até a cesta.'},
-      {title:'Assinatura como modelo de negócio',desc:'A recorrência mensal resolvia dois problemas ao mesmo tempo: garantia renda previsível ao produtor e criava um compromisso sustentável do consumidor com a agricultura familiar. O plano era escolhido pelo usuário com base no tamanho da família e preferências alimentares.'},
-      {title:'Interface pensada para dois públicos opostos',desc:'Produtor rural e consumidor urbano têm contextos de uso radicalmente diferentes. Criamos fluxos distintos: o do produtor era denso em dados e otimizado para uso com pouca conectividade; o do consumidor era clean, visual e pensado para mobile.'},
-      {title:'Identidade que comunica natureza + tecnologia',desc:'A marca precisava ser confiável para ambos os lados. Verdes vibrantes e formas orgânicas transmitiam origem natural; a tipografia limpa e o sistema de ícones sinalizavam que era tecnologia acessível — não inacessível.'}
-    ],
-    solucao:'Ecossistema digital completo: aplicativo para gestão da produção com integração IoT, plataforma de assinatura de cestas para o consumidor final e identidade visual sistêmica que sustentava os dois produtos. A Pitanga transformava o "produto imperfeito" em proposição de valor — orgânico, rastreado e com impacto social direto.',
-    impacto:'O modelo conectava agricultores familiares diretamente ao consumidor final, eliminando intermediários e o critério estético das gôndolas como filtro de acesso ao mercado. O produtor lucrava com produto que antes seria descartado. O consumidor ganhava acesso a alimentos mais frescos, orgânicos e transparentes. E o excedente da receita era reinvestido em mais tecnologia e controle de operação no campo.',
-    metrics:[{num:'104',label:'Views no Behance'},{num:'2 lados',label:'Produtor + consumidor'},{num:'IoT',label:'Rastreabilidade integrada'}]
+    problema:'No Brasil, toneladas de alimentos saudáveis são descartadas todos os anos — não porque estragaram, mas porque não têm aparência de prateleira. Produtos com formato irregular são rejeitados pelas redes varejistas antes mesmo de chegar ao consumidor.',
+    desafio:'Criar um ecossistema digital que fechasse o ciclo completo: usar IoT para aumentar eficiência e qualidade da lavoura e criar um canal direto entre produtor e consumidor final para escoar os produtos que o varejo rejeita, mas que são perfeitamente nutritivos.',
+    hipotese:'Se o agricultor tivesse controle real sobre sua operação via IoT, poderia elevar o padrão dos produtos. E se o excedente tivesse um canal de venda próprio — assinatura mensal de cestas orgânicas rastreadas — o que era descarte viraria receita.',
+    abordagem:'Dois módulos interdependentes: painel do produtor com monitoramento IoT e alertas de qualidade; e app do consumidor com seleção de planos de assinatura e rastreabilidade completa. O nome Pitanga — gíria regional para algo simples — definiu o princípio: tecnologia de ponta com interface que não intimida.',
+    decisoes:[{title:'Dois usuários, uma plataforma',desc:'Jornadas distintas para produtor e consumidor, mas linguagem visual unificada — a marca reconhecível nos dois pontos da cadeia.'},{title:'IoT como diferencial narrativo',desc:'A rastreabilidade não era só funcional — era o argumento de venda. Cada cesta tinha origem visível: qual propriedade, qual colheita, qual data.'},{title:'Modelo de assinatura por planos',desc:'O consumidor escolhia frequência e tamanho da cesta. A lógica reduzia incerteza do produtor e criava receita recorrente previsível.'},{title:'Identidade com raízes no campo',desc:'Verdes vibrantes, formas orgânicas e tipografia legível em telas de baixa resolução — priorizando leitura em ambientes externos.'}],
+    solucao:'Ecossistema completo: painel web com integração IoT, app mobile com seleção de planos e rastreabilidade, e identidade visual própria. O ciclo fechado: produção mais eficiente → menos descarte → excedente vira cesta → produtor reinveste.',
+    impacto:'Demonstrou como design sistêmico pode atacar dois problemas simultâneos — desperdício e renda — com uma solução que beneficia os dois lados da cadeia.',
+    metrics:[{num:'104',label:'Views no Behance'},{num:'4',label:'Appreciations'},{num:'2023',label:'Publicado'}]
   },
   maera:{
-    title:'Rebranding',titleEm:'Maera',cat:'Branding Estratégico · Rebranding · Expansão LATAM',
+    title:'Rebranding',sub:'Maera',cat:'Branding · Rebranding · Identidade Visual · LATAM',
     behance:'https://www.behance.net/gallery/223034875/Rebranding-Maera',
-    cover:'https://mir-s3-cdn-cf.behance.net/project_modules/max_632_webp/533cc5223034875.67f1995ac65fc.png',
-    imgs:['https://mir-s3-cdn-cf.behance.net/project_modules/max_632_webp/c4a4cd223034875.67f1995ac5970.png','https://mir-s3-cdn-cf.behance.net/project_modules/max_632_webp/06e8b5223034875.67f1995ac35b2.png','https://mir-s3-cdn-cf.behance.net/project_modules/max_632_webp/431336223034875.67f1995ac4e1f.png','https://mir-s3-cdn-cf.behance.net/project_modules/max_632_webp/92a382223034875.67f1995ac60af.png','https://mir-s3-cdn-cf.behance.net/project_modules/max_632_webp/19443e223034875.67f1995ac6d67.png','https://mir-s3-cdn-cf.behance.net/project_modules/max_632_webp/d5708e223034875.67f1995ac4048.png'],
+    cover:'capa_maera.png',
+    imgs:['https://mir-s3-cdn-cf.behance.net/project_modules/max_632_webp/c4a4cd223034875.67f1995ac5970.png','https://mir-s3-cdn-cf.behance.net/project_modules/max_632_webp/06e8b5223034875.67f1995ac35b2.png','https://mir-s3-cdn-cf.behance.net/project_modules/max_632_webp/431336223034875.67f1995ac4e1f.png','https://mir-s3-cdn-cf.behance.net/project_modules/max_632_webp/92a382223034875.67f1995ac60af.png','https://mir-s3-cdn-cf.behance.net/project_modules/max_632_webp/19443e223034875.67f1995ac6d67.png'],
     meta:{papel:'Brand Designer',ano:'2025',ferramentas:'Illustrator · Photoshop',escopo:'Freelance'},
-    problema:'A Maera é líder em engenharia clínica no Brasil — mas seu nome anterior era genérico, impossível de registrar no INPI e carregava uma identidade visual que não sustentava esse peso. Em um mercado onde os concorrentes são a Fluke e grandes enterprises internacionais, a percepção de marca era o elo fraco de uma empresa tecnicamente forte.',
-    desafio:'A empresa estava prestes a iniciar expansão para o mercado LATAM e precisava de uma marca capaz de competir de igual para igual com players globais. Não era apenas um problema de estética — era um problema de credibilidade, registro e posicionamento estratégico em novos mercados.',
-    hipotese:'Um nome próprio registrável, com uma identidade visual de nível internacional, colocaria a Maera em pé de igualdade visual com seus concorrentes globais — eliminando a desvantagem de marca em negociações, licitações e expansão comercial na América Latina.',
-    abordagem:'O processo envolveu análise de concorrentes diretos (Fluke, GE Healthcare, Philips Biomedical), entendimento do mercado de engenharia clínica e definição de atributos de marca que precisavam ser projetados: autoridade, precisão, confiabilidade e escala internacional. A partir daí, construímos nome, símbolo e sistema visual de forma integrada.',
-    decisoes:[
-      {title:'Nome como ativo estratégico',desc:'O novo nome foi escolhido por registrabilidade no INPI e por sua capacidade de funcionar em diferentes idiomas e mercados da América Latina — sem perder identidade nem gerar conflito com marcas existentes.'},
-      {title:'Identidade que compete globalmente',desc:'O sistema visual foi calibrado para não parecer uma empresa brasileira tentando crescer — mas uma empresa de nível internacional que opera no Brasil. Referências visuais de empresas como Fluke foram analisadas para identificar onde havia diferenciação possível.'},
-      {title:'Robustez e escalabilidade',desc:'A marca foi construída para funcionar em materiais técnicos, licitações, feiras internacionais e ambientes digitais — com versões para fundo claro, escuro, monocromático e reduzido, todas com a mesma força.'}
-    ],
-    solucao:'Novo nome registrável no INPI, identidade visual completa com manual de uso, sistema de aplicações para o contexto B2B de engenharia clínica e posicionamento estratégico como marca de nível internacional. A Maera saiu do projeto pronta para competir na América Latina.',
-    impacto:'A nova marca eliminou a barreira de registro e deu à empresa uma identidade à altura de sua liderança técnica no mercado. A diferenciação visual em relação aos concorrentes internacionais foi um dos objetivos centrais — entregue com um sistema robusto e escalável para a expansão LATAM.',
-    metrics:[{num:'#1',label:'Líder em engenharia clínica no Brasil'},{num:'LATAM',label:'Expansão planejada'},{num:'INPI',label:'Nome registrável'}]
-  },
-  breedom:{
-    title:'Breedom',titleEm:'Cervejaria',cat:'Branding · Rebranding Estratégico · Embalagem · PDV',
-    behance:'https://www.behance.net/gallery/223027647/Breedom-Cervejaria',
-    cover:'https://mir-s3-cdn-cf.behance.net/project_modules/1400_webp/31e144223027647.67f1727b7a440.jpg',
-    imgs:['https://mir-s3-cdn-cf.behance.net/project_modules/1400_webp/31e144223027647.67f1727b7a440.jpg'],
-    meta:{papel:'Brand Designer',ano:'2025',ferramentas:'Illustrator · Photoshop',escopo:'Freelance'},
-    problema:'A Breedom chegou com três problemas sobrepostos: uma marca genérica sem personalidade própria, uma tipografia do rótulo perigosamente próxima à de um concorrente direto — gerando risco de confusão nas gôndolas — e, o mais crítico: o rótulo era ilegível no ponto de venda. O consumidor não conseguia ler nem identificar a marca na prateleira.',
-    desafio:'Reposicionar a marca estrategicamente do zero, desenvolvendo uma identidade com personalidade forte e rótulos que funcionassem nas gôndolas — com reconhecimento imediato, diferenciação do concorrente e legibilidade em qualquer condição de iluminação e distância.',
-    hipotese:'Se testássemos os rótulos diretamente nas prateleiras antes de finalizar — com protótipos físicos reais — conseguiríamos validar legibilidade e impacto visual com dados, não com suposições. A marca precisava ser desenhada para o contexto real, não para o Figma.',
-    abordagem:'O processo foi completo e com validação em campo: criamos o conceito de marca, desenvolvemos os produtos (rótulos, embalagens, identidade), testamos fisicamente nas prateleiras com protótipos e iteramos com base no que funcionava na gôndola real. O reposicionamento estratégico acompanhou o visual — definindo onde a Breedom queria competir e com que linguagem.',
-    decisoes:[
-      {title:'Teste em prateleira como etapa obrigatória',desc:'Antes de qualquer aprovação final, os rótulos foram impressos e testados fisicamente em gôndolas reais, em diferentes condições de iluminação e entre concorrentes. O que funcionava no digital nem sempre funcionava no ponto de venda.'},
-      {title:'Tipografia como elemento de diferenciação',desc:'A tipografia foi inteiramente repensada para criar distância visual do concorrente e garantir leitura rápida. Hierarquia clara: nome da cervejaria, estilo da cerveja e informações secundárias — nesta ordem, sempre.'},
-      {title:'Conceito que sustenta o sistema',desc:'Em vez de criar rótulos isolados, desenvolvemos um conceito de marca que estruturava toda a linha de produtos. Cada produto tinha personalidade própria, mas todos reconhecíveis como Breedom.'}
-    ],
-    solucao:'Rebranding estratégico completo: novo conceito de marca, sistema de identidade visual, família de rótulos desenvolvida e testada em PDV, guia de aplicações e reposicionamento competitivo. A Breedom saiu com uma marca própria, legível e diferenciada nas prateleiras.',
-    impacto:'O processo de teste em prateleira evitou que um rótulo tecnicamente bonito falhasse no único ambiente que importava. A marca ganhou reconhecimento imediato no PDV, eliminou o risco de confusão com o concorrente e passou a comunicar posicionamento com clareza.',
-    metrics:[{num:'PDV',label:'Testado em prateleira real'},{num:'0',label:'Risco de confusão com concorrente'},{num:'360°',label:'Conceito + produto + validação'}]
-  },
-  sirea:{
-    title:'Sirea',titleEm:'20 anos, nova autoridade',cat:'Branding Estratégico · Identidade Corporativa · B2B',
-    behance:'https://www.behance.net/gallery/223031741/Sirea',
-    cover:'https://mir-s3-cdn-cf.behance.net/project_modules/1400_webp/408241223031741.67f1b4db584a8.jpg',
-    imgs:['https://mir-s3-cdn-cf.behance.net/project_modules/1400_webp/408241223031741.67f1b4db584a8.jpg'],
-    meta:{papel:'Brand Designer',ano:'2025',ferramentas:'Illustrator · Figma',escopo:'Freelance'},
-    problema:'A Sirea tem 20 anos de mercado em gestão financeira e contábil — e chegava com os principais clientes por indicação. Sólida na entrega, invisível na percepção. Enquanto isso, concorrentes internacionais como Deloitte e Accenture avançavam sobre o mercado brasileiro com autoridade de marca muito superior. A Sirea não tinha uma marca à altura da sua experiência.',
-    desafio:'Construir uma identidade corporativa que projetasse os 20 anos de expertise da Sirea como autoridade visual — capaz de competir na percepção com consultorias internacionais e reduzir a dependência de indicação como único canal de captação.',
-    hipotese:'Uma empresa com duas décadas de mercado não precisava inventar credibilidade — precisava comunicá-la. Um sistema visual robusto, sóbrio e com linguagem de enterprise seria suficiente para alterar a percepção sem mudar a essência do negócio.',
-    abordagem:'Começamos mapeando os concorrentes que a Sirea precisava desafiar visualmente — Deloitte, Accenture, consultorias regionais de médio porte — e identificamos onde havia espaço para diferenciação sem perder credibilidade. O briefing estratégico definiu claramente: a marca precisava funcionar em propostas comerciais, apresentações para C-level e materiais institucionais de alto padrão.',
-    decisoes:[
-      {title:'Autoridade pela contenção',desc:'Em B2B de alto valor, menos é mais. Optamos por uma paleta sóbria, tipografia de alta hierarquia e composições equilibradas — sinalizando maturidade e solidez sem depender de recursos visuais chamativos.'},
-      {title:'Símbolo que carrega história',desc:'O símbolo foi construído para ter densidade — uma forma que pareça ter existido sempre, não criada ontem. Para uma empresa de 20 anos, isso importa: a marca nova precisava parecer legítima desde o primeiro contato.'},
-      {title:'Sistema para contextos de alta exigência',desc:'A identidade foi projetada para funcionar onde a Sirea mais precisava: em propostas para grandes clientes, decks de apresentação, contratos e ambientes institucionais. Cada aplicação foi pensada com esse nível de exigência.'}
-    ],
-    solucao:'Sistema de identidade corporativa completo: logotipo, símbolo, paleta, tipografia, sistema de ícones e guia de aplicações para contextos B2B de alto valor. Uma marca que projeta autoridade antes de qualquer apresentação.',
-    impacto:'A Sirea passou a ter uma identidade à altura de sua experiência de mercado — capaz de competir na percepção com players internacionais e reduzir o gap visual que existia entre a empresa e seus concorrentes no processo de captação de novos clientes.',
-    metrics:[{num:'20',label:'Anos de mercado comunicados'},{num:'Enterprise',label:'Linguagem visual'},{num:'B2B',label:'Alta complexidade'}]
-  },
-  azaio:{
-    title:'Azaio',titleEm:'Inovação além do core',cat:'Branding · Brand Identity · Spin-off de Inovação',
-    behance:'https://www.behance.net/gallery/223036011/Azaio',
-    cover:'https://mir-s3-cdn-cf.behance.net/project_modules/1400_webp/f59a71223036011.67f19fbe5eafc.jpg',
-    imgs:['https://mir-s3-cdn-cf.behance.net/project_modules/1400_webp/f59a71223036011.67f19fbe5eafc.jpg'],
-    meta:{papel:'Brand Designer',ano:'2025',ferramentas:'Illustrator · Figma',escopo:'Freelance'},
-    problema:'A Maera — líder em engenharia clínica no Brasil — queria explorar oportunidades de inovação além do seu ecossistema principal. Para isso, precisava de um braço independente: a Azaio. O desafio era criar uma marca que tivesse identidade própria, sem se confundir com a Maera e sem carregar o peso institucional de uma empresa já estabelecida.',
-    desafio:'Posicionar a Azaio como uma entidade ágil e inovadora, conectada à Maera mas com linguagem visual própria. A marca precisava comunicar exploração, velocidade e abertura — valores diferentes do rigor técnico da empresa-mãe — sem perder a credibilidade herdada.',
-    hipotese:'Uma identidade visual que fizesse referência sutil ao universo da Maera (sem replicar) e abraçasse uma linguagem mais experimental seria suficiente para diferenciar os dois mundos e posicionar a Azaio como o laboratório de inovação do grupo.',
-    abordagem:'O processo começou entendendo a relação entre as duas marcas: onde elas se tocavam, onde precisavam se separar e que tipo de produto ou serviço a Azaio desenvolveria. A partir daí, construímos uma identidade que funcionasse sozinha — com sua própria personalidade — mas que fizesse sentido ao lado da Maera.',
-    decisoes:[
-      {title:'Identidade própria, não derivada',desc:'Evitamos qualquer referência direta ao sistema visual da Maera. A Azaio precisava parecer uma empresa independente — que por acidente compartilha DNA estratégico com a empresa-mãe, não por subordinação visual.'},
-      {title:'Linguagem de inovação com credibilidade',desc:'Startups de inovação frequentemente erram para o lado da leveza excessiva — perdendo credibilidade no contexto B2B. A Azaio precisava do equilíbrio: moderna e ágil sem parecer frágil.'},
-      {title:'Símbolo com abertura semântica',desc:'O símbolo foi construído para não ter um significado único e fechado — permitindo que a Azaio cresça para diferentes direções de produto sem que a marca pareça deslocada.'}
-    ],
-    solucao:'Brand identity completa para a Azaio: nome validado, símbolo com abertura semântica, sistema tipográfico, paleta e guia de aplicações. Uma marca pronta para crescer além do ecossistema de engenharia clínica.',
-    impacto:'A Azaio ganhou uma identidade capaz de operar de forma independente da Maera — atraindo parceiros, talentos e clientes com uma linguagem própria de inovação, sem perder a credibilidade institucional do grupo.',
+    problema:'A Maera é líder em engenharia clínica no Brasil e concorrente direta da FLUKE e grandes enterprises internacionais. O nome anterior era genérico, irregistrável no INPI, e a identidade visual não tinha robustez para representar uma empresa dessa relevância. Com planos de expansão para o mercado LATAM, a marca precisava ser outra.',
+    desafio:'Reposicionar visualmente a empresa sem perder reconhecimento já construído — e ao mesmo tempo criar uma identidade com robustez e diferenciação suficientes para competir no mesmo nível que concorrentes internacionais de grande porte.',
+    hipotese:'Um sistema visual mais estruturado — com tipografia expressiva, paleta com personalidade e símbolo registrável — daria à Maera a presença e autoridade necessárias para a expansão LATAM sem sacrificar familiaridade com clientes atuais.',
+    abordagem:'Diagnóstico da marca atual, análise de concorrentes nacionais e internacionais, benchmarking do setor de engenharia clínica. Desenvolvimento de direções alternativas validadas internamente antes do refinamento final.',
+    decisoes:[{title:'Nome e registro como ponto de partida',desc:'A troca de nome foi o gatilho do projeto. O novo nome precisava ser registrável, sonoro e escalável para outros mercados — o que condicionou toda a direção criativa.'},{title:'Tipografia como âncora',desc:'Família tipográfica com personalidade forte no display e legibilidade funcional no texto corrido. A escolha tipográfica virou o principal elemento de diferenciação.'},{title:'Paleta com profundidade',desc:'Cores primárias fortes e secundárias de suporte, criando hierarquia visual e versatilidade em diferentes superfícies de aplicação.'},{title:'Sistema completo, não só logo',desc:'Padrões gráficos, ícones, regras de uso e guia de voz visual para garantir consistência em qualquer ponto de contato na expansão.'}],
+    solucao:'Identidade visual completa: logotipo registrável, símbolo, paleta cromática, tipografia, padrões gráficos e manual de uso. Uma marca pronta para o LATAM.',
+    impacto:'A nova identidade foi implementada em todos os canais digitais e físicos. A empresa passou a ser percebida como mais robusta e moderna, com posicionamento compatível com a competição internacional.',
     metrics:[]
   },
-  upflux:{
-    title:'UpFlux',titleEm:'Design como estrutura',cat:'Product Design · Design Ops · Estratégia Comercial · B2B SaaS',
-    behance:null,
-    cover:null,
-    imgs:[],
-    meta:{papel:'Product Designer Estratégico',ano:'2025 — atual',ferramentas:'Figma · Notion · IA generativa',escopo:'CLT · Remoto'},
-    problema:'A UpFlux é uma plataforma SaaS de Process Mining — um produto de alta complexidade técnica, vendido para grandes empresas em ciclos comerciais longos e disputados. Quando chegamos, a área de design era embrionária: sem processos, sem design system, sem rotinas estabelecidas e sem integração com as demais áreas. Design existia como execução reativa, não como função estratégica.',
-    desafio:'Construir a área de design do zero — com processos, governança e entregáveis — e ao mesmo tempo tornar o design um ativo direto no processo comercial: traduzindo a complexidade do produto em narrativas claras o suficiente para apoiar negociações de alto valor com decisores de grandes empresas.',
-    hipotese:'Se a área de design tivesse estrutura interna sólida (processos, visibilidade, autonomia por setor) e entregasse materiais estratégicos de alta qualidade para o time comercial, o design deixaria de ser custo de suporte e passaria a ser alavanca de receita — especialmente em Big Deals onde a clareza da proposta de valor é determinante.',
-    abordagem:'O trabalho foi dividido em três frentes sequenciais e interdependentes. Primeiro, estruturamos a operação interna: rotinas de reunião, método ágil, Gantt e centralização no Notion para dar visibilidade a toda a empresa sobre o que design estava fazendo e entregando. Segundo, construímos o ecossistema de marca: design system, padrões visuais e aceleradores por área — desenvolvidos a partir de uma pesquisa interna de dores de cada setor. Terceiro, entramos nas negociações: Big Deals, PoCs e demonstrações de uso, desenvolvendo modelos de apresentação estratégica que traduzissem o core do produto e seu potencial de retorno com clareza e objetividade.',
-    decisoes:[
-      {title:'Estrutura antes de execução',desc:'A tentação era sair fazendo. A decisão foi construir a base primeiro: processos documentados, fluxos de demanda, rituais de alinhamento e visibilidade centralizada no Notion. Sem isso, qualquer entregável seria produzido no vácuo — sem contexto, sem prioridade, sem impacto.'},
-      {title:'Design System orientado por dor, não por padrão',desc:'Em vez de criar um sistema visual genérico e impor às áreas, fizemos uma pesquisa interna para entender as necessidades reais de cada setor. O resultado foram aceleradores específicos: templates, componentes e guias que davam autonomia a cada área sem abrir mão de consistência.'},
-      {title:'Narrativa comercial como produto de design',desc:'Process Mining é um produto difícil de vender — não porque o valor seja baixo, mas porque é difícil de explicar para quem nunca viu. Desenvolvemos um modelo de narrativa visual para Big Deals e PoCs que traduzia complexidade técnica em linguagem de negócio: problema, dado, impacto, retorno.'},
-      {title:'IA como acelerador de escala',desc:'Após validar o modelo de narrativa comercial, estruturamos um processo automatizado com IA generativa para produção de cases, PoCs e apresentações. O que antes era produção manual por demanda virou um fluxo acelerado — mantendo qualidade e reduzindo o tempo de resposta para o time comercial.'}
-    ],
-    solucao:'Uma área de design funcional, integrada e com impacto mensurável em três camadas: operação interna estruturada com processos e visibilidade; ecossistema de marca consistente com design system e aceleradores por área; e um modelo de narrativa comercial — hoje parcialmente automatizado com IA — que apoia ativamente o fechamento de negociações de alto valor.',
-    impacto:'O design passou de função reativa para ativo estratégico dentro da UpFlux. A área ganhou visibilidade, integração com produto e comercial, e passou a contribuir diretamente em negociações de alto valor — com materiais que traduzem a complexidade do produto em clareza para o decisor. Por restrições de NDA, números e nomes de clientes não são divulgados.',
-    metrics:[{num:'0→1',label:'Área de design estruturada do zero'},{num:'3 frentes',label:'Ops · Marca · Estratégia comercial'},{num:'IA',label:'Processo automatizado de narrativa'}]
+  breedom:{
+    title:'Breedom',sub:'Cervejaria',cat:'Branding · Identidade Visual · Embalagem · Varejo',
+    behance:'https://www.behance.net/gallery/223027647/Breedom-Cervejaria',
+    cover:'capa_breedom.png',
+    imgs:['https://mir-s3-cdn-cf.behance.net/project_modules/1400_webp/31e144223027647.67f1727b7a440.jpg'],
+    meta:{papel:'Brand Designer',ano:'2025',ferramentas:'Illustrator · Photoshop',escopo:'Freelance'},
+    problema:'O mercado de cerveja artesanal está saturado de marcas que tentam parecer rústicas da mesma forma. A Breedom tinha um problema triplo: marca genérica, tipografia idêntica a um concorrente direto e rótulo ilegível na gôndola — impossível de ser reconhecido nas prateleiras.',
+    desafio:'Criar uma identidade que se destacasse nas prateleiras e na memória dos consumidores, resolvendo o problema de legibilidade do rótulo e diferenciando claramente da concorrência — sem perder a essência artesanal.',
+    hipotese:'Ao abraçar uma estética mais gráfica e menos naturalista, a Breedom poderia ocupar um espaço visual pouco explorado no segmento — diferenciando-se tanto dos rótulos rústicos quanto das marcas excessivamente minimalistas.',
+    abordagem:'Pesquisa de mercado e análise de concorrentes para mapear o espaço em branco visual. Desenvolvimento do conceito, criação dos produtos, teste físico nas prateleiras e reposicionamento estratégico junto ao rebranding.',
+    decisoes:[{title:'Teste físico como etapa de validação',desc:'Os rótulos foram testados em prateleiras reais antes de finalizar. O que funcionava na tela precisava funcionar na gôndola — com competidores ao lado.'},{title:'Tipografia como solução de legibilidade',desc:'O problema principal era o rótulo ilegível. A solução começou pela tipografia: escolha de família com presença forte em todos os tamanhos de impressão.'},{title:'Identidade com atitude',desc:'Linguagem visual com mais personalidade e irreverência — tipografia com caráter, ícones gráficos e paleta que chamasse atenção no ponto de venda.'}],
+    solucao:'Identidade visual completa: logotipo, sistema de rótulos, paleta de cores, iconografia e guia de aplicação. Uma marca com personalidade forte e reconhecimento imediato nas prateleiras.',
+    impacto:'A identidade criou diferenciação visual imediata no segmento, com o rótulo tornando-se o principal ativo de comunicação da marca nos pontos de venda e redes sociais.',
+    metrics:[]
+  },
+  sirea:{
+    title:'Sirea',sub:'Identidade Visual',cat:'Branding · Autoridade de Marca · Gestão',
+    behance:'https://www.behance.net/gallery/223031741/Sirea',
+    cover:'capa_sirea.png',
+    imgs:['https://mir-s3-cdn-cf.behance.net/project_modules/1400_webp/408241223031741.67f1b4db584a8.jpg'],
+    meta:{papel:'Brand Designer',ano:'2025',ferramentas:'Illustrator · Figma',escopo:'Freelance'},
+    problema:'A Sirea tem 20 anos de mercado em gestão financeira e contábil, concorrendo com Deloitte e Accenture. A base de clientes chegava majoritariamente por indicação — o que funcionava, mas limitava a capacidade de crescimento. Sem uma marca à altura da trajetória, a empresa perdia terreno para players internacionais que estavam tomando o mercado.',
+    desafio:'Criar uma identidade que transmitisse a solidez de 20 anos de mercado com a modernidade necessária para competir com grandes consultorias. A marca precisava gerar autoridade e percepção de robustez suficientes para abrir portas sem indicação.',
+    hipotese:'Um visual mais limpo e estruturado, com símbolo memorável e paleta que comunicasse confiança, seria suficiente para reposicionar a percepção de marca e permitir que a Sirea competisse em condições mais igualitárias.',
+    abordagem:'Análise do posicionamento atual, benchmarking do setor de consultorias e definição de atributos de marca prioritários. Sistema visual desenvolvido do zero com foco em escalabilidade.',
+    decisoes:[{title:'Autoridade como princípio central',desc:'Cada decisão de design foi avaliada pela pergunta: isso transmite autoridade? Geometria, tipografia e cor foram escolhidas para responder afirmativamente.'},{title:'Paleta de credibilidade',desc:'Cores que comunicam estabilidade e profissionalismo, com um acento que adiciona modernidade sem comprometer a seriedade do negócio.'},{title:'Símbolo escalável',desc:'Forma geométrica com leitura clara em todos os tamanhos — do favicon ao papel timbrado — preparada para uso em LATAM.'}],
+    solucao:'Sistema de identidade visual completo: logotipo, símbolo, paleta cromática, tipografia e principais aplicações. Uma marca que compete com Deloitte no mesmo ring.',
+    impacto:'A nova identidade foi recebida positivamente pela liderança e clientes, com aumento na percepção de credibilidade e abertura de novas frentes de prospecção além da indicação.',
+    metrics:[]
+  },
+  azaio:{
+    title:'Azaio',sub:'Identidade Visual',cat:'Brand Identity · Inovação · Spin-off',
+    behance:'https://www.behance.net/gallery/223036011/Azaio',
+    cover:'capa_azaio.png',
+    imgs:['https://mir-s3-cdn-cf.behance.net/project_modules/1400_webp/f59a71223036011.67f19fbe5eafc.jpg'],
+    meta:{papel:'Brand Designer',ano:'2025',ferramentas:'Illustrator · Figma',escopo:'Freelance'},
+    problema:'A Azaio é um braço de inovação dentro da Maera — criado para desenvolver produtos além do ecossistema de engenharia clínica. Como spin-off de uma marca já estabelecida, precisava de identidade própria: sem parecer filha da Maera, mas sem se distanciar tanto a ponto de perder credibilidade institucional.',
+    desafio:'Criar uma identidade que fosse simultaneamente independente e coerente com o universo da Maera. A Azaio precisava comunicar inovação e ousadia — características que a marca-mãe, mais conservadora, não poderia assumir.',
+    hipotese:'Um sistema visual minimalista com forte personalidade tipográfica e símbolo versátil seria mais eficaz. Menos elementos, mais intenção — permitindo que a identidade se adaptasse rapidamente a diferentes contextos de inovação.',
+    abordagem:'Partimos do nome e de sua sonoridade para explorar direções formais e conceituais. Múltiplas rodadas de esboços e testes de aplicação, sempre com referência ao ecossistema Maera para garantir coerência sem subordinação.',
+    decisoes:[{title:'Independência com DNA compartilhado',desc:'A Azaio não poderia parecer filha da Maera na aparência, mas precisava compartilhar valores. A solução foi trabalhar no território de princípios — não na estética.'},{title:'Símbolo com duplo significado',desc:'O símbolo foi construído para carregar múltiplas leituras visuais, criando profundidade e tornando a marca mais interessante quanto mais você a observa.'},{title:'Paleta restrita e poderosa',desc:'Com apenas duas cores primárias, a marca ganhou versatilidade e reconhecimento imediato em qualquer aplicação.'}],
+    solucao:'Brand identity completa: logotipo, símbolo, sistema tipográfico e paleta cromática. Projetada para crescer com diferentes produtos sem perder coerência.',
+    impacto:'A identidade posicionou a Azaio com presença visual acima do esperado para um braço de inovação em fase inicial, gerando percepção imediata de modernidade e autonomia em relação à marca-mãe.',
+    metrics:[]
   },
   marcia:{
-    title:'Márcia',titleEm:'Menezes',cat:'Branding Pessoal · Identidade Visual',
+    title:'Márcia',sub:'Menezes',cat:'Personal Branding · Identidade Visual',
     behance:'https://www.behance.net/gallery/223037137/Marcia-Menezes',
-    cover:'https://mir-s3-cdn-cf.behance.net/project_modules/1400_webp/f481ca223037137.67f1a7e7c78a3.jpg',
+    cover:'capa_marcia.png',
     imgs:['https://mir-s3-cdn-cf.behance.net/project_modules/1400_webp/f481ca223037137.67f1a7e7c78a3.jpg'],
     meta:{papel:'Brand Designer',ano:'2025',ferramentas:'Illustrator · Figma',escopo:'Freelance'},
-    problema:'Márcia Menezes é uma profissional com trajetória consolidada — mas sem identidade visual, sua presença dependia exclusivamente do boca a boca e da força das relações pessoais. Isso limitava o alcance, dificultava a percepção de valor para novos clientes e impedia que ela controlasse sua própria narrativa profissional.',
-    desafio:'Criar uma marca pessoal que traduzisse quem Márcia é — sua personalidade, autoridade e estilo — em um sistema visual funcional tanto no digital quanto no impresso. Sem parecer genérica, sem parecer excessiva.',
-    hipotese:'Uma identidade ancorada no nome e na assinatura — em vez de um símbolo arbitrário — criaria uma conexão mais autêntica com o público e reforçaria a presença de Márcia como profissional com identidade própria.',
-    abordagem:'Começamos com uma escuta aprofundada: trajetória, valores, público que ela queria atrair e como ela queria ser percebida. Mapeamos referências visuais que ressoavam com ela e desenvolvemos direções que equilibrassem elegância, feminilidade e profissionalismo — sem recorrer a clichês.',
-    decisoes:[
-      {title:'Nome como marca',desc:'Colocar o nome completo como elemento central transforma a assinatura em ativo visual. Para uma marca pessoal, isso é mais poderoso do que qualquer símbolo genérico — porque o nome já carrega a história.'},
-      {title:'Sofisticação sem distância',desc:'A paleta e o traço foram escolhidos para comunicar elegância feminina com proximidade — não frieza. A marca precisava parecer acolhedora e profissional ao mesmo tempo.'},
-      {title:'Aplicações que Márcia realmente usa',desc:'Projetamos pensando nos contextos reais: cartão de visitas, stories, apresentações e cabeçalho de proposta. Cada aplicação foi validada para funcionar onde importava.'}
-    ],
-    solucao:'Identidade visual pessoal completa: logotipo com assinatura, variações cromáticas, tipografia e guia de aplicações para os principais contextos de uso. Uma marca que conta quem Márcia é antes mesmo de ela falar.',
-    impacto:'Com a nova identidade, Márcia passou a controlar sua própria narrativa visual — com consistência em todos os pontos de contato e uma presença profissional que reflete sua trajetória e projeta onde ela quer chegar.',
+    problema:'Márcia Menezes precisava de uma marca pessoal à altura de sua trajetória. Sem identidade visual, dependia exclusivamente do boca a boca — o que limitava seu alcance e dificultava a percepção de valor por novos clientes.',
+    desafio:'Traduzir a personalidade, o estilo e a autoridade de Márcia em um sistema visual funcional tanto no digital quanto no impresso. A marca precisava ser ao mesmo tempo humana e profissional.',
+    hipotese:'Uma identidade baseada em sua assinatura e personalidade criaria uma conexão mais autêntica com seu público — diferente de um símbolo genérico.',
+    abordagem:'Conversa profunda sobre trajetória, valores e público. Mapeamento de referências visuais e desenvolvimento de direções que equilibrassem elegância e acessibilidade.',
+    decisoes:[{title:'Nome como marca',desc:'O nome completo como elemento central, usando tipografia expressiva para transformar a assinatura em um ativo visual poderoso.'},{title:'Feminilidade sem clichê',desc:'A paleta e o traço foram escolhidos para comunicar sofisticação feminina sem recorrer a recursos visuais óbvios ou datados.'},{title:'Sistema aplicável desde o início',desc:'Cartão de visitas, stories, apresentações — desenvolvidos em paralelo para garantir que a marca funcionasse onde Márcia precisaria usar.'}],
+    solucao:'Identidade visual pessoal completa: logotipo, variações cromáticas, tipografia e guia de aplicações.',
+    impacto:'A nova identidade foi implementada em canais digitais e materiais de apresentação, resultando em maior percepção de autoridade e consistência na comunicação.',
     metrics:[]
   }
 };
 
-const ORDER = ['upflux','pitanga','maera','breedom','sirea','azaio','marcia'];
+const ORDER=['upflux','pitanga','maera','breedom','sirea','azaio','marcia'];
 
-function buildCase(k) {
-  const t = i18n[currentLang];
-  const c = C[k], i = ORDER.indexOf(k);
-  const prev = i > 0 ? ORDER[i-1] : null;
-  const next = i < ORDER.length-1 ? ORDER[i+1] : null;
-  const gcols = c.imgs.length >= 3 ? 'g3' : c.imgs.length === 2 ? 'g2' : 'g1';
+function buildCase(k){
+  const t=i18n[lang], c=C[k], i=ORDER.indexOf(k);
+  const prev=i>0?ORDER[i-1]:null;
+  const next=i<ORDER.length-1?ORDER[i+1]:null;
+  const gcols=c.imgs.length>=3?'g3':c.imgs.length===2?'g2':'g1';
 
-  const heroHtml = c.cover
-    ? `<div class="case-hero">
+  const heroHtml=c.cover
+    ?`<div class="case-hero-section">
         <img class="case-hero-img" src="${c.cover}" alt="${c.title}">
-        <div class="case-hero-overlay"></div>
         <div class="case-hero-content">
-          <div class="case-hero-cat">${c.cat}</div>
-          <h1 class="case-hero-title">${c.title}<br><em>${c.titleEm}</em></h1>
-          <div class="case-meta-row">
-            <div><div class="case-meta-label">${t.meta_role}</div><div class="case-meta-value">${c.meta.papel}</div></div>
-            <div><div class="case-meta-label">${t.meta_year}</div><div class="case-meta-value">${c.meta.ano}</div></div>
-            <div><div class="case-meta-label">${t.meta_tools}</div><div class="case-meta-value">${c.meta.ferramentas}</div></div>
-            ${c.meta.escopo ? `<div><div class="case-meta-label">Escopo</div><div class="case-meta-value">${c.meta.escopo}</div></div>` : ''}
+          <div class="case-cat">${c.cat}</div>
+          <div class="case-hero-title">${c.title}</div>
+          <div class="case-hero-subtitle">${c.sub}</div>
+          <div class="case-meta">
+            <div class="case-meta-item"><div class="case-meta-label">${t.meta_role}</div><div class="case-meta-val">${c.meta.papel}</div></div>
+            <div class="case-meta-item"><div class="case-meta-label">${t.meta_year}</div><div class="case-meta-val">${c.meta.ano}</div></div>
+            <div class="case-meta-item"><div class="case-meta-label">${t.meta_tools}</div><div class="case-meta-val">${c.meta.ferramentas}</div></div>
+            ${c.meta.escopo?`<div class="case-meta-item"><div class="case-meta-label">${t.meta_scope}</div><div class="case-meta-val">${c.meta.escopo}</div></div>`:''}
           </div>
+          ${c.behance?`<a href="${c.behance}" target="_blank" class="case-behance-hero-btn">Ver projeto completo no Behance ↗</a>`:''}
         </div>
       </div>`
-    : `<div class="case-hero case-hero-text">
-        <div class="case-hero-text-inner">
-          <div class="case-hero-cat">${c.cat}</div>
-          <h1 class="case-hero-title">${c.title}<br><em>${c.titleEm}</em></h1>
-          <div class="case-meta-row">
-            <div><div class="case-meta-label">${t.meta_role}</div><div class="case-meta-value">${c.meta.papel}</div></div>
-            <div><div class="case-meta-label">${t.meta_year}</div><div class="case-meta-value">${c.meta.ano}</div></div>
-            <div><div class="case-meta-label">${t.meta_tools}</div><div class="case-meta-value">${c.meta.ferramentas}</div></div>
-            ${c.meta.escopo ? `<div><div class="case-meta-label">Escopo</div><div class="case-meta-value">${c.meta.escopo}</div></div>` : ''}
+    :`<div class="case-hero-section">
+        <div class="case-hero-no-img" data-name="${c.title}"></div>
+        <div class="case-hero-content">
+          <div class="case-cat">${c.cat}</div>
+          <div class="case-hero-title">${c.title}</div>
+          <div class="case-hero-subtitle">${c.sub}</div>
+          <div class="case-meta">
+            <div class="case-meta-item"><div class="case-meta-label">${t.meta_role}</div><div class="case-meta-val">${c.meta.papel}</div></div>
+            <div class="case-meta-item"><div class="case-meta-label">${t.meta_year}</div><div class="case-meta-val">${c.meta.ano}</div></div>
+            <div class="case-meta-item"><div class="case-meta-label">${t.meta_tools}</div><div class="case-meta-val">${c.meta.ferramentas}</div></div>
+            ${c.meta.escopo?`<div class="case-meta-item"><div class="case-meta-label">${t.meta_scope}</div><div class="case-meta-val">${c.meta.escopo}</div></div>`:''}
           </div>
-          <div class="case-nda-note">${t.case_nda}</div>
+          <div class="case-nda-badge">⊘ ${t.case_nda}</div>
         </div>
-        <div class="case-hero-pattern"></div>
       </div>`;
 
   return `
   ${heroHtml}
   <div class="case-body">
-    <div class="case-section"><div class="case-section-label">${t.sec_problem}</div><h2>${t.sec_problem_sub}</h2><p>${c.problema}</p></div>
-    <div class="case-section"><div class="case-section-label">${t.sec_challenge}</div><h2>${t.sec_challenge_sub}</h2><p>${c.desafio}</p></div>
-    <div class="case-section"><div class="case-section-label">${t.sec_hypothesis}</div><h2>${t.sec_hypothesis_sub}</h2><p>${c.hipotese}</p></div>
-    <div class="case-section"><div class="case-section-label">${t.sec_approach}</div><h2>${t.sec_approach_sub}</h2><p>${c.abordagem}</p></div>
-    ${c.imgs.length ? `<div class="case-gallery ${gcols}">${c.imgs.map(img=>`<img src="${img}" alt="${c.title}" loading="lazy">`).join('')}</div><p class="gallery-caption">${t.gallery_caption}</p>` : ''}
-    <div class="case-section"><div class="case-section-label">${t.sec_decisions}</div><h2>${t.sec_decisions_sub}</h2><div class="decisions-list">${c.decisoes.map((d,n)=>`<div class="decision-item"><div class="decision-num">0${n+1}</div><div><div class="decision-title">${d.title}</div><div class="decision-desc">${d.desc}</div></div></div>`).join('')}</div></div>
-    <div class="case-section"><div class="case-section-label">${t.sec_solution}</div><h2>${t.sec_solution_sub}</h2><p>${c.solucao}</p></div>
-    <div class="case-section"><div class="case-section-label">${t.sec_impact}</div><h2>${t.sec_impact_sub}</h2><p>${c.impacto}</p>${c.metrics.length ? `<div class="case-metrics">${c.metrics.map(m=>`<div class="metric-card"><div class="metric-num">${m.num}</div><div class="metric-label">${m.label}</div></div>`).join('')}</div>` : ''}</div>
+    <div class="case-sec"><div class="case-sec-label">${t.sec_problem}</div><h2>${t.sec_problem_h}</h2><p>${c.problema}</p></div>
+    <div class="case-sec"><div class="case-sec-label">${t.sec_challenge}</div><h2>${t.sec_challenge_h}</h2><p>${c.desafio}</p></div>
+    <div class="case-sec"><div class="case-sec-label">${t.sec_hypothesis}</div><h2>${t.sec_hypothesis_h}</h2><p>${c.hipotese}</p></div>
+    <div class="case-sec"><div class="case-sec-label">${t.sec_approach}</div><h2>${t.sec_approach_h}</h2><p>${c.abordagem}</p></div>
+    ${c.imgs.length?`<div class="case-gallery ${gcols}">${c.imgs.map(img=>`<img src="${img}" alt="${c.title}" loading="lazy">`).join('')}</div><p class="gallery-cap">${t.gallery_cap}</p>`:''}
+    <div class="case-sec"><div class="case-sec-label">${t.sec_decisions}</div><h2>${t.sec_decisions_h}</h2><div class="decisions-grid">${c.decisoes.map((d,n)=>`<div class="dec-item"><div class="dec-num">0${n+1}</div><div><div class="dec-title">${d.title}</div><div class="dec-desc">${d.desc}</div></div></div>`).join('')}</div></div>
+    <div class="case-sec"><div class="case-sec-label">${t.sec_solution}</div><h2>${t.sec_solution_h}</h2><p>${c.solucao}</p></div>
+    <div class="case-sec"><div class="case-sec-label">${t.sec_impact}</div><h2>${t.sec_impact_h}</h2><p>${c.impacto}</p>${c.metrics.length?`<div class="case-metrics">${c.metrics.map(m=>`<div class="metric-card"><div class="metric-num">${m.num}</div><div class="metric-lbl">${m.label}</div></div>`).join('')}</div>`:''}</div>
   </div>
   <div class="case-footer-nav">
-    ${prev ? `<div class="cfn-item" onclick="openCase('${prev}')"><div class="cfn-dir">← Anterior</div><div class="cfn-title">${C[prev].title}</div></div>` : '<div class="cfn-item" style="cursor:default"></div>'}
-    ${next ? `<div class="cfn-item" onclick="openCase('${next}')"><div class="cfn-dir">Próximo →</div><div class="cfn-title">${C[next].title}</div></div>` : '<div class="cfn-item" style="cursor:default"></div>'}
+    ${prev?`<div class="cfn" onclick="openCase('${prev}')"><div class="cfn-dir">${t.cfn_prev}</div><div class="cfn-name">${C[prev].title}</div></div>`:'<div class="cfn"></div>'}
+    ${next?`<div class="cfn" onclick="openCase('${next}')"><div class="cfn-dir">${t.cfn_next}</div><div class="cfn-name">${C[next].title}</div></div>`:'<div class="cfn"></div>'}
   </div>`;
 }
 
-function openCase(k) {
-  window._openCaseKey = k;
-  const cv = document.getElementById('case-view');
-  const t = i18n[currentLang];
-  document.getElementById('caseNavTitle').textContent = C[k].title + ' ' + C[k].titleEm;
-  const cbl = document.getElementById('caseBehanceLink');
-  cbl.textContent = t.case_behance;
-  cbl.href = C[k].behance || '#';
-  document.getElementById('caseContent').innerHTML = buildCase(k);
+function openCase(k){
+  window._openCaseKey=k;
+  const cv=document.getElementById('case-view');
+  const t=i18n[lang];
+  document.getElementById('caseTopTitle').textContent=C[k].title;
+  document.getElementById('caseBackBtn').textContent='← '+t.case_back;
+  const cbl=document.getElementById('caseBehanceLnk');
+  cbl.textContent=t.case_behance; cbl.href=C[k].behance||'#';
+  if(!C[k].behance) cbl.style.display='none'; else cbl.style.display='';
+  document.getElementById('caseContent').innerHTML=buildCase(k);
   cv.classList.remove('closing'); cv.classList.add('active');
-  cv.scrollTop = 0; document.body.style.overflow = 'hidden';
-  reattachHover();
+  cv.scrollTop=0; document.body.style.overflow='hidden';
 }
 
-function closeCase() {
-  const cv = document.getElementById('case-view');
+function closeCase(){
+  const cv=document.getElementById('case-view');
+  if(!cv.classList.contains('active')) return;
   cv.classList.add('closing');
-  setTimeout(()=>{ cv.classList.remove('active','closing'); document.body.style.overflow = ''; setTimeout(()=>{ document.getElementById('projetos').scrollIntoView({behavior:'smooth'}); },50); }, 400);
+  setTimeout(()=>{ cv.classList.remove('active','closing'); document.body.style.overflow=''; },400);
+  window._openCaseKey=null;
 }
 
-function navClick(e, anchor) {
-  const cv = document.getElementById('case-view');
-  if (cv.classList.contains('active')) { e.preventDefault(); closeCase(); if(anchor) setTimeout(()=>document.querySelector(anchor)?.scrollIntoView({behavior:'smooth'}),500); }
-}
+/* ── NAV SCROLL ─────────────────────────────────────────── */
+const mainNav=document.getElementById('mainNav');
+window.addEventListener('scroll',()=>{
+  if(window.scrollY>60) mainNav.classList.add('scrolled'); else mainNav.classList.remove('scrolled');
+  // dark on hero
+  const hero=document.getElementById('hero');
+  const heroBottom=hero.getBoundingClientRect().bottom;
+  if(heroBottom>0) mainNav.classList.add('dark-section'); else mainNav.classList.remove('dark-section');
+});
+mainNav.classList.add('dark-section');
 
-/* ── i18n ───────────────────────────────────────────────────────────── */
-const i18n = {
-  pt: {
-    nav_about:'Sobre', nav_exp:'Experiência', nav_work:'Projetos', nav_edu:'Formação', nav_contact:'Contato',
-    hero_tag:'Product Designer · Brand Designer',
-    hero_sub:'Raízes em branding. Cabeça em produto.<br>4+ anos criando sistemas visuais e experiências digitais que funcionam — do símbolo à interface, da pesquisa ao handoff.',
-    hero_cta1:'Ver Projetos', hero_cta2:'Vamos conversar',
-    stat1:'Anos de Experiência', stat2:'Discovery → Handoff', stat3:'SaaS · E-commerce · Tech', stat4:'Estratégia de Produto',
-    about_label:'Sobre mim', about_title:'Branding <em>encontra</em> produto',
-    about_p1:'Comecei pelo branding — construindo sistemas de identidade visual com personalidade e consistência. Com o tempo, fui me aproximando de produto: pesquisa com usuários, arquitetura de informação, prototipagem e decisões que impactam negócio.',
-    about_p2:'Hoje atuo na interseção entre as duas disciplinas. Entendo <strong>marca como experiência</strong> e <strong>produto como comunicação</strong> — o que me permite colaborar com times de design, produto e estratégia sem perder a visão do todo.',
-    about_p3:'Experiência em ambientes <strong>B2B SaaS</strong> e <strong>e-commerce</strong>, com atuação em projetos end-to-end: do discovery ao handoff. Disponível para freelance e oportunidades.',
-    skill_ux:'Figma · Prototipagem · Wireframes · Design System · User Research · Testes',
-    skill_strat_name:'Estratégia', skill_strat:'Discovery · JTBD · Arquitetura de Informação · Handoff · Acessibilidade',
-    skill_brand:'Identidade Visual · Direção de Arte · Sistemas Visuais · Social Media',
-    skill_proc_name:'Processos', skill_proc:'Design Thinking · Scrum · Kanban · UCD · Pesquisa Qualitativa',
-    exp_label:'Trajetória', exp_title:'Onde <em>atuei</em>',
-    upflux_period:'Set/2025 — Atual', upflux_role:'Product Designer · Estratégico · SaaS B2B',
-    upflux_li1:'Propostas estratégicas e narrativas de produto para Big Deals de alto valor',
-    upflux_li2:'Fluxos de UX e jornadas orientadas a dados para decisões de produto',
-    upflux_li3:'Alinhamento entre produto, comercial e liderança executiva',
-    exp_current:'Atual',
-    hacoo_period:'Mar/2024 — Jun/2025', hacoo_role:'Designer de Soluções II · E-commerce · Remoto',
-    hacoo_li1:'Projetos end-to-end de UX com redução de <strong style="color:var(--accent)">25%</strong> no tempo médio de entrega',
-    hacoo_li2:'Design System que reduziu retrabalho entre squads',
-    hacoo_li3:'Testes de usabilidade e iteração contínua de interfaces', hacoo_dur:'1 ano e 3m',
-    selettra_period:'Mai/2023 — Mar/2024', selettra_role:'Assistente de Criação Jr · Automação e Robótica',
-    selettra_li1:'Materiais visuais para comunicação institucional e apresentações comerciais',
-    selettra_li2:'Interfaces e layouts para canais digitais', selettra_dur:'10 meses',
-    sol_period:'Fev/2022 — Fev/2023', sol_role:'Estagiário em Visual Design · Remoto',
-    sol_li1:'Materiais gráficos para redes sociais, websites e apresentações digitais',
-    sol_li2:'Layouts responsivos e prototipagem de interfaces', sol_dur:'1 ano',
-    work_label:'Portfólio', work_title:'Cases <em>selecionados</em>',
-    upflux_cat:'Product Design · Design Ops · B2B SaaS',
-    upflux_desc:'Construção da área de design do zero — estrutura, marca e estratégia comercial em um SaaS de Process Mining.',
-    pitanga_desc:'Plataforma digital para agricultores familiares — pesquisa, UX e identidade do zero.',
-    maera_cat:'Branding · Rebranding', maera_desc:'Redesign completo de identidade visual com sistema de marca coeso e moderno.',
-    breedom_cat:'Branding · Embalagem', breedom_desc:'Identidade para cervejaria artesanal unindo tradição e irreverência.',
-    sirea_cat:'Identidade Visual', sirea_desc:'Sistema visual com foco em clareza e posicionamento de mercado.',
-    azaio_cat:'Identidade Visual', azaio_desc:'Brand identity para produto digital com direção de arte estratégica.',
-    marcia_cat:'Branding Pessoal', marcia_desc:'Identidade visual pessoal com personalidade marcante e sistema aplicável.',
-    view_case:'Ver case', behance_btn:'Ver todos no Behance ↗',
-    edu_label:'Educação', edu_title:'Formação <em>acadêmica</em>',
-    edu_ongoing:'Em curso', edu_done:'Concluído',
-    edu1_title:'Pós-graduação em UX Design', edu2_title:'Bacharelado em Design',
-    edu3_title:'UX/UI Design & UI Avançado', edu3_period:'2025 — cursando',
-    contact_cta:'Vamos criar<br><em>algo incrível</em><br>juntos?',
-    contact_sub:'Estou disponível para projetos freelance, colaborações e oportunidades.',
-    contact_btn:'Enviar mensagem →', contact_phone:'Telefone',
-    contact_loc:'Localização', contact_loc_val:'São José dos Pinhais, PR', contact_portfolio:'Portfólio',
-    footer_role:'Product Designer', footer_top:'↑ Voltar ao topo',
-    case_back:'Voltar ao portfólio', case_behance:'Ver no Behance ↗',
-    case_nda:'Imagens não divulgadas por acordo de confidencialidade.',
-    sec_problem:'Problema', sec_problem_sub:'O que estava <em>quebrado</em>',
-    sec_challenge:'Desafio', sec_challenge_sub:'A questão <em>central</em>',
-    sec_hypothesis:'Hipótese', sec_hypothesis_sub:'Nossa <em>aposta</em>',
-    sec_approach:'Abordagem', sec_approach_sub:'Como <em>chegamos lá</em>',
-    sec_decisions:'Decisões que moldaram o projeto', sec_decisions_sub:'Escolhas <em>intencionais</em>',
-    sec_solution:'Solução', sec_solution_sub:'O que foi <em>entregue</em>',
-    sec_impact:'Impacto', sec_impact_sub:'O que <em>mudou</em>',
-    gallery_caption:'Seleção de imagens do projeto',
-    cfn_prev:'← Anterior', cfn_next:'Próximo →',
-    meta_role:'Papel', meta_year:'Ano', meta_tools:'Ferramentas', meta_scope:'Escopo',
-  },
-  en: {
-    nav_about:'About', nav_exp:'Experience', nav_work:'Work', nav_edu:'Education', nav_contact:'Contact',
-    hero_tag:'Product Designer · Brand Designer',
-    hero_sub:'Roots in branding. Mind in product.<br>4+ years building visual systems and digital experiences that work — from symbol to interface, from research to handoff.',
-    hero_cta1:'View Work', hero_cta2:'Let\'s talk',
-    stat1:'Years of Experience', stat2:'Discovery → Handoff', stat3:'SaaS · E-commerce · Tech', stat4:'Product Strategy',
-    about_label:'About me', about_title:'Branding <em>meets</em> product',
-    about_p1:'I started with branding — building visual identity systems with personality and consistency. Over time, I moved closer to product: user research, information architecture, prototyping and decisions that impact the business.',
-    about_p2:'Today I work at the intersection of both disciplines. I see <strong>brand as experience</strong> and <strong>product as communication</strong> — which allows me to collaborate with design, product and strategy teams without losing sight of the whole.',
-    about_p3:'Experience in <strong>B2B SaaS</strong> and <strong>e-commerce</strong> environments, working on end-to-end projects: from discovery to handoff. Available for freelance and full-time opportunities.',
-    skill_ux:'Figma · Prototyping · Wireframes · Design System · User Research · Usability Testing',
-    skill_strat_name:'Strategy', skill_strat:'Discovery · JTBD · Information Architecture · Handoff · Accessibility',
-    skill_brand:'Visual Identity · Art Direction · Visual Systems · Social Media',
-    skill_proc_name:'Process', skill_proc:'Design Thinking · Scrum · Kanban · UCD · Qualitative Research',
-    exp_label:'Timeline', exp_title:'Where I\'ve <em>worked</em>',
-    upflux_period:'Sep/2025 — Present', upflux_role:'Product Designer · Strategic · B2B SaaS',
-    upflux_li1:'Strategic proposals and product narratives for high-value Big Deals',
-    upflux_li2:'UX flows and data-driven journeys to support product decisions',
-    upflux_li3:'Alignment between product, sales and executive leadership',
-    exp_current:'Current',
-    hacoo_period:'Mar/2024 — Jun/2025', hacoo_role:'Solutions Designer II · E-commerce · Remote',
-    hacoo_li1:'End-to-end UX projects with a <strong style="color:var(--accent)">25%</strong> reduction in average campaign delivery time',
-    hacoo_li2:'Design System that reduced rework across squads',
-    hacoo_li3:'Usability testing and continuous interface iteration', hacoo_dur:'1 year 3m',
-    selettra_period:'May/2023 — Mar/2024', selettra_role:'Junior Creative Assistant · Automation & Robotics',
-    selettra_li1:'Visual materials for institutional communication and commercial presentations',
-    selettra_li2:'Interfaces and layouts for digital channels', selettra_dur:'10 months',
-    sol_period:'Feb/2022 — Feb/2023', sol_role:'Visual Design Intern · Remote',
-    sol_li1:'Graphic materials for social media, websites and digital presentations',
-    sol_li2:'Responsive layouts and interface prototyping', sol_dur:'1 year',
-    work_label:'Portfolio', work_title:'Selected <em>case studies</em>',
-    upflux_cat:'Product Design · Design Ops · B2B SaaS',
-    upflux_desc:'Built the design function from scratch — structure, brand system and commercial strategy in a Process Mining SaaS.',
-    pitanga_desc:'Digital platform for family farmers — research, UX and brand identity from scratch.',
-    maera_cat:'Branding · Rebranding', maera_desc:'Complete visual identity redesign with a cohesive and modern brand system.',
-    breedom_cat:'Branding · Packaging', breedom_desc:'Identity for a craft brewery balancing tradition and attitude.',
-    sirea_cat:'Visual Identity', sirea_desc:'Visual system focused on clarity and market positioning.',
-    azaio_cat:'Visual Identity', azaio_desc:'Brand identity for a digital product with strategic art direction.',
-    marcia_cat:'Personal Branding', marcia_desc:'Personal visual identity with strong personality and scalable system.',
-    view_case:'View case', behance_btn:'See all on Behance ↗',
-    edu_label:'Education', edu_title:'Academic <em>background</em>',
-    edu_ongoing:'In progress', edu_done:'Completed',
-    edu1_title:'Postgraduate in UX Design', edu2_title:'Bachelor\'s in Design',
-    edu3_title:'UX/UI Design & Advanced UI', edu3_period:'2025 — in progress',
-    contact_cta:'Let\'s build<br><em>something great</em><br>together?',
-    contact_sub:'Available for freelance projects, collaborations and full-time opportunities.',
-    contact_btn:'Send a message →', contact_phone:'Phone',
-    contact_loc:'Location', contact_loc_val:'São José dos Pinhais, PR · Brazil', contact_portfolio:'Portfolio',
-    footer_role:'Product Designer', footer_top:'↑ Back to top',
-    case_back:'Back to portfolio', case_behance:'View on Behance ↗',
-    case_nda:'Images not disclosed under NDA.',
-    sec_problem:'Problem', sec_problem_sub:'What was <em>broken</em>',
-    sec_challenge:'Challenge', sec_challenge_sub:'The <em>core question</em>',
-    sec_hypothesis:'Hypothesis', sec_hypothesis_sub:'Our <em>bet</em>',
-    sec_approach:'Approach', sec_approach_sub:'How we <em>got there</em>',
-    sec_decisions:'Decisions that shaped the project', sec_decisions_sub:'Intentional <em>choices</em>',
-    sec_solution:'Solution', sec_solution_sub:'What was <em>delivered</em>',
-    sec_impact:'Impact', sec_impact_sub:'What <em>changed</em>',
-    gallery_caption:'Project image selection',
-    cfn_prev:'← Previous', cfn_next:'Next →',
-    meta_role:'Role', meta_year:'Year', meta_tools:'Tools', meta_scope:'Scope',
-  }
-};
-
-let currentLang = 'pt';
-
-function applyLang(lang) {
-  const t = i18n[lang];
-  document.querySelectorAll('[data-i18n]').forEach(el => {
-    const key = el.getAttribute('data-i18n');
-    if (t[key] !== undefined) el.innerHTML = t[key];
-  });
-  // Nav labels
-  document.getElementById('langActive').textContent = lang === 'pt' ? 'PT' : 'EN';
-  document.getElementById('langOther').textContent  = lang === 'pt' ? 'EN' : 'PT';
-  // Mobile nav
-  const mobLinks = document.querySelectorAll('.mob-link');
-  const navKeys = ['nav_about','nav_exp','nav_work','nav_edu','nav_contact'];
-  mobLinks.forEach((el, i) => { if(navKeys[i]) el.textContent = t[navKeys[i]]; });
-  // case nav back button (if open)
-  const cb = document.querySelector('.case-back');
-  if(cb) cb.innerHTML = t.case_back;
-  const cbl = document.getElementById('caseBehanceLink');
-  if(cbl) cbl.textContent = t.case_behance;
-  document.documentElement.lang = lang === 'pt' ? 'pt-BR' : 'en';
-  currentLang = lang;
-}
-
-function toggleLang() {
-  const next = currentLang === 'pt' ? 'en' : 'pt';
-  applyLang(next);
-  // If a case is open, rebuild it in new lang
-  const cv = document.getElementById('case-view');
-  if(cv && cv.classList.contains('active') && window._openCaseKey) {
-    document.getElementById('caseContent').innerHTML = buildCase(window._openCaseKey);
-    reattachHover();
-  }
-}
-
-
-const cur = document.getElementById('cursor'), ring = document.getElementById('cursorRing');
-const isTouch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0 || window.matchMedia('(pointer: coarse)').matches;
-if (!isTouch) {
-  document.body.style.cursor = 'none';
-  let mx=0,my=0,rx=0,ry=0;
-  document.addEventListener('mousemove',e=>{ mx=e.clientX; my=e.clientY; cur.style.transform=`translate(${mx-5}px,${my-5}px)`; });
-  (function loop(){ rx+=(mx-rx-18)*0.12; ry+=(my-ry-18)*0.12; ring.style.transform=`translate(${rx}px,${ry}px)`; requestAnimationFrame(loop); })();
-}
-function reattachHover() {
-  document.querySelectorAll('a,button,.project-card,.skill-card,.decision-item,.cfn-item').forEach(el=>{
-    el.addEventListener('mouseenter',()=>ring.classList.add('hover'));
-    el.addEventListener('mouseleave',()=>ring.classList.remove('hover'));
-  });
-}
-reattachHover();
-
-/* SCROLL REVEAL */
-const obs = new IntersectionObserver(entries=>entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('visible'); }),{threshold:0.1});
-document.querySelectorAll('.reveal,.stats-bar,.exp-item,.project-card').forEach(el=>obs.observe(el));
-document.querySelectorAll('.exp-item').forEach((el,i)=>{ el.style.transitionDelay=`${i*0.1}s`; });
-
-/* MOBILE NAV */
+/* ── MOBILE NAV ─────────────────────────────────────────── */
 document.getElementById('menuToggle').addEventListener('click',()=>document.getElementById('mobileNav').classList.add('open'));
 document.getElementById('mobileClose').addEventListener('click',()=>document.getElementById('mobileNav').classList.remove('open'));
-document.querySelectorAll('.mob-link').forEach(l=>l.addEventListener('click',()=>document.getElementById('mobileNav').classList.remove('open')));
+document.querySelectorAll('.mob-link').forEach(l=>l.addEventListener('click',()=>{ document.getElementById('mobileNav').classList.remove('open'); }));
 
-/* ANCHORS */
-document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{ const t=document.querySelector(a.getAttribute('href')); if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'});} }));
+/* ── SMOOTH ANCHORS ─────────────────────────────────────── */
+document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{
+  const t=document.querySelector(a.getAttribute('href')); if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'});}
+}));
+document.querySelectorAll('.nav-center a, .mob-link').forEach(a=>a.addEventListener('click',e=>{
+  const t=document.querySelector(a.getAttribute('href')); if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'});}
+}));
 
-/* ESC */
-document.addEventListener('keydown',e=>{ if(e.key==='Escape'&&document.getElementById('case-view').classList.contains('active')) closeCase(); });
+/* ── SCROLL REVEAL ──────────────────────────────────────── */
+const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');}),{threshold:0.1});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+
+/* ── CARROSSEL ──────────────────────────────────────────── */
+let carouselIdx = 0;
+const VISIBLE = 3;
+
+function getTotal() {
+  return document.querySelectorAll('.proj-card').length;
+}
+function getMaxIdx() {
+  return Math.max(0, getTotal() - VISIBLE);
+}
+function getCardWidth() {
+  const card = document.querySelector('.proj-card');
+  if (!card) return 0;
+  const gap = 24;
+  return card.offsetWidth + gap;
+}
+function updateCarousel() {
+  const track = document.getElementById('carouselTrack');
+  if (!track) return;
+  track.style.transform = `translateX(-${carouselIdx * getCardWidth()}px)`;
+  document.getElementById('prevBtn').disabled = carouselIdx === 0;
+  document.getElementById('nextBtn').disabled = carouselIdx >= getMaxIdx();
+  document.querySelectorAll('.carousel-dot').forEach((d,i) => {
+    d.classList.toggle('active', i === carouselIdx);
+  });
+}
+function carouselNext() {
+  if (carouselIdx < getMaxIdx()) { carouselIdx++; updateCarousel(); }
+}
+function carouselPrev() {
+  if (carouselIdx > 0) { carouselIdx--; updateCarousel(); }
+}
+function buildDots() {
+  const container = document.getElementById('carouselDots');
+  if (!container) return;
+  container.innerHTML = '';
+  const total = getTotal();
+  for (let i = 0; i <= getMaxIdx(); i++) {
+    const d = document.createElement('button');
+    d.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+    d.onclick = () => { carouselIdx = i; updateCarousel(); };
+    container.appendChild(d);
+  }
+}
+
+// Touch/swipe no carrossel
+let touchStartX = 0;
+document.addEventListener('DOMContentLoaded', () => {
+  buildDots();
+  const wrap = document.querySelector('.carousel-wrap');
+  if (wrap) {
+    wrap.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, {passive:true});
+    wrap.addEventListener('touchend', e => {
+      const diff = touchStartX - e.changedTouches[0].clientX;
+      if (Math.abs(diff) > 50) { diff > 0 ? carouselNext() : carouselPrev(); }
+    }, {passive:true});
+  }
+});
+window.addEventListener('resize', () => { updateCarousel(); });
+
+/* ── ESC ────────────────────────────────────────────────── */
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeCase(); });
 </script>
 </body>
 </html>
